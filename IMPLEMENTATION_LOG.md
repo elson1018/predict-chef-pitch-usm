@@ -366,6 +366,55 @@ Per user instruction, the system explicitly distinguishes what has been implemen
   - Production Preview Port 4173 Overview: `preview_overview_artwork_1792861438914.png`
   - Production Preview Port 4173 Demand Insights: `preview_demand_insights_artwork_1792861448821.png`
 
+---
+
+## 14. Runtime Diagnostics, State Machine Execution & Continuous Playback Verification
+
+**Timestamp:** 2026-10-25 01:13:00 +08:00  
+**Phase:** Deep Runtime Diagnostics & 3-Second Scenario Hold Verification  
+**Status:** **PASS** (Actual runtime properties, advance callbacks, CLI renders, and continuous recordings verified)
+
+### 1. Collected Runtime Diagnostics (Evidence in Browser)
+
+| Diagnostic Item | Observed Runtime Value | Verification Notes |
+|---|---|---|
+| **Available State Machines** | `["State Machine 1"]` | Declared on `CanteenArtboard` in `scene.rml`. |
+| **Playing State Machines** | `["State Machine 1"]` | Active from mount; continuously advances layers. |
+| **Available Animations** | `["TypicalDay", "HeavyRain", "CampusFestival", "SteamLoop", "SteamStatic", "RainFallLoop", "RainStationary", "ChefBobLoop", "ChefStationary"]` | All 9 timelines compiled into `public/canteen.riv`. |
+| **Playing Animations** | `[]` | Confirms linear animations are governed strictly by `State Machine 1` layer states rather than bare fallback timelines. |
+| **Bound ViewModel Exists** | `true` | `vmiExists === true`; `defaultViewModel === "CanteenVM"`. |
+| **Actual `scenario` Property** | `0` (Typical Day) → `1` (Heavy Rain) → `2` (Campus Festival) | Live property read directly from `vmi.number('scenario').value` before and after each button click. |
+| **Actual `prefersReducedMotion` Property** | `false` | Read directly from `vmi.boolean('prefersReducedMotion').value` matching system preference. |
+| **Advance Callbacks Over 2 Seconds** | `120 advances` | Confirms active 60fps render loop with zero stalls or frozen states. |
+
+### 2. Hypotheses Disproven & Minimal Code Changes Applied
+
+1. **Hypothesis 3 (RML propertyKey Mismatch) — DISPROVEN:**
+   - Headless CLI rendering with `rive rive/canteen --screenshot=test_scenario_1.png --data="scenario=1" --advance=1s` and `--data="scenario=2"` succeeded with 0 errors and produced exact pixel transitions (slate teal sky + rain + 1 customer on `1`; ceiling bunting + 5 customers on `2`).
+2. **Hypothesis 1 & 2 (ViewModel Unbound / State Machine Not Playing) — DISPROVEN in Browser:**
+   - In browser, `autoBind: true` successfully bound `CanteenVM`, and `State Machine 1` was actively playing from initial render.
+3. **Confirmed Minimal Code Changes:**
+   - In [src/KitchenScene.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/KitchenScene.jsx):
+     - Added advance callback counter and diagnostic snapshot without mutating outside effects.
+     - Hardened reset effect to call `rive.stop('State Machine 1')` and `rive.play('State Machine 1')`, preventing any accidental fallback to a 1-frame linear animation.
+   - In [src/RiveFeasibility.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/RiveFeasibility.jsx):
+     - Removed fallback to React props (`effectiveScenarioVal = scenarioVal ?? scenario`); now reads `vmi?.number('scenario')?.value ?? 'unbound'` to prevent false-positive diagnostic readouts.
+
+### 3. Continuous 3-Second Hold Verification Artifacts
+
+- **Continuous Demonstration Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/canteen_scenario_demo_1792861894712.webp`
+  *(Holds Typical Day 3s with totals 230/254, Heavy Rain 3.5s with totals 184/205, Campus Festival 3.5s with totals 300/332 across Overview, Demand Insights, and Port 4173 Production Preview)*.
+- **Captured Verified Screenshots:**
+  - Overview Typical Day (Held 3s): `overview_typical_verified.png`
+  - Overview Heavy Rain (Held 3s): `overview_rain_verified.png`
+  - Overview Campus Festival (Held 3s): `overview_festival_verified.png`
+  - Demand Insights Campus Festival: `demand_insights_festival_verified.png`
+  - Demand Insights Heavy Rain: `demand_insights_rain_verified.png`
+  - Demand Insights Typical Day: `demand_insights_typical_verified.png`
+  - Production Preview (Port 4173): `preview_overview_verified.png`
+
+
 
 
 

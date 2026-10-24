@@ -74,17 +74,23 @@ function CanteenViewer({
     }
   }, [prefersReducedMotion, setReducedMotionVal, vmi, idPrefix])
 
-  const effectiveScenarioVal = scenarioVal !== undefined && scenarioVal !== null ? scenarioVal : scenario
-  const effectiveMotionVal = reducedMotionVal !== undefined && reducedMotionVal !== null ? reducedMotionVal : prefersReducedMotion
+  const readbackScenarioVal =
+    scenarioVal !== undefined && scenarioVal !== null
+      ? scenarioVal
+      : vmi?.number?.('scenario')?.value ?? 'unbound'
+  const readbackMotionVal =
+    reducedMotionVal !== undefined && reducedMotionVal !== null
+      ? reducedMotionVal
+      : vmi?.boolean?.('prefersReducedMotion')?.value ?? 'unbound'
 
   const scenarioName =
-    effectiveScenarioVal === 0
+    readbackScenarioVal === 0
       ? '0 (Typical Day)'
-      : effectiveScenarioVal === 1
+      : readbackScenarioVal === 1
       ? '1 (Heavy Rain)'
-      : effectiveScenarioVal === 2
+      : readbackScenarioVal === 2
       ? '2 (Campus Festival)'
-      : `${effectiveScenarioVal}`
+      : `${readbackScenarioVal}`
 
   return (
     <div
@@ -123,7 +129,7 @@ function CanteenViewer({
           </span>
           <span>
             reducedMotion:{' '}
-            <strong id={`${idPrefix}-reduced-motion-display`}>{effectiveMotionVal ? 'true' : 'false'}</strong>
+            <strong id={`${idPrefix}-reduced-motion-display`}>{String(readbackMotionVal)}</strong>
           </span>
           <span
             id={`${idPrefix}-load-status`}

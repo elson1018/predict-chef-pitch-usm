@@ -58,6 +58,67 @@ export default function KitchenScene({
     vmi
   )
 
+  // Track advance callbacks over 2s and expose diagnostics
+  useEffect(() => {
+    if (!rive) return
+    let advances = 0
+    const onAdvance = () => {
+      advances++
+    }
+    try {
+      rive.on('advance', onAdvance)
+    } catch {
+      // ignore
+    }
+
+    const timer = setTimeout(() => {
+      const readbackScenario = rive?.viewModelInstance?.number('scenario')?.value ?? 'unbound'
+      const readbackMotion = rive?.viewModelInstance?.boolean('prefersReducedMotion')?.value ?? 'unbound'
+      if (typeof window !== 'undefined' && window.__kitchenSceneDiag) {
+        window.__kitchenSceneDiag.advancesIn2s = advances
+      }
+      console.log('[KitchenScene Diag 2s]', {
+        advancesIn2s: advances,
+        stateMachineNames: rive.stateMachineNames,
+        playingStateMachineNames: rive.playingStateMachineNames,
+        animationNames: rive.animationNames,
+        playingAnimationNames: rive.playingAnimationNames,
+        vmiExists: Boolean(rive.viewModelInstance),
+        defaultViewModel: rive.defaultViewModel ? rive.defaultViewModel()?.name : undefined,
+        actualScenario: readbackScenario,
+        actualMotion: readbackMotion,
+      })
+    }, 2000)
+
+    return () => {
+      clearTimeout(timer)
+      try {
+        rive.off('advance', onAdvance)
+      } catch {
+        // ignore
+      }
+    }
+  }, [rive])
+
+  // Expose live diagnostic state on window for automated inspection
+  useEffect(() => {
+    if (typeof window !== 'undefined' && rive) {
+      window.__kitchenSceneDiag = {
+        ...(window.__kitchenSceneDiag || {}),
+        hasRive: Boolean(rive),
+        stateMachineNames: rive.stateMachineNames,
+        playingStateMachineNames: rive.playingStateMachineNames,
+        animationNames: rive.animationNames,
+        playingAnimationNames: rive.playingAnimationNames,
+        vmiExists: Boolean(rive.viewModelInstance),
+        defaultViewModel: rive.defaultViewModel ? rive.defaultViewModel()?.name : undefined,
+        actualScenario: rive.viewModelInstance?.number('scenario')?.value ?? 'unbound',
+        actualMotion: rive.viewModelInstance?.boolean('prefersReducedMotion')?.value ?? 'unbound',
+        rive,
+      }
+    }
+  }, [rive, targetScenarioIndex, prefersReducedMotion])
+
   // Synchronise numeric scenario to Rive ViewModel
   useEffect(() => {
     if (vmi) {
@@ -96,8 +157,8 @@ export default function KitchenScene({
   useEffect(() => {
     if (resetKey > 0 && rive) {
       try {
-        rive.stop()
-        rive.play()
+        rive.stop('State Machine 1')
+        rive.play('State Machine 1')
       } catch (e) {
         console.warn('[KitchenScene] Error resetting animations:', e)
       }
