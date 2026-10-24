@@ -65,7 +65,11 @@
 .reduced-motion .reset-demo-btn{transition:none !important}
 
 /* Mobile responsive down to 390px */
+@media(max-width:1000px){
+  .hero-visual{display:block !important;margin-top:20px;max-width:100%}
+}
 @media(max-width:480px){
+  .hero-visual{display:block !important;margin-top:16px;max-width:100%}
   .scenario-btn-group{flex-direction:column}
   .scenario-btn{width:100%}
   .dish-bar-label{width:55px;font-size:10px}

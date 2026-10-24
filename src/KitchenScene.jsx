@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   useRive,
   useViewModelInstanceBoolean,
@@ -32,6 +32,8 @@ export default function KitchenScene({
   ariaLabel = 'PreDict-Chef Canteen Scene',
   resetKey = 0,
 }) {
+  const [loadStatus, setLoadStatus] = useState('loading')
+  const [loadError, setLoadError] = useState(null)
   const targetScenarioIndex = scenarioToRiveIndex(scenario)
 
   const { rive, RiveComponent } = useRive({
@@ -40,9 +42,11 @@ export default function KitchenScene({
     autoplay: true,
     autoBind: true,
     onLoad: () => {
-      setIsLoaded(true)
+      setLoadStatus('loaded')
     },
     onLoadError: (err) => {
+      setLoadStatus('error')
+      setLoadError(String(err))
       console.error('[KitchenScene] Failed to load /canteen.riv:', err)
     },
   })
@@ -110,6 +114,9 @@ export default function KitchenScene({
         overflow: 'hidden',
         borderRadius: '10px',
         background: '#f5efe6',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         ...style,
       }}
     >
@@ -117,6 +124,44 @@ export default function KitchenScene({
         style={{ width: '100%', height: '100%', display: 'block' }}
         aria-label={ariaLabel}
       />
+      {loadStatus === 'loading' && (
+        <div
+          className="kitchen-scene-status loading"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(245, 239, 230, 0.85)',
+            color: '#495a44',
+            fontSize: '12px',
+            fontWeight: 600,
+            pointerEvents: 'none',
+          }}
+        >
+          <span>⏳ Loading canteen scene...</span>
+        </div>
+      )}
+      {loadStatus === 'error' && (
+        <div
+          className="kitchen-scene-status error"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#fce8e6',
+            color: '#c5221f',
+            fontSize: '12px',
+            padding: '12px',
+            textAlign: 'center',
+          }}
+        >
+          <span>⚠️ Failed to load canteen artwork: {loadError}</span>
+        </div>
+      )}
     </div>
   )
 }
