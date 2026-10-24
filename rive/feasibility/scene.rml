@@ -1,0 +1,405 @@
+<Rive version="1" kind="fragment">
+    <Artboard defaultStateMachineId="0:7" styleId="0:5" viewModelId="0:40" width="500" height="500" name="Artboard" id="0:2">
+        <LayoutComponentStyle name="Artboard Style" id="0:5"/>
+
+        <!-- Scene Background -->
+        <Fill name="Background">
+            <SolidColor colorValue="FF151821" name="Color"/>
+        </Fill>
+
+        <!-- Kitchen Counter and Stove Burner Base -->
+        <Shape x="250" y="440" name="CounterTop" id="0:50">
+            <Rectangle width="440" height="36" originX="0.5" originY="0.5" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="4" cornerRadiusBR="4" name="CounterPath"/>
+            <Fill name="CounterFill">
+                <SolidColor colorValue="FF252A36" name="Color"/>
+            </Fill>
+            <Stroke thickness="2" name="CounterStroke">
+                <SolidColor colorValue="FF363D4E" name="Color"/>
+            </Stroke>
+        </Shape>
+
+        <Shape x="250" y="416" name="StovePlate" id="0:51">
+            <Rectangle width="240" height="12" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="2" cornerRadiusBR="2" name="PlatePath"/>
+            <Fill name="PlateFill">
+                <SolidColor colorValue="FF323947" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <Shape x="250" y="408" name="StoveFlameGlow" id="0:52">
+            <Rectangle width="150" height="8" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="2" cornerRadiusBR="2" name="GlowPath"/>
+            <Fill name="GlowFill">
+                <SolidColor colorValue="FFFF6B35" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Chef Cooking Pot -->
+        <Node x="250" y="345" name="PotAssembly" id="0:60">
+            <!-- Pot Left Handle -->
+            <Shape x="-115" y="-15" name="LeftHandle" id="0:61">
+                <Rectangle width="30" height="20" originX="0.5" originY="0.5" cornerRadiusTL="10" cornerRadiusBL="10" cornerRadiusTR="4" cornerRadiusBR="4" name="HandlePath"/>
+                <Fill name="HandleFill">
+                    <SolidColor colorValue="FF3D4554" name="Color"/>
+                </Fill>
+                <Stroke thickness="3" name="HandleStroke">
+                    <SolidColor colorValue="FF566175" name="Color"/>
+                </Stroke>
+            </Shape>
+
+            <!-- Pot Right Handle -->
+            <Shape x="115" y="-15" name="RightHandle" id="0:62">
+                <Rectangle width="30" height="20" originX="0.5" originY="0.5" cornerRadiusTR="10" cornerRadiusBR="10" cornerRadiusTL="4" cornerRadiusBL="4" name="HandlePath"/>
+                <Fill name="HandleFill">
+                    <SolidColor colorValue="FF3D4554" name="Color"/>
+                </Fill>
+                <Stroke thickness="3" name="HandleStroke">
+                    <SolidColor colorValue="FF566175" name="Color"/>
+                </Stroke>
+            </Shape>
+
+            <!-- Main Pot Body (Rich Terracotta/Crimson Enamel) -->
+            <Shape x="0" y="10" name="PotBody" id="0:63">
+                <Rectangle width="210" height="110" originX="0.5" originY="0.5" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="40" cornerRadiusBR="40" name="BodyPath"/>
+                <Fill name="BodyFill">
+                    <SolidColor colorValue="FFC0392B" name="Color"/>
+                </Fill>
+                <Stroke thickness="3" name="BodyStroke">
+                    <SolidColor colorValue="FFE74C3C" name="Color"/>
+                </Stroke>
+            </Shape>
+
+            <!-- Pot Body Highlight Sheen -->
+            <Shape x="-65" y="10" name="BodyHighlight" id="0:64">
+                <Rectangle width="16" height="85" originX="0.5" originY="0.5" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="8" cornerRadiusBR="8" name="SheenPath"/>
+                <Fill name="SheenFill">
+                    <SolidColor colorValue="22FFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+
+            <!-- Stew / Broth Surface Inside -->
+            <Shape x="0" y="-42" name="StewSurface" id="0:65">
+                <Ellipse width="190" height="16" originX="0.5" originY="0.5" name="StewPath"/>
+                <Fill name="StewFill">
+                    <SolidColor colorValue="FFF39C12" name="Color"/>
+                </Fill>
+            </Shape>
+
+            <!-- Pot Silver Metallic Rim -->
+            <Shape x="0" y="-45" name="PotRim" id="0:66">
+                <Rectangle width="224" height="14" originX="0.5" originY="0.5" cornerRadiusTL="7" cornerRadiusTR="7" cornerRadiusBL="7" cornerRadiusBR="7" name="RimPath"/>
+                <Fill name="RimFill">
+                    <SolidColor colorValue="FFBDC3C7" name="Color"/>
+                </Fill>
+                <Stroke thickness="2" name="RimStroke">
+                    <SolidColor colorValue="FFECF0F1" name="Color"/>
+                </Stroke>
+            </Shape>
+        </Node>
+
+        <!-- Looping Steam Elements (Rising Wisps) -->
+        <Node x="215" y="270" opacity="0" name="SteamPuff1" id="0:71">
+            <Shape name="Steam1Shape">
+                <Ellipse width="26" height="34" originX="0.5" originY="0.5" name="Puff1Path"/>
+                <Fill name="SteamFill1">
+                    <SolidColor colorValue="BBF0F4F8" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <Node x="250" y="260" opacity="0" name="SteamPuff2" id="0:72">
+            <Shape name="Steam2Shape">
+                <Ellipse width="34" height="44" originX="0.5" originY="0.5" name="Puff2Path"/>
+                <Fill name="SteamFill2">
+                    <SolidColor colorValue="CCFFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <Node x="285" y="270" opacity="0" name="SteamPuff3" id="0:73">
+            <Shape name="Steam3Shape">
+                <Ellipse width="28" height="36" originX="0.5" originY="0.5" name="Puff3Path"/>
+                <Fill name="SteamFill3">
+                    <SolidColor colorValue="BBF0F4F8" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Rain Layer / Drops Controlled by Data Binding -->
+        <Node x="0" y="0" opacity="0" name="RainSystem" id="0:80">
+            <!-- Stationary Rain Cloud Top Banner -->
+            <Shape x="250" y="28" name="CloudTop">
+                <Rectangle width="420" height="42" originX="0.5" originY="0.5" cornerRadiusBL="20" cornerRadiusBR="20" cornerRadiusTL="4" cornerRadiusTR="4" name="CloudPath"/>
+                <Fill name="CloudFill">
+                    <SolidColor colorValue="EE2C3E50" name="Color"/>
+                </Fill>
+            </Shape>
+
+            <!-- Staggered Rain Group A (Phase 0-60) -->
+            <Node x="0" y="0" name="RainGroupA" id="0:81">
+                <Shape x="90" y="55" rotation="0.12" name="DropA1">
+                    <Rectangle width="3" height="22" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathA1"/>
+                    <Fill name="DropFillA1"><SolidColor colorValue="DD5DADE2" name="Color"/></Fill>
+                </Shape>
+                <Shape x="210" y="60" rotation="0.12" name="DropA2">
+                    <Rectangle width="3.5" height="24" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathA2"/>
+                    <Fill name="DropFillA2"><SolidColor colorValue="EE3498DB" name="Color"/></Fill>
+                </Shape>
+                <Shape x="330" y="55" rotation="0.12" name="DropA3">
+                    <Rectangle width="3" height="22" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathA3"/>
+                    <Fill name="DropFillA3"><SolidColor colorValue="DD5DADE2" name="Color"/></Fill>
+                </Shape>
+                <Shape x="410" y="65" rotation="0.12" name="DropA4">
+                    <Rectangle width="3" height="20" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathA4"/>
+                    <Fill name="DropFillA4"><SolidColor colorValue="DD85C1E9" name="Color"/></Fill>
+                </Shape>
+            </Node>
+
+            <!-- Staggered Rain Group B (Phase Offset 20 frames) -->
+            <Node x="0" y="0" name="RainGroupB" id="0:82">
+                <Shape x="130" y="55" rotation="0.12" name="DropB1">
+                    <Rectangle width="3.5" height="26" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathB1"/>
+                    <Fill name="DropFillB1"><SolidColor colorValue="EE3498DB" name="Color"/></Fill>
+                </Shape>
+                <Shape x="250" y="60" rotation="0.12" name="DropB2">
+                    <Rectangle width="3" height="22" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathB2"/>
+                    <Fill name="DropFillB2"><SolidColor colorValue="DD5DADE2" name="Color"/></Fill>
+                </Shape>
+                <Shape x="370" y="55" rotation="0.12" name="DropB3">
+                    <Rectangle width="3.5" height="24" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathB3"/>
+                    <Fill name="DropFillB3"><SolidColor colorValue="EE85C1E9" name="Color"/></Fill>
+                </Shape>
+            </Node>
+
+            <!-- Staggered Rain Group C (Phase Offset 40 frames) -->
+            <Node x="0" y="0" name="RainGroupC" id="0:83">
+                <Shape x="170" y="55" rotation="0.12" name="DropC1">
+                    <Rectangle width="3" height="22" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathC1"/>
+                    <Fill name="DropFillC1"><SolidColor colorValue="DD5DADE2" name="Color"/></Fill>
+                </Shape>
+                <Shape x="290" y="60" rotation="0.12" name="DropC2">
+                    <Rectangle width="3.5" height="26" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathC2"/>
+                    <Fill name="DropFillC2"><SolidColor colorValue="EE3498DB" name="Color"/></Fill>
+                </Shape>
+                <Shape x="430" y="55" rotation="0.12" name="DropC3">
+                    <Rectangle width="3" height="20" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="DropPathC3"/>
+                    <Fill name="DropFillC3"><SolidColor colorValue="DD85C1E9" name="Color"/></Fill>
+                </Shape>
+            </Node>
+        </Node>
+
+        <!-- Interactive State Machine -->
+        <StateMachine name="State Machine 1" id="0:7">
+            <!-- Layer 1: Looping Steam -->
+            <StateMachineLayer name="SteamLayer" id="0:8">
+                <AnyState x="200" y="-120"/>
+                <ExitState x="400" y="-120"/>
+                <EntryState>
+                    <StateTransition stateToId="0:12"/>
+                </EntryState>
+                <AnimationState stateName="LoopingSteamState" x="200" animationId="0:90" id="0:12"/>
+            </StateMachineLayer>
+
+            <!-- Layer 2: Rain Controller driven by isRaining ViewModel property -->
+            <StateMachineLayer name="RainLayer" id="0:15">
+                <AnyState x="200" y="-120"/>
+                <ExitState x="400" y="-120"/>
+                <EntryState>
+                    <StateTransition stateToId="0:16"/>
+                </EntryState>
+
+                <!-- Rain Off State: Rain is hidden -->
+                <AnimationState stateName="RainOffState" x="150" animationId="0:91" id="0:16">
+                    <StateTransition stateToId="0:17" duration="20">
+                        <TransitionViewModelCondition>
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="true"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Rain On State: Rain falls in a loop -->
+                <AnimationState stateName="RainOnState" x="350" animationId="0:92" id="0:17">
+                    <StateTransition stateToId="0:16" duration="20">
+                        <TransitionViewModelCondition>
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="false"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+        </StateMachine>
+
+        <!-- Steam Animation: Continuous organic loop (120 frames = 2 seconds) -->
+        <LinearAnimation loopValue="loop" duration="120" name="SteamLoop" id="0:90">
+            <!-- Puff 1 Animation -->
+            <KeyedObject objectId="0:71">
+                <!-- y position -->
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="270" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="190" frame="60" interpolationType="linear"/>
+                    <KeyFrameDouble value="120" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <!-- opacity -->
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.75" frame="35" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.5" frame="75" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <!-- scaleX -->
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="0.6" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.1" frame="60" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.6" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <!-- scaleY -->
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="0.6" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.1" frame="60" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.6" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Puff 2 Animation (Phased) -->
+            <KeyedObject objectId="0:72">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="180" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="110" frame="50" interpolationType="linear"/>
+                    <KeyFrameDouble value="260" frame="51" interpolationType="linear"/>
+                    <KeyFrameDouble value="180" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.6" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="50" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="51" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.8" frame="85" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.6" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="1.2" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.8" frame="50" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.5" frame="51" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.2" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1.2" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.8" frame="50" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.5" frame="51" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.2" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Puff 3 Animation -->
+            <KeyedObject objectId="0:73">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="140" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="110" frame="25" interpolationType="linear"/>
+                    <KeyFrameDouble value="270" frame="26" interpolationType="linear"/>
+                    <KeyFrameDouble value="190" frame="75" interpolationType="linear"/>
+                    <KeyFrameDouble value="140" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.3" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="25" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="26" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.7" frame="60" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.3" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="1.4" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.7" frame="25" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.6" frame="26" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.4" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1.4" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.7" frame="25" interpolationType="linear"/>
+                    <KeyFrameDouble value="0.6" frame="26" interpolationType="linear"/>
+                    <KeyFrameDouble value="1.4" frame="120" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Rain Off Animation (Holds Rain opacity at 0) -->
+        <LinearAnimation duration="1" name="RainOff" id="0:91">
+            <KeyedObject objectId="0:80">
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0" frame="0" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Rain On Animation (Stationary cloud, staggered falling drops) -->
+        <LinearAnimation loopValue="loop" duration="60" name="RainOn" id="0:92">
+            <!-- RainSystem stays stationary at full opacity -->
+            <KeyedObject objectId="0:80">
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="1" frame="0" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Group A: Falls y 0 -> 120, fades in then fades out before reset -->
+            <KeyedObject objectId="0:81">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="0" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="120" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="10" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="50" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Group B: Phased offset by 20 frames, seamless loop -->
+            <KeyedObject objectId="0:82">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="80" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="120" frame="20" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="21" interpolationType="linear"/>
+                    <KeyFrameDouble value="80" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="1" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="20" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="21" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="29" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Group C: Phased offset by 40 frames, seamless loop -->
+            <KeyedObject objectId="0:83">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="40" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="120" frame="40" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="41" interpolationType="linear"/>
+                    <KeyFrameDouble value="40" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="1" frame="0" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="40" interpolationType="linear"/>
+                    <KeyFrameDouble value="0" frame="41" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="49" interpolationType="linear"/>
+                    <KeyFrameDouble value="1" frame="60" interpolationType="linear"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+    </Artboard>
+
+    <!-- Data Model Definition for PredictChef Feasibility -->
+    <ViewModel defaultInstanceId="0:41" name="FeasibilityVM" id="0:40">
+        <ViewModelPropertyBoolean name="isRaining" id="0:45"/>
+        <ViewModelInstance exports="true" name="Default" id="0:41">
+            <ViewModelInstanceBoolean propertyValue="false" viewModelPropertyId="0:45"/>
+        </ViewModelInstance>
+    </ViewModel>
+</Rive>

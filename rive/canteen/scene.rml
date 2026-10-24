@@ -1,0 +1,1049 @@
+<Rive version="1" kind="fragment">
+    <Artboard defaultStateMachineId="0:7" styleId="0:5" viewModelId="0:40" width="800" height="450" name="CanteenArtboard" id="0:2">
+        <LayoutComponentStyle name="Artboard Style" id="0:5"/>
+
+        <!-- ========================================================
+             Z-7: CUSTOMER SILHOUETTES (FOREGROUND - DECLARED FIRST)
+             Requirement: Exactly 3 for Typical Day, small in bottom corners.
+             Contrasting collars and counter inset ensure high visibility.
+             ======================================================== -->
+        <!-- Customer 1 (Bottom Left, x: 55, y: 405) -->
+        <Node x="55" y="405" name="Customer1" id="0:91">
+            <!-- Head Silhouette (Pine Shadow #0D1F17) -->
+            <Shape x="0" y="-14" name="Cust1Head">
+                <Ellipse width="32" height="32" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+            <!-- Contrasting Collar Accent (Soft Oat #E2D9C8) -->
+            <Shape x="0" y="4" name="Cust1Collar">
+                <Rectangle width="18" height="8" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+            <!-- Torso / Shoulders (Pine Shadow #0D1F17) -->
+            <Shape x="0" y="24" name="Cust1Torso">
+                <Rectangle width="60" height="42" originX="0.5" originY="0.5" cornerRadiusTL="18" cornerRadiusTR="18" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Customer 2 (Bottom Left inner, x: 115, y: 415) -->
+        <Node x="115" y="415" name="Customer2" id="0:92">
+            <Shape x="0" y="-12" name="Cust2Head">
+                <Ellipse width="28" height="28" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+            <!-- Contrasting Collar Accent (Restrained Sage #7A9A86) -->
+            <Shape x="0" y="3" name="Cust2Collar">
+                <Rectangle width="16" height="7" originX="0.5" originY="0.5" cornerRadiusBL="3" cornerRadiusBR="3" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="22" name="Cust2Torso">
+                <Rectangle width="52" height="38" originX="0.5" originY="0.5" cornerRadiusTL="16" cornerRadiusTR="16" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Customer 3 (Bottom Right, x: 735, y: 410) -->
+        <Node x="735" y="410" name="Customer3" id="0:93">
+            <Shape x="0" y="-14" name="Cust3Head">
+                <Ellipse width="32" height="32" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+            <!-- Contrasting Collar Accent (Muted Lime #B5C99A) -->
+            <Shape x="0" y="4" name="Cust3Collar">
+                <Rectangle width="20" height="8" originX="0.5" originY="0.5" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="24" name="Cust3Torso">
+                <Rectangle width="62" height="42" originX="0.5" originY="0.5" cornerRadiusTL="18" cornerRadiusTR="18" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Customer 4 (Bottom Right inner, x: 675, y: 418 - Festival only) -->
+        <Node x="675" y="418" opacity="0.0" name="Customer4" id="0:94">
+            <Shape x="0" y="-12" name="Cust4Head">
+                <Ellipse width="28" height="28" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+            <!-- Contrasting Collar Accent (Restrained Sage #7A9A86) -->
+            <Shape x="0" y="3" name="Cust4Collar">
+                <Rectangle width="16" height="7" originX="0.5" originY="0.5" cornerRadiusBL="3" cornerRadiusBR="3" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="22" name="Cust4Torso">
+                <Rectangle width="50" height="38" originX="0.5" originY="0.5" cornerRadiusTL="16" cornerRadiusTR="16" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Customer 5 (Bottom Left outer, x: 170, y: 420 - Festival only) -->
+        <Node x="170" y="420" opacity="0.0" name="Customer5" id="0:95">
+            <Shape x="0" y="-12" name="Cust5Head">
+                <Ellipse width="26" height="26" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+            <!-- Contrasting Collar Accent (Amber Glow #E8B86D) -->
+            <Shape x="0" y="3" name="Cust5Collar">
+                <Rectangle width="16" height="7" originX="0.5" originY="0.5" cornerRadiusBL="3" cornerRadiusBR="3" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="22" name="Cust5Torso">
+                <Rectangle width="48" height="36" originX="0.5" originY="0.5" cornerRadiusTL="14" cornerRadiusTR="14" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF0D1F17" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-6: STEAM PLUMES (Muted Sage-Grey against Cream Wall)
+             Placeholder wisps: graceful vertical rising shapes.
+             ======================================================== -->
+        <!-- Wisp 1: Above Tray 2 (Curry) -->
+        <Node x="255" y="215" opacity="0.55" name="SteamWisp1" id="0:81">
+            <Shape x="0" y="-10" name="WispTop1">
+                <Ellipse width="10" height="14" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="4" name="WispBody1">
+                <Rectangle width="8" height="24" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Wisp 2: Above Tray 3 (Rice) -->
+        <Node x="365" y="212" opacity="0.50" name="SteamWisp2" id="0:82">
+            <Shape x="0" y="-10" name="WispTop2">
+                <Ellipse width="11" height="15" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="4" name="WispBody2">
+                <Rectangle width="9" height="26" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Wisp 3: Above Stockpot -->
+        <Node x="468" y="206" opacity="0.60" name="SteamWisp3" id="0:83">
+            <Shape x="0" y="-12" name="WispTop3">
+                <Ellipse width="13" height="16" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="BB708A7B" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="4" name="WispBody3">
+                <Rectangle width="11" height="28" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="BB708A7B" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-5: FOOD TRAYS & STOCKPOT ON TOP OF COUNTER
+             Tray 1: Crisp Vegetables / Salad (Muted Lime & Sage)
+             Tray 2: Warm Curry / Stew with Chunks (Amber Glow)
+             Tray 3: Fragrant Steamed Rice (Generous Warm Cream Mound)
+             ======================================================== -->
+        <!-- Food Tray 1: Crisp Vegetables / Salad -->
+        <Node x="145" y="254" name="Tray1Node" id="0:70">
+            <!-- Garnish & Veggie details -->
+            <Shape x="2" y="-12" name="HerbDot1"><Ellipse width="6" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill></Shape>
+            <Shape x="-11" y="-8" name="CarrotCoin1"><Ellipse width="8" height="6" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <Shape x="12" y="-7" name="CarrotCoin2"><Ellipse width="7" height="5" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <!-- Broccoli / Salad Floret clusters -->
+            <Shape x="0" y="-8" name="FloretCenter">
+                <Ellipse width="34" height="16" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+                <Stroke thickness="1" name="S"><SolidColor colorValue="FF7A9A86" name="Color"/></Stroke>
+            </Shape>
+            <Shape x="-22" y="-6" name="FloretLeft">
+                <Ellipse width="26" height="14" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+            </Shape>
+            <Shape x="22" y="-6" name="FloretRight">
+                <Ellipse width="26" height="14" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+            </Shape>
+            <!-- Base Greenery Bed (Restrained Sage) -->
+            <Shape x="0" y="-3" name="GreensBed">
+                <Ellipse width="86" height="18" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+            <!-- Tray Metallic Rim (Soft Oat) -->
+            <Shape x="0" y="0" name="TrayRim1">
+                <Rectangle width="98" height="14" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Tray Recessed Well -->
+            <Shape x="0" y="4" name="TrayWell1">
+                <Rectangle width="92" height="18" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Food Tray 2: Warm Curry / Simmered Stew with Chunks -->
+        <Node x="255" y="254" name="Tray2Node" id="0:71">
+            <!-- Herb garnish flakes on stew -->
+            <Shape x="-7" y="-11" name="StewHerb1"><Ellipse width="6" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill></Shape>
+            <Shape x="14" y="-9" name="StewHerb2"><Ellipse width="6" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill></Shape>
+            <!-- Simmered Stew Chunks -->
+            <Shape x="2" y="-11" name="SauceDollop"><Ellipse width="10" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <Shape x="2" y="-8" name="StewChunkCenter">
+                <Rectangle width="22" height="11" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+            <Shape x="-18" y="-7" name="StewChunkLeft">
+                <Rectangle width="18" height="10" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="3" cornerRadiusBR="3" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+                <Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <Shape x="22" y="-6" name="StewChunkRight">
+                <Rectangle width="16" height="9" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="3" cornerRadiusBR="3" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+                <Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Rich Amber Curry Sauce Bed -->
+            <Shape x="0" y="-3" name="CurrySauceBed">
+                <Ellipse width="86" height="18" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill>
+            </Shape>
+            <!-- Tray Metallic Rim -->
+            <Shape x="0" y="0" name="TrayRim2">
+                <Rectangle width="98" height="14" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Tray Recessed Well -->
+            <Shape x="0" y="4" name="TrayWell2">
+                <Rectangle width="92" height="18" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Food Tray 3: Fragrant Steamed Rice (Generous Fluffy Mound) -->
+        <Node x="365" y="254" name="Tray3Node" id="0:72">
+            <!-- Herb sprig atop rice mound -->
+            <Shape x="-3" y="-15" name="RiceGarnishL"><Ellipse width="9" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill></Shape>
+            <Shape x="4" y="-15" name="RiceGarnishR"><Ellipse width="8" height="4" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill></Shape>
+            <!-- Fluffy Rice Puff Mounds -->
+            <Shape x="0" y="-8" name="RiceMoundCenter">
+                <Ellipse width="46" height="20" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="1" name="S"><SolidColor colorValue="FFE2D9C8" name="Color"/></Stroke>
+            </Shape>
+            <Shape x="-22" y="-6" name="RiceMoundLeft">
+                <Ellipse width="32" height="15" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+            </Shape>
+            <Shape x="22" y="-6" name="RiceMoundRight">
+                <Ellipse width="32" height="15" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+            </Shape>
+            <!-- Rice Base Bed (Soft Oat shadow) -->
+            <Shape x="0" y="-3" name="RiceShadowBed">
+                <Ellipse width="86" height="18" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+            <!-- Tray Metallic Rim -->
+            <Shape x="0" y="0" name="TrayRim3">
+                <Rectangle width="98" height="14" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Tray Recessed Well -->
+            <Shape x="0" y="4" name="TrayWell3">
+                <Rectangle width="92" height="18" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Chef Stockpot on right near chef (x: 468, y: 246) -->
+        <Node x="468" y="246" name="StockpotNode" id="0:75">
+            <!-- Simmering Broth Surface (Amber Glow) -->
+            <Shape x="0" y="-10" name="BrothSurface">
+                <Ellipse width="54" height="6" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill>
+            </Shape>
+            <!-- Pot Rim (Soft Oat) -->
+            <Shape x="0" y="-11" name="PotRim">
+                <Rectangle width="64" height="8" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+                <Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Stockpot Handles -->
+            <Shape x="-34" y="-2" name="PotHandleL">
+                <Rectangle width="12" height="10" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusBL="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+            <Shape x="34" y="-2" name="PotHandleR">
+                <Rectangle width="12" height="10" originX="0.5" originY="0.5" cornerRadiusTR="4" cornerRadiusBR="4" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+            <!-- Pot Body (Deep Forest) -->
+            <Shape x="0" y="6" name="PotBody">
+                <Rectangle width="60" height="34" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="12" cornerRadiusBR="12" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF7A9A86" name="Color"/></Stroke>
+            </Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-5: SERVING COUNTER BODY
+             Understated PredictChef leaf medallion on counter front.
+             Clean recessed base band without decorative grid slats.
+             ======================================================== -->
+        <Node x="400" y="355" name="ServingCounterAssembly" id="0:60">
+            <!-- Countertop Edge (Soft Oat #E2D9C8) -->
+            <Shape x="0" y="-88" name="CounterTopSurface" id="0:64">
+                <Rectangle width="800" height="16" originX="0.5" originY="0.5" name="TopPath"/>
+                <Fill name="TopFill"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+                <Stroke thickness="2" name="TopStroke"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Understated PredictChef Centered Leaf Emblem Badge -->
+            <Node x="0" y="-22" name="PredictChefEmblem">
+                <!-- Three-leaf clover / leaf motif -->
+                <Shape x="0" y="7" name="EmblemStem">
+                    <Rectangle width="3" height="7" originX="0.5" originY="0.5" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+                </Shape>
+                <Shape x="0" y="-7" name="EmblemLeafTop">
+                    <Ellipse width="12" height="15" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+                </Shape>
+                <Shape x="-6" y="2" name="EmblemLeafL">
+                    <Ellipse width="14" height="11" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+                </Shape>
+                <Shape x="6" y="2" name="EmblemLeafR">
+                    <Ellipse width="14" height="11" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill>
+                </Shape>
+                <!-- Subtle Inner Rim -->
+                <Shape x="0" y="0" name="EmblemInnerRing">
+                    <Ellipse width="38" height="38" originX="0.5" originY="0.5" name="P"/>
+                    <Stroke thickness="1" name="S"><SolidColor colorValue="66E2D9C8" name="Color"/></Stroke>
+                </Shape>
+                <!-- Dark Medallion Disc -->
+                <Shape x="0" y="0" name="EmblemDisc">
+                    <Ellipse width="46" height="46" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF11261D" name="Color"/></Fill>
+                    <Stroke thickness="2" name="S"><SolidColor colorValue="FF7A9A86" name="Color"/></Stroke>
+                </Shape>
+            </Node>
+
+            <!-- Clean, Restrained Counter Inset Base Panel (Zero decorative grid slats) -->
+            <Shape x="0" y="45" name="CounterInsetBase" id="0:63">
+                <Rectangle width="766" height="46" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3" name="DetailPath"/>
+                <Fill name="DetailFill"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Inset Panel Sage Border Rim -->
+            <Shape x="0" y="45" name="CounterContrastBand" id="0:62">
+                <Rectangle width="774" height="54" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="BandPath"/>
+                <Fill name="ContrastFill"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Counter Front Base Panel (Deep Forest #163024) -->
+            <Shape x="0" y="0" name="CounterMainPanel" id="0:61">
+                <Rectangle width="800" height="180" originX="0.5" originY="0.5" name="PanelPath"/>
+                <Fill name="PanelFill"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-4: THE CHEF (Classic Toque Silhouette & Tunic)
+             ======================================================== -->
+        <Node x="575" y="210" name="ChefGroup" id="0:50">
+            <!-- Classic Toque Crown Lobes / Puff Silhouette -->
+            <Shape x="-8" y="-52" name="PleatCreaseL">
+                <Rectangle width="1.5" height="16" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+            <Shape x="8" y="-52" name="PleatCreaseR">
+                <Rectangle width="1.5" height="16" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Top Center Toque Puff (Warm Cream with Deep Forest Stroke) -->
+            <Shape x="0" y="-66" name="HatLobeCenter">
+                <Ellipse width="38" height="40" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Top Left Toque Puff -->
+            <Shape x="-18" y="-59" name="HatLobeLeft">
+                <Ellipse width="32" height="34" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Top Right Toque Puff -->
+            <Shape x="18" y="-59" name="HatLobeRight">
+                <Ellipse width="32" height="34" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Lower Crown Flared Base -->
+            <Shape x="0" y="-46" name="HatCrownBase" id="0:57">
+                <Rectangle width="46" height="24" originX="0.5" originY="0.5" cornerRadiusTL="6" cornerRadiusTR="6" cornerRadiusBL="2" cornerRadiusBR="2" name="CrownPath"/>
+                <Fill name="CrownFill"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="CrownStroke"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Chef Toque Hat Band (Deep Forest) -->
+            <Shape x="0" y="-35" name="HatBand" id="0:56">
+                <Rectangle width="44" height="9" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="BandPath"/>
+                <Fill name="BandFill"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Chef Head (Warm Amber Tone with Deep Forest Outline) -->
+            <Shape x="0" y="-16" name="ChefHead" id="0:55">
+                <Ellipse width="42" height="42" originX="0.5" originY="0.5" name="HeadPath"/>
+                <Fill name="HeadFill"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill>
+                <Stroke thickness="2" name="HeadStroke"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Chef Neck -->
+            <Shape x="0" y="2" name="ChefNeck" id="0:54">
+                <Rectangle width="18" height="12" originX="0.5" originY="0.5" name="NeckPath"/>
+                <Fill name="NeckFill"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Apron Neck Strap -->
+            <Shape x="0" y="10" name="ApronStrap" id="0:53">
+                <Rectangle width="24" height="8" originX="0.5" originY="0.5" cornerRadiusBL="4" cornerRadiusBR="4" name="StrapPath"/>
+                <Fill name="StrapFill"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Chef Apron (Deep Forest) -->
+            <Shape x="0" y="38" name="ChefApron" id="0:52">
+                <Rectangle width="56" height="52" originX="0.5" originY="0.5" cornerRadiusTL="6" cornerRadiusTR="6" cornerRadiusBL="4" cornerRadiusBR="4" name="ApronPath"/>
+                <Fill name="ApronFill"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Chef Left Shoulder/Arm hint (Warm Cream with Deep Forest Stroke) -->
+            <Shape x="-42" y="36" name="ChefArmLeft">
+                <Rectangle width="18" height="48" originX="0.5" originY="0.5" cornerRadiusTL="9" cornerRadiusTR="9" cornerRadiusBL="6" cornerRadiusBR="6" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+            <!-- Chef Right Shoulder/Arm hint (Warm Cream with Deep Forest Stroke) -->
+            <Shape x="42" y="36" name="ChefArmRight">
+                <Rectangle width="18" height="48" originX="0.5" originY="0.5" cornerRadiusTL="9" cornerRadiusTR="9" cornerRadiusBL="6" cornerRadiusBR="6" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Torso & White Tunic (Warm Cream with Deep Forest Stroke) -->
+            <Shape x="0" y="30" name="ChefTorso" id="0:51">
+                <Rectangle width="92" height="66" originX="0.5" originY="0.5" cornerRadiusTL="18" cornerRadiusTR="18" cornerRadiusBL="4" cornerRadiusBR="4" name="TorsoPath"/>
+                <Fill name="TunicFill"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill>
+                <Stroke thickness="2" name="TorsoStroke"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-3: FESTIVAL BUNTING (Garlands across top ceiling/wall border)
+             Visible only in Campus Festival (Scenario 2).
+             ======================================================== -->
+        <Node x="400" y="40" opacity="0.0" name="BuntingGroup" id="0:30">
+            <!-- Garland Hanging Cords -->
+            <Shape x="0" y="-15" name="BuntingCord">
+                <Rectangle width="780" height="2" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+            <!-- Triangular Flags (Muted Lime, Amber Glow, Restrained Sage, Soft Oat) -->
+            <Shape x="-330" y="2" rotation="3.14159" name="Flag1"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="-270" y="5" rotation="3.14159" name="Flag2"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="-210" y="7" rotation="3.14159" name="Flag3"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="-150" y="5" rotation="3.14159" name="Flag4"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="-90" y="2" rotation="3.14159" name="Flag5"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="-30" y="5" rotation="3.14159" name="Flag6"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="30" y="7" rotation="3.14159" name="Flag7"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="90" y="5" rotation="3.14159" name="Flag8"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="150" y="2" rotation="3.14159" name="Flag9"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="210" y="5" rotation="3.14159" name="Flag10"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="270" y="7" rotation="3.14159" name="Flag11"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+            <Shape x="330" y="4" rotation="3.14159" name="Flag12"><Triangle width="22" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill><Stroke thickness="1" name="S"><SolidColor colorValue="FF163024" name="Color"/></Stroke></Shape>
+        </Node>
+
+        <!-- ========================================================
+             Z-2: WALL ACCENTS, LAMPS & WINDOW FRAME
+             Window exterior: Pale sky, low campus building & 1 restrained tree.
+             Ample clear sky (70%+) preserved for rain state later.
+             ======================================================== -->
+        <!-- Overhead Pendant Lamps -->
+        <Node x="260" y="30" name="Lamp1">
+            <Shape x="0" y="14" name="Bulb"><Ellipse width="14" height="8" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <Shape x="0" y="6" name="Shade"><Rectangle width="36" height="12" originX="0.5" originY="0.5" cornerRadiusTL="6" cornerRadiusTR="6" cornerRadiusBL="2" cornerRadiusBR="2" name="P"/><Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill></Shape>
+            <Shape x="0" y="-15" name="Cord"><Rectangle width="2" height="30" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill></Shape>
+        </Node>
+        <Node x="575" y="30" name="Lamp2">
+            <Shape x="0" y="14" name="Bulb"><Ellipse width="14" height="8" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <Shape x="0" y="6" name="Shade"><Rectangle width="36" height="12" originX="0.5" originY="0.5" cornerRadiusTL="6" cornerRadiusTR="6" cornerRadiusBL="2" cornerRadiusBR="2" name="P"/><Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill></Shape>
+            <Shape x="0" y="-15" name="Cord"><Rectangle width="2" height="30" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill></Shape>
+        </Node>
+
+        <!-- Canteen Menu Signboard -->
+        <Node x="490" y="130" name="MenuBoard" id="0:35">
+            <Shape x="0" y="15" name="MenuLine4"><Rectangle width="32" height="3" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill></Shape>
+            <Shape x="0" y="6" name="MenuLine3"><Rectangle width="40" height="3" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill></Shape>
+            <Shape x="0" y="-3" name="MenuLine2"><Rectangle width="36" height="3" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFF5EFE6" name="Color"/></Fill></Shape>
+            <Shape x="0" y="-12" name="MenuLine1"><Rectangle width="42" height="3" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFB5C99A" name="Color"/></Fill></Shape>
+            <Shape x="0" y="-24" name="MenuHeader"><Rectangle width="38" height="6" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="P"/><Fill name="F"><SolidColor colorValue="FFE8B86D" name="Color"/></Fill></Shape>
+            <Shape x="0" y="0" name="MenuBoardBase">
+                <Rectangle width="54" height="74" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="BoardPath"/>
+                <Fill name="BoardFill"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+                <Stroke thickness="2" name="BoardBorder"><SolidColor colorValue="FFE2D9C8" name="Color"/></Stroke>
+            </Shape>
+        </Node>
+
+        <!-- Window Mullions, Scenery & Framing (Masked by frame geometry) -->
+        <Node x="260" y="158" name="WindowFrameGroup" id="0:20">
+            <!-- Mullion Bars (Front) -->
+            <Shape x="0" y="10" name="MullionH" id="0:29">
+                <Rectangle width="350" height="5" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+            <Shape x="-60" y="0" name="MullionV1" id="0:27">
+                <Rectangle width="5" height="170" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+            <Shape x="60" y="0" name="MullionV2" id="0:28">
+                <Rectangle width="5" height="170" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Window Outer Dark Border (Deep Forest) -->
+            <Shape x="0" y="0" name="WindowOuterFrame" id="0:26">
+                <Rectangle width="354" height="174" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3" name="FramePath"/>
+                <Stroke thickness="6" join="miter" name="FrameStroke"><SolidColor colorValue="FF163024" name="Color"/></Stroke>
+            </Shape>
+
+            <!-- Rain Weather Layer (Clipping strictly inside 350x170 window) -->
+            <Node x="0" y="0" opacity="0.0" name="RainWeatherSystem" id="0:23">
+                <!-- Stationary Cloud Bar at Window Top -->
+                <Node x="0" y="-70" name="WindowCloudBar" id="0:86">
+                    <Shape x="-90" y="-4" name="CloudPuffL"><Ellipse width="80" height="24" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="EED5DDD7" name="Color"/></Fill></Shape>
+                    <Shape x="0" y="-2" name="CloudPuffM"><Ellipse width="96" height="28" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="FFCAD8CD" name="Color"/></Fill></Shape>
+                    <Shape x="90" y="-4" name="CloudPuffR"><Ellipse width="80" height="24" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="EED5DDD7" name="Color"/></Fill></Shape>
+                    <Shape x="0" y="2" name="CloudBase"><Rectangle width="330" height="12" originX="0.5" originY="0.5" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/><Fill name="F"><SolidColor colorValue="FFCAD8CD" name="Color"/></Fill></Shape>
+                </Node>
+
+                <!-- Staggered Rain Group A (Phase 0) -->
+                <Node x="0" y="0" name="RainGroupA" id="0:24">
+                    <Shape x="-120" y="0" rotation="0.14" name="DropA1"><Rectangle width="2.5" height="18" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="-45" y="-10" rotation="0.14" name="DropA2"><Rectangle width="2.5" height="20" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="30" y="10" rotation="0.14" name="DropA3"><Rectangle width="2.5" height="16" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="105" y="-5" rotation="0.14" name="DropA4"><Rectangle width="2.5" height="20" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                </Node>
+
+                <!-- Staggered Rain Group B (Phase Offset 20 frames) -->
+                <Node x="0" y="0" name="RainGroupB" id="0:25">
+                    <Shape x="-85" y="8" rotation="0.14" name="DropB1"><Rectangle width="2.5" height="19" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="-10" y="-8" rotation="0.14" name="DropB2"><Rectangle width="2.5" height="17" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="65" y="5" rotation="0.14" name="DropB3"><Rectangle width="2.5" height="22" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="135" y="-12" rotation="0.14" name="DropB4"><Rectangle width="2.5" height="18" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                </Node>
+
+                <!-- Staggered Rain Group C (Phase Offset 40 frames) -->
+                <Node x="0" y="0" name="RainGroupC" id="0:84">
+                    <Shape x="-135" y="-15" rotation="0.14" name="DropC1"><Rectangle width="2.5" height="18" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="-60" y="12" rotation="0.14" name="DropC2"><Rectangle width="2.5" height="20" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="0" y="-4" rotation="0.14" name="DropC3"><Rectangle width="2.5" height="17" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="99A3B8B9" name="Color"/></Fill></Shape>
+                    <Shape x="80" y="14" rotation="0.14" name="DropC4"><Rectangle width="2.5" height="21" originX="0.5" originY="0.5" cornerRadiusTL="1" cornerRadiusTR="1" cornerRadiusBL="1" cornerRadiusBR="1" name="P"/><Fill name="F"><SolidColor colorValue="BBA3B8B9" name="Color"/></Fill></Shape>
+                </Node>
+            </Node>
+
+            <!-- Restrained Tree Shape (Right side: x=95, stays strictly inside window) -->
+            <Node x="95" y="44" name="RestrainedTree">
+                <Shape x="0" y="24" name="Trunk">
+                    <Rectangle width="5" height="26" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF163024" name="Color"/></Fill>
+                </Shape>
+                <Shape x="-2" y="-3" name="CanopyLobe">
+                    <Ellipse width="34" height="38" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+                </Shape>
+                <Shape x="0" y="0" name="CanopyMain">
+                    <Ellipse width="44" height="50" originX="0.5" originY="0.5" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF557361" name="Color"/></Fill>
+                </Shape>
+            </Node>
+
+            <!-- Low Campus Building Silhouette (Left/Center: y=45..85, leaving top 70% open sky) -->
+            <Node x="-35" y="66" name="CampusBuilding">
+                <Shape x="-30" y="2" name="Win1"><Rectangle width="4" height="10" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="55163024" name="Color"/></Fill></Shape>
+                <Shape x="-10" y="2" name="Win2"><Rectangle width="4" height="10" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="55163024" name="Color"/></Fill></Shape>
+                <Shape x="10" y="2" name="Win3"><Rectangle width="4" height="10" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="55163024" name="Color"/></Fill></Shape>
+                <Shape x="30" y="2" name="Win4"><Rectangle width="4" height="10" originX="0.5" originY="0.5" name="P"/><Fill name="F"><SolidColor colorValue="55163024" name="Color"/></Fill></Shape>
+                <!-- Central roof pavilion pediment -->
+                <Shape x="0" y="-21" name="PavilionRoof">
+                    <Rectangle width="58" height="12" originX="0.5" originY="0.5" cornerRadiusTL="3" cornerRadiusTR="3" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF658371" name="Color"/></Fill>
+                </Shape>
+                <!-- Main Building Block -->
+                <Shape x="0" y="0" name="BuildingBlock">
+                    <Rectangle width="200" height="32" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" name="P"/>
+                    <Fill name="F"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+                </Shape>
+            </Node>
+
+            <!-- Rain Sky Fill (Cool Slate Teal #5A7678) -->
+            <Shape x="0" y="0" opacity="0.0" name="ExteriorSkyRain" id="0:85">
+                <Rectangle width="350" height="170" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="SkyPathRain"/>
+                <Fill name="SkyFillRain"><SolidColor colorValue="FF5A7678" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Typical/Festival Sky Fill (Pale Sky: Warm Cream with light Amber tint) -->
+            <Shape x="0" y="0" opacity="1.0" name="ExteriorSkyTypical" id="0:22">
+                <Rectangle width="350" height="170" originX="0.5" originY="0.5" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="SkyPath"/>
+                <Fill name="SkyFill"><SolidColor colorValue="FFF0E8DC" name="Color"/></Fill>
+            </Shape>
+
+            <!-- Window Outer Sill & Shadow -->
+            <Shape x="0" y="0" name="WindowRecess" id="0:21">
+                <Rectangle width="364" height="184" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="RecessPath"/>
+                <Fill name="RecessFill"><SolidColor colorValue="FFE2D9C8" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Wainscoting / Dado Rail accent line above counter -->
+        <Shape x="400" y="258" name="WallTrim" id="0:11">
+            <Rectangle width="800" height="6" originX="0.5" originY="0.5" name="TrimPath"/>
+            <Fill name="TrimFill"><SolidColor colorValue="FF7A9A86" name="Color"/></Fill>
+        </Shape>
+
+        <!-- ========================================================
+             Z-0: INTERIOR WALL BASE (DEEPEST LAYER - DECLARED LAST)
+             ======================================================== -->
+        <Shape x="400" y="135" name="InteriorWall" id="0:10">
+            <Rectangle width="800" height="270" originX="0.5" originY="0.5" name="WallPath"/>
+            <Fill name="WallFill">
+                <SolidColor colorValue="FFF5EFE6" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- ========================================================
+             INTERACTIVE STATE MACHINE (4 DECOUPLED LAYERS)
+             ======================================================== -->
+        <StateMachine name="State Machine 1" id="0:7">
+            <!-- Layer 1: Scenario Controller (0 = Typical, 1 = Rain, 2 = Festival) -->
+            <StateMachineLayer name="ScenarioLayer" id="0:8">
+                <AnyState x="0" y="-150"/>
+                <ExitState x="600" y="-150"/>
+                <EntryState>
+                    <StateTransition stateToId="0:111"/>
+                </EntryState>
+
+                <!-- Scenario 0: Typical Day -->
+                <AnimationState stateName="TypicalDayState" x="100" y="50" animationId="0:100" id="0:111">
+                    <!-- 0 -> 1 (Heavy Rain) -->
+                    <StateTransition stateToId="0:112" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="1"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                    <!-- 0 -> 2 (Campus Festival) -->
+                    <StateTransition stateToId="0:113" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="2"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Scenario 1: Heavy Rain -->
+                <AnimationState stateName="HeavyRainState" x="300" y="50" animationId="0:101" id="0:112">
+                    <!-- 1 -> 0 (Typical Day) -->
+                    <StateTransition stateToId="0:111" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="0"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                    <!-- 1 -> 2 (Campus Festival) -->
+                    <StateTransition stateToId="0:113" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="2"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Scenario 2: Campus Festival -->
+                <AnimationState stateName="CampusFestivalState" x="500" y="50" animationId="0:102" id="0:113">
+                    <!-- 2 -> 0 (Typical Day) -->
+                    <StateTransition stateToId="0:111" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="0"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                    <!-- 2 -> 1 (Heavy Rain) -->
+                    <StateTransition stateToId="0:112" duration="15">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyNumber>
+                                    <DataBindContext sourcePathIds="0:40-0:45" propertyKey="636"/>
+                                </BindablePropertyNumber>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueNumberComparator value="1"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+
+            <!-- Layer 2: Steam Animation (Supports prefersReducedMotion) -->
+            <StateMachineLayer name="SteamLayer" id="0:120">
+                <AnyState x="0" y="-150"/>
+                <ExitState x="400" y="-150"/>
+                <EntryState>
+                    <StateTransition stateToId="0:121"/>
+                </EntryState>
+
+                <!-- Active Looping Steam -->
+                <AnimationState stateName="SteamMovingState" x="150" y="50" animationId="0:103" id="0:121">
+                    <StateTransition stateToId="0:122" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="true"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Stationary Steam on prefersReducedMotion -->
+                <AnimationState stateName="SteamRestingState" x="350" y="50" animationId="0:104" id="0:122">
+                    <StateTransition stateToId="0:121" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="false"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+
+            <!-- Layer 3: Rain Motion (Supports prefersReducedMotion) -->
+            <StateMachineLayer name="RainMotionLayer" id="0:130">
+                <AnyState x="0" y="-150"/>
+                <ExitState x="400" y="-150"/>
+                <EntryState>
+                    <StateTransition stateToId="0:131"/>
+                </EntryState>
+
+                <!-- Active Falling Rain Loop -->
+                <AnimationState stateName="RainFallingState" x="150" y="50" animationId="0:105" id="0:131">
+                    <StateTransition stateToId="0:132" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="true"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Stationary Raindrops on prefersReducedMotion -->
+                <AnimationState stateName="RainRestingState" x="350" y="50" animationId="0:106" id="0:132">
+                    <StateTransition stateToId="0:131" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="false"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+
+            <!-- Layer 4: Chef Subtle Idle Breathing (Supports prefersReducedMotion) -->
+            <StateMachineLayer name="ChefMotionLayer" id="0:140">
+                <AnyState x="0" y="-150"/>
+                <ExitState x="400" y="-150"/>
+                <EntryState>
+                    <StateTransition stateToId="0:141"/>
+                </EntryState>
+
+                <AnimationState stateName="ChefBobbingState" x="150" y="50" animationId="0:107" id="0:141">
+                    <StateTransition stateToId="0:142" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="true"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+
+                <AnimationState stateName="ChefRestingState" x="350" y="50" animationId="0:108" id="0:142">
+                    <StateTransition stateToId="0:141" duration="10">
+                        <TransitionViewModelCondition opValue="equal">
+                            <TransitionPropertyViewModelComparator>
+                                <BindablePropertyBoolean>
+                                    <DataBindContext sourcePathIds="0:40-0:46" propertyKey="634"/>
+                                </BindablePropertyBoolean>
+                            </TransitionPropertyViewModelComparator>
+                            <TransitionValueBooleanComparator value="false"/>
+                        </TransitionViewModelCondition>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+        </StateMachine>
+
+        <!-- ========================================================
+             ANIMATION DEFINITIONS
+             ======================================================== -->
+        <!-- Scenario 0: Typical Day (3 customers, warm sky, no bunting, no rain) -->
+        <LinearAnimation duration="1" name="TypicalDay" id="0:100">
+            <KeyedObject objectId="0:91"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:92"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:93"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:94"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:95"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:30"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:23"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:85"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:22"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+
+        <!-- Scenario 1: Heavy Rain (1 customer, cool sky, rain active, no bunting) -->
+        <LinearAnimation duration="1" name="HeavyRain" id="0:101">
+            <KeyedObject objectId="0:91"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:92"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:93"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:94"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:95"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:30"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:23"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:85"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:22"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+
+        <!-- Scenario 2: Campus Festival (5 customers, bunting visible, warm sky, no rain) -->
+        <LinearAnimation duration="1" name="CampusFestival" id="0:102">
+            <KeyedObject objectId="0:91"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:92"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:93"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:94"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:95"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:30"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:23"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:85"><KeyedProperty propertyKey="18"><KeyFrameDouble value="0" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:22"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+
+        <!-- Looping Organic Steam (3 staggered wisps rising, scaling, and fading out) -->
+        <LinearAnimation loopValue="loop" duration="120" name="SteamLoop" id="0:103">
+            <!-- Wisp 1: Above Tray 2 (Curry) -->
+            <KeyedObject objectId="0:81">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="225" frame="0"/>
+                    <KeyFrameDouble value="195" frame="60"/>
+                    <KeyFrameDouble value="170" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0" frame="0"/>
+                    <KeyFrameDouble value="0.6" frame="25"/>
+                    <KeyFrameDouble value="0.4" frame="85"/>
+                    <KeyFrameDouble value="0" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="0.8" frame="0"/>
+                    <KeyFrameDouble value="1.05" frame="60"/>
+                    <KeyFrameDouble value="1.3" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="0.8" frame="0"/>
+                    <KeyFrameDouble value="1.05" frame="60"/>
+                    <KeyFrameDouble value="1.3" frame="120"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Wisp 2: Above Tray 3 (Rice, 40-frame phase offset) -->
+            <KeyedObject objectId="0:82">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="188" frame="0"/>
+                    <KeyFrameDouble value="170" frame="40"/>
+                    <KeyFrameDouble value="225" frame="41"/>
+                    <KeyFrameDouble value="200" frame="80"/>
+                    <KeyFrameDouble value="188" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.35" frame="0"/>
+                    <KeyFrameDouble value="0" frame="40"/>
+                    <KeyFrameDouble value="0" frame="41"/>
+                    <KeyFrameDouble value="0.55" frame="65"/>
+                    <KeyFrameDouble value="0.4" frame="100"/>
+                    <KeyFrameDouble value="0.35" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="1.15" frame="0"/>
+                    <KeyFrameDouble value="1.3" frame="40"/>
+                    <KeyFrameDouble value="0.8" frame="41"/>
+                    <KeyFrameDouble value="1" frame="80"/>
+                    <KeyFrameDouble value="1.15" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1.15" frame="0"/>
+                    <KeyFrameDouble value="1.3" frame="40"/>
+                    <KeyFrameDouble value="0.8" frame="41"/>
+                    <KeyFrameDouble value="1" frame="80"/>
+                    <KeyFrameDouble value="1.15" frame="120"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Wisp 3: Above Stockpot (80-frame phase offset) -->
+            <KeyedObject objectId="0:83">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="205" frame="0"/>
+                    <KeyFrameDouble value="170" frame="80"/>
+                    <KeyFrameDouble value="225" frame="81"/>
+                    <KeyFrameDouble value="205" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.5" frame="0"/>
+                    <KeyFrameDouble value="0" frame="80"/>
+                    <KeyFrameDouble value="0" frame="81"/>
+                    <KeyFrameDouble value="0.6" frame="105"/>
+                    <KeyFrameDouble value="0.5" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="0.95" frame="0"/>
+                    <KeyFrameDouble value="1.3" frame="80"/>
+                    <KeyFrameDouble value="0.8" frame="81"/>
+                    <KeyFrameDouble value="0.95" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="0.95" frame="0"/>
+                    <KeyFrameDouble value="1.3" frame="80"/>
+                    <KeyFrameDouble value="0.8" frame="81"/>
+                    <KeyFrameDouble value="0.95" frame="120"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Static Steam (Pre-motion resting baseline) -->
+        <LinearAnimation duration="1" name="SteamStatic" id="0:104">
+            <KeyedObject objectId="0:81"><KeyedProperty propertyKey="14"><KeyFrameDouble value="215" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.55" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:82"><KeyedProperty propertyKey="14"><KeyFrameDouble value="212" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.5" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:83"><KeyedProperty propertyKey="14"><KeyFrameDouble value="206" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.6" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+
+        <!-- Continuous Falling Rain Loop (3 staggered groups, hidden resets) -->
+        <LinearAnimation loopValue="loop" duration="60" name="RainFallLoop" id="0:105">
+            <!-- Rain Group A -->
+            <KeyedObject objectId="0:24">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="-40" frame="0"/>
+                    <KeyFrameDouble value="45" frame="60"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0" frame="0"/>
+                    <KeyFrameDouble value="0.7" frame="10"/>
+                    <KeyFrameDouble value="0.7" frame="50"/>
+                    <KeyFrameDouble value="0" frame="60"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Rain Group B (Offset 20 frames) -->
+            <KeyedObject objectId="0:25">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="16" frame="0"/>
+                    <KeyFrameDouble value="45" frame="20"/>
+                    <KeyFrameDouble value="-40" frame="21"/>
+                    <KeyFrameDouble value="16" frame="60"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.5" frame="0"/>
+                    <KeyFrameDouble value="0" frame="20"/>
+                    <KeyFrameDouble value="0" frame="21"/>
+                    <KeyFrameDouble value="0.7" frame="30"/>
+                    <KeyFrameDouble value="0.7" frame="50"/>
+                    <KeyFrameDouble value="0.5" frame="60"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Rain Group C (Offset 40 frames) -->
+            <KeyedObject objectId="0:84">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="-12" frame="0"/>
+                    <KeyFrameDouble value="45" frame="40"/>
+                    <KeyFrameDouble value="-40" frame="41"/>
+                    <KeyFrameDouble value="-12" frame="60"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.6" frame="0"/>
+                    <KeyFrameDouble value="0" frame="40"/>
+                    <KeyFrameDouble value="0" frame="41"/>
+                    <KeyFrameDouble value="0.7" frame="50"/>
+                    <KeyFrameDouble value="0.6" frame="60"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Stationary Rain on Reduced Motion -->
+        <LinearAnimation duration="1" name="RainStationary" id="0:106">
+            <KeyedObject objectId="0:24"><KeyedProperty propertyKey="14"><KeyFrameDouble value="0" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.6" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:25"><KeyedProperty propertyKey="14"><KeyFrameDouble value="0" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.6" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:84"><KeyedProperty propertyKey="14"><KeyFrameDouble value="0" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.6" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+
+        <!-- Subtle Chef Breathing Bob (ping-pong vertical ease) -->
+        <LinearAnimation loopValue="pingPong" duration="90" name="ChefBobLoop" id="0:107">
+            <KeyedObject objectId="0:50">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="210" frame="0"/>
+                    <KeyFrameDouble value="212.5" frame="90"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Chef Stationary on Reduced Motion -->
+        <LinearAnimation duration="1" name="ChefStationary" id="0:108">
+            <KeyedObject objectId="0:50"><KeyedProperty propertyKey="14"><KeyFrameDouble value="210" frame="0"/></KeyedProperty></KeyedObject>
+        </LinearAnimation>
+    </Artboard>
+
+    <!-- Data Model Definition for PredictChef Canteen Scene -->
+    <ViewModel defaultInstanceId="0:41" name="CanteenVM" id="0:40">
+        <ViewModelPropertyNumber name="scenario" id="0:45"/>
+        <ViewModelPropertyBoolean name="prefersReducedMotion" id="0:46"/>
+        <ViewModelInstance exports="true" name="Default" id="0:41">
+            <ViewModelInstanceNumber propertyValue="0" viewModelPropertyId="0:45"/>
+            <ViewModelInstanceBoolean propertyValue="false" viewModelPropertyId="0:46"/>
+        </ViewModelInstance>
+    </ViewModel>
+</Rive>
