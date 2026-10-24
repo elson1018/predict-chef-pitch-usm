@@ -290,3 +290,36 @@ Per user instruction, the system explicitly distinguishes what has been implemen
   - Scenario 2 (Campus Festival): `canteen_scenario_2_festival_1792855178825.png`
   - Post 20x Rapid Test Settled: `canteen_after_20x_rapid_test_1792855214774.png`
 
+---
+
+## 11. Canteen Scene: Focused Steam Animation Refinement
+
+**Timestamp:** 2026-10-24 23:34:00 +08:00  
+**Phase:** Visual & Motion Refinement (10–15 min pass) — Complete  
+**Status:** **PASS**
+
+### 1. Root Cause & Architectural Correction
+- **Problem:** Previous steam wisps were positioned above Tray 2 (x=255) and Tray 3 (x=365). Because the exterior window spans X: 85 to 435, rising wisps drifted in front of the window frame and exterior sky, creating visual ambiguity where steam resembled floating exterior smoke or outdoor objects.
+- **Correction Applied in `rive/canteen/scene.rml`:**
+  - Removed all steam elements from the food trays and window area.
+  - Concentrated three slender, narrow wisps directly above the Stockpot opening (`SteamWisp1` at x=460, `SteamWisp2` at x=468, `SteamWisp3` at x=476). Because the window ends at x=435, the entire steam assembly sits to the right with a clean 25px clear margin from the window.
+  - Narrowed geometry from bulky 13px blobs to delicate 3–4px wide rounded shapes with soft opacity (`#66829B8C` and `#77708A7B`).
+  - Adjusted motion trajectory: Wisps emerge just above the broth surface (Y: 230), rise a short distance (Y: 230 → 198, ~32px rise), and fade out completely to `opacity=0.0`.
+  - Phased staggering (0, 40, and 80 frames) with loop resets executed strictly while `opacity=0.0`, rendering loop resets 100% invisible.
+  - In `SteamStatic` (reduced motion), wisps rest softly at the pot rim (Y: 222–226, opacity 0.25–0.30) without vertical translation.
+- **Compiled Asset:** `rive/canteen/build/canteen.riv` (14,336 bytes, 0 errors, 0 warnings), deployed to `public/canteen.riv` and `dist/canteen.riv`.
+
+### 2. Browser Verification Results
+- **Stockpot Origin:** Verified at both 800×450 and 400×225. Steam visibly and unmistakably originates solely from the simmering stockpot on the right.
+- **Zero Window Overlap:** No wisps cross into the window area or overlap the exterior building, tree, or sky.
+- **Render Order:** Steam renders directly in front of the interior back wall and above the pot rim.
+- **Reduced Motion:** Verified via `#reduced-motion-toggle-btn`; motion freezes at resting position, switching scenarios functions normally, and full motion resumes smoothly upon toggle.
+- **Quality Gates:** `node --test` (3/3 pass), `oxlint` (0 warnings, 0 errors), `vite build` (21 modules transformed, 0 errors).
+
+### 3. Artifacts
+- **Recording:** `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/steam_motion_preview_1792856031528.webp`
+- **Screenshots:**
+  - Full View (800×450): `steam_refined_full_view_1792856043909.png`
+  - In-Situ Dashboard Scale (400×225): `steam_refined_dashboard_scale_1792856048533.png`
+
+
