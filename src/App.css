@@ -10,3 +10,69 @@
 @media(max-width:1000px){nav{flex-wrap:wrap;overflow:visible}nav a{flex:1 1 40%;font-size:14px;padding:12px;min-height:44px}h1{font-size:30px}.scenario-toolbar label{flex-wrap:wrap;gap:8px}.scenario-toolbar select{margin-left:0}.topbar{gap:12px}.prep-controls{grid-template-columns:1fr}.prep-summary{border-left:0;border-top:1px solid #e7ecdf;padding:20px 0 0}.hero-panel{grid-template-columns:1fr}.hero-visual{display:none}.section-title{flex-wrap:wrap}}
 @media(max-width:480px){.metrics{grid-template-columns:1fr}.metric strong{font-size:34px}.metric>span{font-size:15px}.metric small{font-size:14px}.scenario-toolbar label,.scenario-toolbar select{font-size:14px}.demo-badge{font-size:12px}.topbar{flex-wrap:wrap}.hero-panel h2{font-size:36px}.hero-panel p{font-size:15px}.button-row{flex-wrap:wrap}.date-chip{display:none}.brand small{display:none}}
 @media(min-width:1001px){.sidebar{width:270px}.main-shell{margin-left:270px;width:calc(100% - 270px)}.brand{font-size:24px;letter-spacing:-1px}.brand small{font-size:10px;letter-spacing:0}.brand>span:last-child{white-space:nowrap}.workspace{font-size:14px}nav a{font-size:15px}}
+
+/* Scenario Accessible Buttons */
+.scenario-btn-group{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch}
+.scenario-btn{background:#fff;border:1px solid #dfe5d9;border-radius:8px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:50px;text-align:left;transition:all .18s ease;color:#163024}
+.scenario-btn:hover{border-color:#256348;background:#f9fbf7}
+.scenario-btn:focus-visible{outline:2px solid #256348;outline-offset:2px}
+.scenario-btn.active{background:#163024;color:#fff;border-color:#163024;box-shadow:0 4px 14px rgba(22,48,36,.22)}
+.scenario-btn-icon{font-size:18px;display:grid;place-items:center;width:24px}
+.scenario-btn-text strong{display:block;font-size:13px;font-weight:700;line-height:1.3}
+.scenario-btn-text small{display:block;font-size:11px;color:#5c6e5f;line-height:1.3;margin-top:2px}
+.scenario-btn.active .scenario-btn-text small{color:#e2d9c8}
+.scenario-active-chip{background:#b5c99a;color:#0d1f17;font-size:10px;font-weight:800;letter-spacing:.5px;padding:2px 6px;border-radius:4px;margin-left:auto}
+
+/* Reset Demo Button */
+.reset-demo-btn{background:#f5efe6;border:1px solid #dcd4c3;color:#354d36;font-size:12px;font-weight:700;padding:6px 12px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:34px;transition:all .15s ease}
+.reset-demo-btn:hover{background:#e8dfd0;color:#163024;border-color:#beb49f}
+.reset-demo-btn:focus-visible{outline:2px solid #256348;outline-offset:2px}
+
+/* Kitchen Scene in Demand Insights & Overview */
+.kitchen-scene-card{background:#fff;border:1px solid #e3e8de;border-radius:10px;padding:20px;overflow:hidden}
+.kitchen-scene-wrapper{box-shadow:0 6px 20px rgba(0,0,0,.12);border:1px solid #233e31}
+
+/* Dish Comparison Rows */
+.dish-comp-card{background:#fff;border:1px solid #e3e8de;border-radius:10px;padding:23px;margin-bottom:22px}
+.dish-comp-row{padding:14px 0;border-bottom:1px solid #edf0e7}
+.dish-comp-row:last-child{border-bottom:0;padding-bottom:0}
+.dish-comp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.dish-comp-name{display:flex;align-items:center;gap:8px}
+.dish-comp-name span{width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font-size:18px}
+.dish-comp-name b{font-size:14px;color:#163024}
+.dish-comp-name small{font-size:12px;color:#61725b;margin-left:4px}
+.dish-diff-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
+.dish-diff-badge.up{background:#e8f4e5;color:#28634b}
+.dish-diff-badge.down{background:#fdf2e9;color:#9b5a23}
+.dish-diff-badge.neutral{background:#f0f2ec;color:#556650}
+.dish-comp-bars{display:grid;gap:6px}
+.dish-bar-line{display:flex;align-items:center;gap:10px;font-size:12px}
+.dish-bar-label{width:65px;font-size:11px;font-weight:600;color:#6d7f6b;text-transform:uppercase;letter-spacing:.4px}
+.dish-bar-track{flex:1;height:12px;background:#edf2e8;border-radius:6px;overflow:hidden;position:relative}
+.dish-bar-fill{height:100%;border-radius:6px;transition:width .32s cubic-bezier(.4,0,.2,1)}
+.dish-bar-fill.baseline{background:#c9d6c3}
+.dish-bar-fill.forecast{background:#256348}
+.dish-bar-fill.forecast.rain{background:#5a7678}
+.dish-bar-fill.forecast.event{background:#e8b86d}
+.dish-bar-val{width:80px;text-align:right;font-weight:700;font-size:13px;color:#163024}
+
+/* Reduced motion disables UI transitions */
+@media(prefers-reduced-motion:reduce){
+  .dish-bar-fill,.scenario-btn,.reset-demo-btn{transition:none !important}
+}
+.reduced-motion .dish-bar-fill,
+.reduced-motion .scenario-btn,
+.reduced-motion .reset-demo-btn{transition:none !important}
+
+/* Mobile responsive down to 390px */
+@media(max-width:1000px){
+  .hero-visual{display:block !important;margin-top:20px;max-width:100%}
+}
+@media(max-width:480px){
+  .hero-visual{display:block !important;margin-top:16px;max-width:100%}
+  .scenario-btn-group{flex-direction:column}
+  .scenario-btn{width:100%}
+  .dish-bar-label{width:55px;font-size:10px}
+  .dish-bar-val{width:65px;font-size:12px}
+}
+

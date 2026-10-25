@@ -95,42 +95,43 @@
         </Node>
 
         <!-- ========================================================
-             Z-6: STEAM PLUMES (Muted Sage-Grey against Cream Wall)
-             Placeholder wisps: graceful vertical rising shapes.
+             Z-6: STEAM WISPS (Narrow, soft wisps concentrated above stockpot)
+             Positioned exclusively above Stockpot (x: 468, y: 246).
+             Zero overlap with window frame or exterior scenery.
              ======================================================== -->
-        <!-- Wisp 1: Above Tray 2 (Curry) -->
-        <Node x="255" y="215" opacity="0.55" name="SteamWisp1" id="0:81">
-            <Shape x="0" y="-10" name="WispTop1">
-                <Ellipse width="10" height="14" originX="0.5" originY="0.5" name="P"/>
-                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+        <!-- Wisp 1: Above Stockpot Left (x: 460) -->
+        <Node x="460" y="226" opacity="0.0" name="SteamWisp1" id="0:81">
+            <Shape x="0" y="-6" name="WispTop1">
+                <Ellipse width="4" height="8" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="66829B8C" name="Color"/></Fill>
             </Shape>
-            <Shape x="0" y="4" name="WispBody1">
-                <Rectangle width="8" height="24" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
-                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
-            </Shape>
-        </Node>
-
-        <!-- Wisp 2: Above Tray 3 (Rice) -->
-        <Node x="365" y="212" opacity="0.50" name="SteamWisp2" id="0:82">
-            <Shape x="0" y="-10" name="WispTop2">
-                <Ellipse width="11" height="15" originX="0.5" originY="0.5" name="P"/>
-                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
-            </Shape>
-            <Shape x="0" y="4" name="WispBody2">
-                <Rectangle width="9" height="26" originX="0.5" originY="0.5" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="P"/>
-                <Fill name="F"><SolidColor colorValue="AA829B8C" name="Color"/></Fill>
+            <Shape x="0" y="2" name="WispBody1">
+                <Rectangle width="3" height="14" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="66829B8C" name="Color"/></Fill>
             </Shape>
         </Node>
 
-        <!-- Wisp 3: Above Stockpot -->
-        <Node x="468" y="206" opacity="0.60" name="SteamWisp3" id="0:83">
-            <Shape x="0" y="-12" name="WispTop3">
-                <Ellipse width="13" height="16" originX="0.5" originY="0.5" name="P"/>
-                <Fill name="F"><SolidColor colorValue="BB708A7B" name="Color"/></Fill>
+        <!-- Wisp 2: Above Stockpot Center (x: 468) -->
+        <Node x="468" y="222" opacity="0.0" name="SteamWisp2" id="0:82">
+            <Shape x="0" y="-7" name="WispTop2">
+                <Ellipse width="5" height="10" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="77708A7B" name="Color"/></Fill>
             </Shape>
-            <Shape x="0" y="4" name="WispBody3">
-                <Rectangle width="11" height="28" originX="0.5" originY="0.5" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="P"/>
-                <Fill name="F"><SolidColor colorValue="BB708A7B" name="Color"/></Fill>
+            <Shape x="0" y="3" name="WispBody2">
+                <Rectangle width="3.5" height="16" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="77708A7B" name="Color"/></Fill>
+            </Shape>
+        </Node>
+
+        <!-- Wisp 3: Above Stockpot Right (x: 476) -->
+        <Node x="476" y="225" opacity="0.0" name="SteamWisp3" id="0:83">
+            <Shape x="0" y="-6" name="WispTop3">
+                <Ellipse width="4" height="8" originX="0.5" originY="0.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="66829B8C" name="Color"/></Fill>
+            </Shape>
+            <Shape x="0" y="2" name="WispBody3">
+                <Rectangle width="3" height="13" originX="0.5" originY="0.5" cornerRadiusTL="1.5" cornerRadiusTR="1.5" cornerRadiusBL="1.5" cornerRadiusBR="1.5" name="P"/>
+                <Fill name="F"><SolidColor colorValue="66829B8C" name="Color"/></Fill>
             </Shape>
         </Node>
 
@@ -865,101 +866,112 @@
             <KeyedObject objectId="0:22"><KeyedProperty propertyKey="18"><KeyFrameDouble value="1" frame="0"/></KeyedProperty></KeyedObject>
         </LinearAnimation>
 
-        <!-- Looping Organic Steam (3 staggered wisps rising, scaling, and fading out) -->
+        <!-- Looping Refined Steam (3 narrow wisps rising short distance from stockpot and fading completely) -->
         <LinearAnimation loopValue="loop" duration="120" name="SteamLoop" id="0:103">
-            <!-- Wisp 1: Above Tray 2 (Curry) -->
+            <!-- Wisp 1: Above Stockpot Left (Phase 0) -->
             <KeyedObject objectId="0:81">
                 <KeyedProperty propertyKey="14">
-                    <KeyFrameDouble value="225" frame="0"/>
-                    <KeyFrameDouble value="195" frame="60"/>
-                    <KeyFrameDouble value="170" frame="120"/>
+                    <KeyFrameDouble value="230" frame="0"/>
+                    <KeyFrameDouble value="220" frame="25"/>
+                    <KeyFrameDouble value="208" frame="55"/>
+                    <KeyFrameDouble value="198" frame="80"/>
+                    <KeyFrameDouble value="230" frame="81"/>
+                    <KeyFrameDouble value="230" frame="120"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="18">
                     <KeyFrameDouble value="0" frame="0"/>
-                    <KeyFrameDouble value="0.6" frame="25"/>
-                    <KeyFrameDouble value="0.4" frame="85"/>
+                    <KeyFrameDouble value="0.40" frame="25"/>
+                    <KeyFrameDouble value="0.25" frame="55"/>
+                    <KeyFrameDouble value="0" frame="80"/>
+                    <KeyFrameDouble value="0" frame="81"/>
                     <KeyFrameDouble value="0" frame="120"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="16">
-                    <KeyFrameDouble value="0.8" frame="0"/>
-                    <KeyFrameDouble value="1.05" frame="60"/>
-                    <KeyFrameDouble value="1.3" frame="120"/>
+                    <KeyFrameDouble value="0.85" frame="0"/>
+                    <KeyFrameDouble value="1.0" frame="25"/>
+                    <KeyFrameDouble value="1.15" frame="80"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="17">
-                    <KeyFrameDouble value="0.8" frame="0"/>
-                    <KeyFrameDouble value="1.05" frame="60"/>
-                    <KeyFrameDouble value="1.3" frame="120"/>
+                    <KeyFrameDouble value="0.85" frame="0"/>
+                    <KeyFrameDouble value="1.0" frame="25"/>
+                    <KeyFrameDouble value="1.15" frame="80"/>
                 </KeyedProperty>
             </KeyedObject>
 
-            <!-- Wisp 2: Above Tray 3 (Rice, 40-frame phase offset) -->
+            <!-- Wisp 2: Above Stockpot Center (Phase offset 40 frames) -->
             <KeyedObject objectId="0:82">
                 <KeyedProperty propertyKey="14">
-                    <KeyFrameDouble value="188" frame="0"/>
-                    <KeyFrameDouble value="170" frame="40"/>
-                    <KeyFrameDouble value="225" frame="41"/>
-                    <KeyFrameDouble value="200" frame="80"/>
-                    <KeyFrameDouble value="188" frame="120"/>
+                    <KeyFrameDouble value="208" frame="0"/>
+                    <KeyFrameDouble value="198" frame="40"/>
+                    <KeyFrameDouble value="230" frame="41"/>
+                    <KeyFrameDouble value="220" frame="65"/>
+                    <KeyFrameDouble value="208" frame="95"/>
+                    <KeyFrameDouble value="208" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="0.30" frame="0"/>
+                    <KeyFrameDouble value="0" frame="40"/>
+                    <KeyFrameDouble value="0" frame="41"/>
+                    <KeyFrameDouble value="0.45" frame="65"/>
+                    <KeyFrameDouble value="0.30" frame="95"/>
+                    <KeyFrameDouble value="0.30" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="16">
+                    <KeyFrameDouble value="1.05" frame="0"/>
+                    <KeyFrameDouble value="1.2" frame="40"/>
+                    <KeyFrameDouble value="0.85" frame="41"/>
+                    <KeyFrameDouble value="1.0" frame="65"/>
+                    <KeyFrameDouble value="1.05" frame="120"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1.05" frame="0"/>
+                    <KeyFrameDouble value="1.2" frame="40"/>
+                    <KeyFrameDouble value="0.85" frame="41"/>
+                    <KeyFrameDouble value="1.0" frame="65"/>
+                    <KeyFrameDouble value="1.05" frame="120"/>
+                </KeyedProperty>
+            </KeyedObject>
+
+            <!-- Wisp 3: Above Stockpot Right (Phase offset 80 frames) -->
+            <KeyedObject objectId="0:83">
+                <KeyedProperty propertyKey="14">
+                    <KeyFrameDouble value="220" frame="0"/>
+                    <KeyFrameDouble value="208" frame="35"/>
+                    <KeyFrameDouble value="198" frame="75"/>
+                    <KeyFrameDouble value="230" frame="76"/>
+                    <KeyFrameDouble value="220" frame="105"/>
+                    <KeyFrameDouble value="220" frame="120"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="18">
                     <KeyFrameDouble value="0.35" frame="0"/>
-                    <KeyFrameDouble value="0" frame="40"/>
-                    <KeyFrameDouble value="0" frame="41"/>
-                    <KeyFrameDouble value="0.55" frame="65"/>
-                    <KeyFrameDouble value="0.4" frame="100"/>
+                    <KeyFrameDouble value="0.25" frame="35"/>
+                    <KeyFrameDouble value="0" frame="75"/>
+                    <KeyFrameDouble value="0" frame="76"/>
+                    <KeyFrameDouble value="0.40" frame="105"/>
                     <KeyFrameDouble value="0.35" frame="120"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="16">
-                    <KeyFrameDouble value="1.15" frame="0"/>
-                    <KeyFrameDouble value="1.3" frame="40"/>
-                    <KeyFrameDouble value="0.8" frame="41"/>
-                    <KeyFrameDouble value="1" frame="80"/>
-                    <KeyFrameDouble value="1.15" frame="120"/>
+                    <KeyFrameDouble value="1.0" frame="0"/>
+                    <KeyFrameDouble value="1.15" frame="75"/>
+                    <KeyFrameDouble value="0.85" frame="76"/>
+                    <KeyFrameDouble value="1.0" frame="105"/>
+                    <KeyFrameDouble value="1.0" frame="120"/>
                 </KeyedProperty>
                 <KeyedProperty propertyKey="17">
-                    <KeyFrameDouble value="1.15" frame="0"/>
-                    <KeyFrameDouble value="1.3" frame="40"/>
-                    <KeyFrameDouble value="0.8" frame="41"/>
-                    <KeyFrameDouble value="1" frame="80"/>
-                    <KeyFrameDouble value="1.15" frame="120"/>
-                </KeyedProperty>
-            </KeyedObject>
-
-            <!-- Wisp 3: Above Stockpot (80-frame phase offset) -->
-            <KeyedObject objectId="0:83">
-                <KeyedProperty propertyKey="14">
-                    <KeyFrameDouble value="205" frame="0"/>
-                    <KeyFrameDouble value="170" frame="80"/>
-                    <KeyFrameDouble value="225" frame="81"/>
-                    <KeyFrameDouble value="205" frame="120"/>
-                </KeyedProperty>
-                <KeyedProperty propertyKey="18">
-                    <KeyFrameDouble value="0.5" frame="0"/>
-                    <KeyFrameDouble value="0" frame="80"/>
-                    <KeyFrameDouble value="0" frame="81"/>
-                    <KeyFrameDouble value="0.6" frame="105"/>
-                    <KeyFrameDouble value="0.5" frame="120"/>
-                </KeyedProperty>
-                <KeyedProperty propertyKey="16">
-                    <KeyFrameDouble value="0.95" frame="0"/>
-                    <KeyFrameDouble value="1.3" frame="80"/>
-                    <KeyFrameDouble value="0.8" frame="81"/>
-                    <KeyFrameDouble value="0.95" frame="120"/>
-                </KeyedProperty>
-                <KeyedProperty propertyKey="17">
-                    <KeyFrameDouble value="0.95" frame="0"/>
-                    <KeyFrameDouble value="1.3" frame="80"/>
-                    <KeyFrameDouble value="0.8" frame="81"/>
-                    <KeyFrameDouble value="0.95" frame="120"/>
+                    <KeyFrameDouble value="1.0" frame="0"/>
+                    <KeyFrameDouble value="1.15" frame="75"/>
+                    <KeyFrameDouble value="0.85" frame="76"/>
+                    <KeyFrameDouble value="1.0" frame="105"/>
+                    <KeyFrameDouble value="1.0" frame="120"/>
                 </KeyedProperty>
             </KeyedObject>
         </LinearAnimation>
 
-        <!-- Static Steam (Pre-motion resting baseline) -->
+        <!-- Static Steam (Pre-motion resting baseline above stockpot) -->
         <LinearAnimation duration="1" name="SteamStatic" id="0:104">
-            <KeyedObject objectId="0:81"><KeyedProperty propertyKey="14"><KeyFrameDouble value="215" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.55" frame="0"/></KeyedProperty></KeyedObject>
-            <KeyedObject objectId="0:82"><KeyedProperty propertyKey="14"><KeyFrameDouble value="212" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.5" frame="0"/></KeyedProperty></KeyedObject>
-            <KeyedObject objectId="0:83"><KeyedProperty propertyKey="14"><KeyFrameDouble value="206" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.6" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:81"><KeyedProperty propertyKey="14"><KeyFrameDouble value="226" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.25" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:82"><KeyedProperty propertyKey="14"><KeyFrameDouble value="222" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.30" frame="0"/></KeyedProperty></KeyedObject>
+            <KeyedObject objectId="0:83"><KeyedProperty propertyKey="14"><KeyFrameDouble value="225" frame="0"/></KeyedProperty><KeyedProperty propertyKey="18"><KeyFrameDouble value="0.25" frame="0"/></KeyedProperty></KeyedObject>
         </LinearAnimation>
 
         <!-- Continuous Falling Rain Loop (3 staggered groups, hidden resets) -->

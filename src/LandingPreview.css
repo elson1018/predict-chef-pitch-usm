@@ -1,0 +1,616 @@
+/* ==========================================================================
+   PredictChef Cinematic Landing Page Prototype Stylesheet
+   Argon Visual Direction: Bottom-Right Landscape Portal & Growing Miniature Scene
+   Strictly scoped under .cinematic-landing-root
+   ========================================================================== */
+
+.cinematic-landing-root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0d2818;
+  color: #f7f4ea;
+  font-family: inherit;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.cinematic-landing-root *,
+.cinematic-landing-root *::before,
+.cinematic-landing-root *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Top Navigation Bar
+   -------------------------------------------------------------------------- */
+.cinematic-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 50;
+  background: linear-gradient(to bottom, rgba(13, 40, 24, 0.75) 0%, rgba(13, 40, 24, 0) 100%);
+  pointer-events: auto;
+}
+
+.cinematic-topbar .brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.cinematic-topbar .brand-mark {
+  font-size: 26px;
+  color: #e09f3e;
+  line-height: 1;
+}
+
+.cinematic-topbar .brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cinematic-topbar .brand-name {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f7f4ea;
+}
+
+.cinematic-topbar .brand-light {
+  font-weight: 400;
+  color: #8fad88;
+}
+
+.cinematic-topbar .brand-tagline {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: #8fad88;
+  margin-top: 2px;
+}
+
+.cinematic-topbar .btn-open-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: #f7f4ea;
+  color: #163024;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.cinematic-topbar .btn-open-dashboard:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.cinematic-topbar .btn-open-dashboard:focus-visible {
+  outline: 3px solid #e09f3e;
+  outline-offset: 3px;
+}
+
+.cinematic-topbar .btn-arrow {
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.cinematic-topbar .btn-open-dashboard:hover .btn-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* --------------------------------------------------------------------------
+   Hero Section & Persistent Video Layers
+   -------------------------------------------------------------------------- */
+.cinematic-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 60px 50px;
+
+  /* Default fallback geometry (overridden dynamically by applyGeometryVars) */
+  --portal-top: calc(100vh - 252.5px);
+  --portal-bottom: 50px;
+  --portal-left: calc(100vw - 420px);
+  --portal-right: 60px;
+  --portal-tx: 480px;
+  --portal-ty: 240px;
+  --portal-scale: 0.25;
+}
+
+/* Persistent Slot Layers: ALWAYS 100% full-screen surface */
+.slot-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.slot-video,
+.slot-poster-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform-origin: 50% 50%;
+}
+
+/* Role: Background - full visibility */
+.slot-layer.role-background {
+  clip-path: none;
+  z-index: 1;
+  opacity: 1;
+}
+
+.slot-layer.role-background .slot-video {
+  transform: none;
+  transition: none;
+}
+
+/* Role: Portal Preview - clipped to the resting portal aperture,
+   video transformed to fit miniature scene inside portal */
+.slot-layer.role-portal {
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
+  z-index: 20;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.slot-layer.role-portal .slot-video {
+  transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  transition: none;
+}
+
+/* Role: Expanding - single continuous two-endpoint movement,
+   matching video scale/translation and clip-boundary expansion with identical duration and easing */
+.slot-layer.role-expanding {
+  clip-path: inset(0px 0px 0px 0px round 0px);
+  z-index: 30;
+  opacity: 1;
+  animation: expandClipper 0.85s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.slot-layer.role-expanding .slot-video {
+  transform: translate(0px, 0px) scale(1);
+  animation: expandVideo 0.85s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes expandClipper {
+  0% {
+    clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
+  }
+  100% {
+    clip-path: inset(0px 0px 0px 0px round 0px);
+  }
+}
+
+@keyframes expandVideo {
+  0% {
+    transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* Role: Standby - preloading next scene behind the scenes */
+.slot-layer.role-standby {
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.slot-layer.role-standby .slot-video {
+  transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  transition: none;
+}
+
+/* Light overall tint + concentrated lower-left text shading (Central emblem remains clear) */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  background:
+    /* Concentrated shading behind lower-left text */
+    radial-gradient(ellipse 75% 65% at 0% 100%, rgba(13, 40, 24, 0.90) 0%, rgba(13, 40, 24, 0.65) 45%, rgba(13, 40, 24, 0.15) 80%, transparent 100%),
+    /* Soft bottom grounding */
+    linear-gradient(to top, rgba(13, 40, 24, 0.75) 0%, rgba(13, 40, 24, 0.15) 30%, transparent 100%),
+    /* Subtle top bar tint */
+    linear-gradient(to bottom, rgba(13, 40, 24, 0.35) 0%, transparent 20%);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Resting Portal Anchor in Bottom-Right (Landscape 16:9)
+   -------------------------------------------------------------------------- */
+.portal-anchor {
+  position: absolute;
+  right: 60px;
+  bottom: 50px;
+  width: 360px;
+  height: 202.5px; /* exactly 16:9 */
+  border-radius: 18px;
+  z-index: 25;
+  pointer-events: none;
+}
+
+/* Next-scene caption placed immediately ABOVE the portal, leaving footage clear */
+.portal-caption-above {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(13, 40, 24, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ede6d6;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(143, 173, 136, 0.25);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.portal-caption-above .caption-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e09f3e;
+}
+
+.portal-caption-above.is-visible {
+  opacity: 1;
+}
+
+.portal-caption-above.is-hidden {
+  opacity: 0;
+}
+
+/* Interactive portal window button covering the resting aperture */
+.portal-window-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(247, 244, 234, 0.35);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  pointer-events: auto;
+}
+
+.portal-window-btn:hover {
+  border-color: rgba(224, 159, 62, 0.6);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 159, 62, 0.25);
+}
+
+.portal-window-btn:focus-visible {
+  outline: 3px solid #e09f3e;
+  outline-offset: 3px;
+}
+
+.portal-window-btn.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.portal-window-btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portal-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Foreground Hero Content: Cleaner Bottom-Left Layout
+   -------------------------------------------------------------------------- */
+.hero-content-anchor {
+  position: relative;
+  z-index: 35;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.hero-content-anchor.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Outgoing text fades briskly early so it never competes with the expanding scene */
+.hero-content-anchor.exiting {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.18s ease-out, transform 0.2s ease-out;
+}
+
+.hero-content-anchor.entering {
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: none;
+}
+
+.hero-product-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Prominent Product Headline */
+.hero-product-message {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ede6d6;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+/* Direct Scenario Selector Chips */
+.scenario-direct-chips {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13, 40, 24, 0.65);
+  border: 1px solid rgba(143, 173, 136, 0.3);
+  border-radius: 9999px;
+  padding: 3px 4px;
+  backdrop-filter: blur(6px);
+}
+
+.direct-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: transparent;
+  color: #ede6d6;
+  border: none;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.direct-chip-btn:hover:not(:disabled) {
+  background: rgba(247, 244, 234, 0.15);
+  color: #ffffff;
+}
+
+.direct-chip-btn:focus-visible {
+  outline: 2px solid #e09f3e;
+  outline-offset: 1px;
+}
+
+.direct-chip-btn.active {
+  background: #f7f4ea;
+  color: #163024;
+  font-weight: 700;
+  cursor: default;
+}
+
+.direct-chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8fad88;
+  transition: background 0.15s ease;
+}
+
+.direct-chip-btn.active .direct-chip-dot {
+  background: #e09f3e;
+}
+
+.hero-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Substantially enlarged scenario title */
+.hero-title {
+  margin: 0;
+  font-size: clamp(52px, 6.5vw, 80px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #f7f4ea;
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.85);
+  text-transform: uppercase;
+}
+
+.hero-forecast-pill {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  padding: 6px 16px;
+  background: rgba(224, 159, 62, 0.22);
+  border: 1px solid #e09f3e;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+}
+
+.forecast-val {
+  font-size: 19px;
+  font-weight: 700;
+  color: #e09f3e;
+  letter-spacing: -0.01em;
+}
+
+.hero-explanation {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ede6d6;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+  max-width: 480px;
+}
+
+/* Fallback status banner */
+.video-fallback-banner {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 40, 24, 0.9);
+  border: 1px solid rgba(224, 159, 62, 0.4);
+  color: #ede6d6;
+  font-size: 12px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  z-index: 50;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion Mode
+   -------------------------------------------------------------------------- */
+.cinematic-landing-root.reduced-motion .slot-layer {
+  transition: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .slot-layer.role-expanding {
+  animation: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .slot-layer.role-expanding .slot-video {
+  animation: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .slot-video {
+  transition: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .hero-content-anchor {
+  transition: opacity 0.15s ease !important;
+  transform: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .btn-open-dashboard,
+.cinematic-landing-root.reduced-motion .portal-window-btn,
+.cinematic-landing-root.reduced-motion .direct-chip-btn {
+  transition: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow-Screen / Mobile Responsiveness (Down to 390px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .cinematic-hero {
+    height: auto;
+    min-height: 100vh;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: stretch;
+    padding: 100px 24px 40px;
+    gap: 28px;
+    overflow-y: auto;
+  }
+
+  .portal-anchor {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: 350px;
+    height: 196.875px; /* exactly 16:9 */
+    margin: 0 auto;
+  }
+
+  .hero-content-anchor {
+    max-width: 100%;
+  }
+
+  .hero-product-message {
+    font-size: 19px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+  }
+
+  .cinematic-topbar {
+    padding: 0 20px;
+    height: 70px;
+  }
+
+  .scenario-direct-chips {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 420px) {
+  .cinematic-hero {
+    padding: 85px 16px 32px;
+  }
+
+  .hero-product-message {
+    font-size: 17px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .portal-anchor {
+    max-width: 320px;
+    height: 180px; /* 16:9 */
+  }
+
+  .direct-chip-btn {
+    padding: 3px 7px;
+    font-size: 10px;
+  }
+
+  .cinematic-topbar .brand-name {
+    font-size: 16px;
+  }
+
+  .cinematic-topbar .btn-open-dashboard {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
