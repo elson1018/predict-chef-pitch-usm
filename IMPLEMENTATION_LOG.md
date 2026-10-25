@@ -873,6 +873,55 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
 - **Settled State Screenshot:**  
   `C:\Users\gooyo\.gemini\antigravity-ide\brain\2413331d-ba0d-45e6-917d-62019d94fc24\settled_portal_state_1792917509085.png`
 
+---
+
+## 23. Cinematic Portal Transition & UI Polish Upgrade (3-Phase State Machine & Persistent 3-Video Pool)
+
+**Timestamp:** 2026-10-25 20:41:00 +08:00  
+**Phase:** Exact Implementation Brief: 900ms Dual-Layer Push-Through, 3-Phase State Machine & Collision-Free UI  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Zero jump-cut, dual-layer camera push-through 0.36->1.0 & 1.0->1.10 dims, zero text/bunting collisions, seamless handoff)
+
+### 1. Architectural & State Machine Implementation
+1. **3-Phase React State Machine ([src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx)):**
+   - States: `phase: 'idle' | 'expanding' | 'resetting'`.
+   - `triggerScenarioTransition`: Sets `incomingScenario(targetKey)`, clears hover, and transitions to `phase: 'expanding'` via double `requestAnimationFrame` to ensure zero src swap at $t=0\text{ms}$.
+   - Exact Handoff Timing:
+     - `expanding` phase (900ms): CSS `clip-path` and `transform: scale(1)` animate concurrently. Active background pushes forward (`1.0 -> 1.10`) and dims (`brightness(0.50)`).
+     - `resetting` phase (50ms): Promotes `activeScenario = incomingScenario`, sets next incoming scenario, and snaps portal back to resting bounds invisibly with `transition: none !important`.
+     - `idle` phase: Fades portal back in with cascading staggered typography reveals.
+2. **Persistent 3-Video Pool Architecture:**
+   - Mounted all 3 scenario videos concurrently (`typical-day.mp4`, `heavy-rain.mp4`, `campus-festival.mp4`) with `autoPlay`, `loop`, `muted`, `playsInline`.
+   - Assigned roles via CSS classes: `video-role-bg`, `video-role-portal`, `video-role-standby`.
+   - Browser never reloads or swaps `<video src>`, eliminating network decoder flushes and frame drops.
+3. **Collision-Free UI & Visual Polish ([src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css)):**
+   - **Zero Countertop Text Collision:** Anchored editorial stack in bottom-left dark counter zone with subtle radial vignette. The eyebrow `"Prepare for demand. Before it arrives."` sits *below* the scenario pills and entirely beneath the white countertop line ($y \approx 56\%$).
+   - **Zero Bunting Collision:** Brand mark and name wrapped inside `.brand-frosted-pill` with `backdrop-filter: blur(10px)` so Campus Festival bunting passes cleanly behind.
+   - **Internal Portal Badge:** `✦ Next · [Scenario]` badge embedded inside top-left corner of the portal card; no external floating text.
+   - **Staggered Text Reveal:** Eyebrow (0ms), Headline (60ms), Portion badge (120ms), Description (180ms).
+
+### 2. Verification Checklist Results
+
+| # | Requirement | Observed Result | Status |
+|---|---|---|---|
+| 1 | **No Instant Jump-Cut** | Portal visibly animates outward over 900ms while miniature room scales smoothly from 0.36 to 1.0 | **PASS** |
+| 2 | **Outgoing Camera Push** | Active background scene pushes forward (`scale(1.10)`) and dims (`brightness(0.50)`) during expansion | **PASS** |
+| 3 | **Zero Countertop Collision** | Eyebrow text sits below switcher pills in dark counter front; white countertop line completely clear | **PASS** |
+| 4 | **Zero Bunting Collision** | Frosted brand pill floats in top-left; Campus Festival bunting flags pass cleanly behind it | **PASS** |
+| 5 | **Internal Portal Badge** | `✦ Next · [Scenario]` badge rendered inside top-left of the portal card hitbox | **PASS** |
+| 6 | **Dashboard Handoff** | 'Open dashboard' carries active scenario into `#Overview` (Campus Festival 300 portions retained) | **PASS** |
+| 7 | **Quality Gates** | `npm test` (3/3 pass), `npm run lint` (0 err/0 warn), `npm run build` (success in 1.53s) | **PASS** |
+
+### 3. Verification Artifacts
+- **Cinematic Portal Transition Upgrade Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/cinematic_portal_transition_upgrade_1792931985585.webp`
+- **Captured Screenshots:**
+  - Resting State Desktop (Typical Day): `resting_state_typical_day_1792932000738.png`
+  - Portal Hover Effect: `portal_hover_effect_1792932012864.png`
+  - Campus Festival State (Zero Bunting Collision): `campus_festival_state_1792932036521.png`
+  - Dashboard Handoff State: `dashboard_handoff_campus_festival_1792932069537.png`
+
+
 
 
 
