@@ -23,25 +23,35 @@ function Metric({ label, value, detail, accent }) {
 }
 
 function Chart({ rows, impactMode = false }) {
+  const [selected, setSelected] = useState(null)
+  const [hovered, setHovered] = useState(null)
+  const activeDay = hovered ?? selected
+  const active = rows.find(r => r.day === activeDay)
+  const describe = r => impactMode
+    ? `${r.day}: baseline ${r.baselineWaste} kg, simulated waste ${r.waste} kg, prevented ${r.baselineWaste - r.waste} kg`
+    : `${r.day}: forecast ${r.predicted} portions, actual ${r.actual} portions, absolute error ${Math.abs(r.predicted - r.actual)} portions`
   return (
-    <div
-      className="chart"
-      role="img"
-      aria-label={
-        impactMode
-          ? 'Food waste comparison in kilograms; exact values in table below'
-          : 'Forecast versus simulated actual sales; exact values in table below'
-      }
-    >
-      {rows.map((r) => (
-        <div className="bar-group" key={r.day}>
-          <div className="bars">
-            <i style={{ height: `${impactMode ? r.baselineWaste * 7 : r.predicted * 0.58}px` }} />
-            <i style={{ height: `${impactMode ? r.waste * 7 : r.actual * 0.58}px` }} />
-          </div>
-          <span>{r.day}</span>
-        </div>
-      ))}
+    <div className="interactive-chart">
+      <div className="chart" role="group" aria-label={impactMode ? 'Simulated food waste by service' : 'Simulated forecast and actual sales by service'} onMouseLeave={() => setHovered(null)}>
+        {rows.map(r => (
+          <button type="button" className={`bar-group chart-service ${activeDay === r.day ? 'is-active' : ''}`} key={r.day}
+            aria-label={describe(r)} aria-pressed={selected === r.day}
+            onMouseEnter={() => setHovered(r.day)} onFocus={() => setHovered(r.day)} onBlur={() => setHovered(null)}
+            onClick={() => setSelected(selected === r.day ? null : r.day)} onKeyDown={e => { if (e.key === 'Escape') { setSelected(null); setHovered(null) } }}>
+            <span className="bars" aria-hidden="true">
+              <i style={{ height: `${impactMode ? r.baselineWaste * 7 : r.predicted * .58}px` }} />
+              <i style={{ height: `${impactMode ? r.waste * 7 : r.actual * .58}px` }} />
+            </span>
+            <span>{r.day}</span>
+          </button>
+        ))}
+      </div>
+      <div className={`chart-detail ${active ? 'has-selection' : ''}`}>
+        {active ? <><b>{active.day} service</b><span>{impactMode
+          ? `Baseline ${active.baselineWaste} kg · Demo waste ${active.waste} kg · Prevented ${active.baselineWaste - active.waste} kg`
+          : `Forecast ${active.predicted} · Actual ${active.actual} · Error ${Math.abs(active.predicted - active.actual)} portions`}</span></>
+          : <span>Hover or focus to explore. Click or tap a service to keep its details.</span>}
+      </div>
     </div>
   )
 }
@@ -79,6 +89,7 @@ function ScenarioButtons({ scenario, onSelectScenario }) {
 }
 
 function DishComparisonSection({ scenario, prefersReducedMotion }) {
+  const [selectedDish, setSelectedDish] = useState(null)
   const MAX_PORTIONS = 120
   return (
     <section className="dish-comp-card">
@@ -103,7 +114,14 @@ function DishComparisonSection({ scenario, prefersReducedMotion }) {
           const isNegative = diff < 0
 
           return (
-            <div key={d.id} className="dish-comp-row">
+            <div key={d.id} className={`dish-comp-row interactive-dish ${selectedDish === d.id ? 'is-selected' : ''}`}
+              role="button" tabIndex={0} aria-expanded={selectedDish === d.id}
+              aria-label={`${d.name}: baseline ${baseline}, forecast ${forecastVal} portions. Show comparison details`}
+              onClick={() => setSelectedDish(selectedDish === d.id ? null : d.id)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDish(selectedDish === d.id ? null : d.id) }
+                if (e.key === 'Escape') setSelectedDish(null)
+              }}>
               <div className="dish-comp-header">
                 <div className="dish-comp-name">
                   <span style={{ background: d.color }}>{d.icon}</span>
@@ -124,6 +142,7 @@ function DishComparisonSection({ scenario, prefersReducedMotion }) {
                     : 'Baseline (±0)'}
                 </span>
               </div>
+              {selectedDish === d.id && <p className="dish-selection-detail">{scenarios[scenario].label}: {baseline} → {forecastVal} portions · {diff === 0 ? 'No change from baseline' : `${Math.abs(diff)} ${diff > 0 ? 'more' : 'fewer'} portions (${Math.abs(pct)}%)`} · simulated</p>}
               <div className="dish-comp-bars">
                 <div className="dish-bar-line">
                   <span className="dish-bar-label">Baseline</span>

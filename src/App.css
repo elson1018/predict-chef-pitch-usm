@@ -76,3 +76,88 @@
   .dish-bar-val{width:65px;font-size:12px}
 }
 
+/* Light dashboard polish: preserve the existing layout and typography. */
+.app-shell{--ui-border:#dfe7dc;--ui-muted:#586a54;--ui-shadow:0 3px 16px rgba(28,57,39,.035)}
+.app-shell .card,.app-shell .metric,.app-shell .dish-comp-card{border-color:var(--ui-border);box-shadow:var(--ui-shadow);border-radius:14px}
+.app-shell .page-heading{margin-bottom:26px}
+.app-shell .page-heading p{line-height:1.7;max-width:650px}
+.app-shell .simulation-note{background:#f0f3e9;border-color:#e2e7d8;color:#536348;border-radius:9px;padding:12px 15px}
+.app-shell .section-title{align-items:flex-start}
+.app-shell .section-title p,.app-shell .subtext{color:var(--ui-muted)}
+.app-shell .metric strong{font-variant-numeric:tabular-nums}
+.app-shell .metric.accent{background:#edf4e8;border-color:#d3e2c9}
+.app-shell nav a{transition:background-color .16s ease,color .16s ease}
+.app-shell nav a:hover{background:#f2f6ee;color:#28573b}
+.app-shell nav a.active{background:#eaf2e4;color:#245a3d;box-shadow:inset 3px 0 #568449}
+.app-shell .primary{background:#256348;box-shadow:0 2px 5px #234f3514}
+.app-shell .primary,.app-shell .secondary{padding:12px 18px;font-size:14px;border-radius:8px}
+.app-shell .secondary{border-color:#d5dfcf;color:#415b3b;background:#fcfdf9}
+.app-shell .primary:active:not(:disabled),.app-shell .secondary:active:not(:disabled){transform:translateY(1px)}
+.app-shell .portion-input{width:88px;text-align:center;font-weight:700;background:#f8fbf5;border-color:#c5d4bc;border-radius:8px;font-variant-numeric:tabular-nums}
+.app-shell .portion-input:focus{background:#fff;border-color:#5c8351}
+.app-shell .prep-summary{background:#f7faf3;border:1px solid #e3ebdc;border-radius:10px;padding:22px}
+.app-shell .prep-summary>strong{font-variant-numeric:tabular-nums;letter-spacing:-1.5px}
+.app-shell .prep-summary p,.app-shell .prep-controls small{color:#5b6d51}
+.app-shell .pending{background:#fbf1d8;color:#775b20}
+.app-shell .approved{background:#e5f1de;color:#305e30}
+.app-shell .table-scroll{border:1px solid #e5ebdf;border-radius:10px}
+.app-shell thead th{font-size:13px;color:#4e6345;background:#f3f7ee;padding:16px 14px}
+.app-shell tbody td,.app-shell tbody th{padding:18px 14px}
+.app-shell tbody tr:hover{background:#fafcf7}
+.app-shell tbody tr:last-child td,.app-shell tbody tr:last-child th{border-bottom:0}
+.app-shell .dish b{font-size:14px;font-weight:600}
+.app-shell .tag{font-size:12px}
+.app-shell .approval-footer{padding-top:5px;gap:22px}
+.app-shell .legend{flex-wrap:wrap;row-gap:10px}
+.app-shell .legend span:before{width:9px;height:9px}
+.app-shell .bars i{border-radius:6px 6px 0 0}
+.app-shell .topbar>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+.app-shell #open-cinematic-preview-btn{color:#456b43 !important;border-color:#d6e1cf !important;background:#f6f9f1 !important;min-height:38px}
+.app-shell .demo-badge{color:#52664a;background:#f8faf4}
+@media(max-width:1000px){.app-shell .topbar{flex-wrap:wrap;gap:12px}.app-shell .topbar>div:last-child{justify-content:flex-start}.app-shell .prep-summary{padding:20px}.app-shell .scenario-toolbar{align-items:flex-start}.app-shell .scenario-btn-group{width:100%}.app-shell .scenario-btn{flex:1 1 180px}}
+@media(max-width:480px){.app-shell .card{padding:18px}.app-shell .approval-footer .button-row{gap:10px}.app-shell .primary,.app-shell .secondary{font-size:14px}.app-shell .demo-badge{display:none}.app-shell nav a{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.app-shell nav a,.app-shell .primary,.app-shell .secondary{transition:none}.app-shell .primary:active,.app-shell .secondary:active{transform:none}}
+/* Small, accessible interactions for the existing graphs. */
+.app-shell .chart-service{border:1px solid transparent;background:transparent;border-radius:8px 8px 0 0;padding:10px 4px 0;min-width:0;color:inherit;cursor:pointer;transition:background-color .16s,border-color .16s}
+.app-shell .chart-service:hover,.app-shell .chart-service.is-active{background:#edf4e780;border-color:#d5e1cc}
+.app-shell .chart-service:hover:not(:disabled){filter:none}
+.app-shell .chart-service .bars{width:100%}
+.app-shell .chart-service .bars i{transition:height .22s ease,filter .16s ease}
+.app-shell .chart-service.is-active .bars i{filter:saturate(1.4) brightness(.88)}
+.app-shell .chart-service>span:last-child{background:transparent;color:#49643f;font-size:13px}
+.app-shell .chart-detail{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;min-height:76px;padding:14px 12px;margin-top:12px;background:#f7f9f3;border:1px solid #e5ebdd;border-radius:8px;color:#556a4b;font-size:13px;line-height:1.7}
+.app-shell .chart-detail b{color:#294e35}.app-shell .chart-detail.has-selection{background:#edf4e7;border-color:#d5e3c9}
+.app-shell .interactive-dish{cursor:pointer;border-radius:10px;outline-offset:4px;transition:background-color .16s,box-shadow .16s}
+.app-shell .interactive-dish:hover,.app-shell .interactive-dish.is-selected{background:#f3f8ee;box-shadow:0 0 0 8px #f3f8ee}
+.app-shell .interactive-dish:focus-visible{outline:3px solid #b88732}
+.app-shell .dish-selection-detail{font-size:13px;line-height:1.7;color:#3d633d;background:#eaf2e2;padding:10px 12px;border-radius:7px;margin:10px 0 14px}
+@media(max-width:480px){.app-shell .chart-service .bars{gap:4px}.app-shell .chart-service .bars i{width:16px}.app-shell .chart-detail{min-height:104px}}
+@media(prefers-reduced-motion:reduce){.app-shell .chart-service,.app-shell .chart-service .bars i,.app-shell .interactive-dish{transition:none}}
+.app-shell.reduced-motion .chart-service,.app-shell.reduced-motion .chart-service .bars i,.app-shell.reduced-motion .interactive-dish{transition:none}
+/* Stronger text contrast, without increasing visual density. */
+.app-shell{color:#203a2b;--ui-muted:#40543e}
+.app-shell p,.app-shell small{font-weight:500}
+.app-shell .page-heading p,.app-shell .section-title p,.app-shell .subtext,
+.app-shell .metric>span,.app-shell .metric small,.app-shell .scenario-toolbar small,
+.app-shell .signal small,.app-shell .step p,.app-shell .dish small,
+.app-shell .prep-controls p,.app-shell .prep-controls small,.app-shell .prep-summary p,
+.app-shell .prep-summary strong small,.app-shell .approval-footer small,
+.app-shell .workspace small,.app-shell .profile small,.app-shell .date-chip small,
+.app-shell .purpose p,.app-shell .purpose small,.app-shell .brand small,
+.app-shell .formula span,.app-shell .formula+p{color:#40543e;font-weight:500}
+.app-shell .legend,.app-shell .dish-bar-label,.app-shell .chart-service>span:last-child{color:#344f35;font-weight:600}
+.app-shell .chart-detail,.app-shell .dish-selection-detail{color:#344c33;font-weight:500}
+.app-shell .chart-detail b{color:#203f28;font-weight:700}
+.app-shell .simulation-note{color:#3d5035;font-weight:500}
+.app-shell .topbar,.app-shell .nav-label,.app-shell .eyebrow,.app-shell footer,.app-shell footer span,.app-shell footer small{color:#455b42;font-weight:500}
+.app-shell .eyebrow,.app-shell .nav-label{font-weight:700}
+.app-shell thead th{color:#344c30;font-weight:700}
+.app-shell tbody td,.app-shell tbody th{color:#29422e;font-weight:500}
+.app-shell .signal b,.app-shell .step b,.app-shell .scenario-toolbar b{font-weight:600}
+.app-shell .secondary,.app-shell .demo-badge{color:#36502f;font-weight:600}
+.app-shell .tag{color:#3e5b2f;font-weight:600}
+.app-shell .override{color:#795716}
+.app-shell .sdg-card p,.app-shell .sdg-card small{color:#fff8e7;font-weight:500}
+.app-shell .hero-panel p{color:#3e5436;font-weight:500}
+.app-shell .scenario-btn-text small{color:#40543e;font-weight:500}
+.app-shell .scenario-btn.active .scenario-btn-text small{color:#f0f5e9}
