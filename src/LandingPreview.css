@@ -34,7 +34,7 @@
   align-items: center;
   justify-content: space-between;
   z-index: 50;
-  background: linear-gradient(to bottom, rgba(13, 40, 24, 0.85) 0%, rgba(13, 40, 24, 0) 100%);
+  background: linear-gradient(to bottom, rgba(13, 40, 24, 0.75) 0%, rgba(13, 40, 24, 0) 100%);
   pointer-events: auto;
 }
 
@@ -123,7 +123,7 @@
   overflow: hidden;
   display: flex;
   align-items: flex-end;
-  padding: 0 60px 60px;
+  padding: 0 60px 50px;
 }
 
 .hero-bg-layer {
@@ -145,36 +145,43 @@
   display: block;
 }
 
+/* Reduced full-screen green overlay:
+   Light overall tint preserving cream, sage and amber,
+   with concentrated stronger shading anchored strictly behind the lower-left text */
 .hero-gradient-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgba(13, 40, 24, 0.94) 0%, rgba(13, 40, 24, 0.72) 38%, rgba(13, 40, 24, 0.2) 75%, rgba(13, 40, 24, 0.35) 100%),
-    linear-gradient(to top, rgba(13, 40, 24, 0.96) 0%, rgba(13, 40, 24, 0.4) 45%, transparent 100%);
+    /* Concentrated shading behind lower-left text */
+    radial-gradient(ellipse 75% 65% at 0% 100%, rgba(13, 40, 24, 0.90) 0%, rgba(13, 40, 24, 0.65) 45%, rgba(13, 40, 24, 0.15) 80%, transparent 100%),
+    /* Soft bottom grounding */
+    linear-gradient(to top, rgba(13, 40, 24, 0.75) 0%, rgba(13, 40, 24, 0.15) 30%, transparent 100%),
+    /* Subtle top bar tint */
+    linear-gradient(to bottom, rgba(13, 40, 24, 0.35) 0%, transparent 20%);
   pointer-events: none;
 }
 
 /* --------------------------------------------------------------------------
-   Rounded Portal (Center-Right Preview & Expansion)
+   Rounded Portal (Centre-Left Window Area & Taller Aspect Ratio)
    -------------------------------------------------------------------------- */
 .portal-container {
   position: absolute;
-  right: 6%;
-  top: 48%;
-  transform: translateY(-50%);
-  width: 410px;
-  height: 250px;
+  left: 45%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  width: 330px;
+  height: 430px;
   z-index: 20;
-  border-radius: 22px;
-  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(247, 244, 234, 0.3);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(247, 244, 234, 0.35);
   overflow: hidden;
   background: #163024;
-  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Expanding State: Blossoms outwards to fill the entire hero */
 .portal-container.is-expanding {
-  right: 0 !important;
+  left: 0 !important;
   top: 0 !important;
   transform: none !important;
   width: 100% !important;
@@ -184,10 +191,10 @@
   z-index: 45;
 }
 
-/* Settling State: Brief settling back to portal coordinates */
-.portal-container.is-settling {
+/* Repositioning State: Smooth reset back to portal coordinates */
+.portal-container.is-repositioning {
+  opacity: 0.95;
   transition: opacity 0.25s ease;
-  opacity: 0.85;
 }
 
 .portal-frame {
@@ -218,7 +225,7 @@
 .portal-sheen {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -304,13 +311,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 18px;
+  padding: 11px 20px;
   background: #e09f3e;
   color: #163024;
   font-size: 13px;
   font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
@@ -339,7 +346,7 @@
 .hero-content-anchor {
   position: relative;
   z-index: 30;
-  max-width: 580px;
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -362,11 +369,16 @@
   transition: none;
 }
 
+.hero-product-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .hero-badge-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .simulated-chip {
@@ -374,8 +386,8 @@
   align-items: center;
   gap: 6px;
   padding: 5px 12px;
-  background: rgba(143, 173, 136, 0.16);
-  border: 1px solid rgba(143, 173, 136, 0.35);
+  background: rgba(143, 173, 136, 0.22);
+  border: 1px solid rgba(143, 173, 136, 0.45);
   color: #8fad88;
   font-size: 12px;
   font-weight: 600;
@@ -388,11 +400,15 @@
   font-size: 10px;
 }
 
-.intro-copy {
-  font-size: 13px;
-  font-weight: 500;
+/* Prominent Product Headline */
+.hero-product-message {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
   color: #ede6d6;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
 }
 
 .hero-title-block {
@@ -401,14 +417,16 @@
   gap: 12px;
 }
 
+/* Substantially enlarged scenario title */
 .hero-title {
   margin: 0;
-  font-size: 56px;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(56px, 6.8vw, 84px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
   color: #f7f4ea;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.85);
+  text-transform: uppercase;
 }
 
 .hero-forecast-pill {
@@ -416,14 +434,14 @@
   align-self: flex-start;
   align-items: center;
   padding: 6px 16px;
-  background: rgba(224, 159, 62, 0.18);
+  background: rgba(224, 159, 62, 0.22);
   border: 1px solid #e09f3e;
   border-radius: 9999px;
   backdrop-filter: blur(4px);
 }
 
 .forecast-val {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: #e09f3e;
   letter-spacing: -0.01em;
@@ -432,16 +450,16 @@
 .hero-explanation {
   margin: 0;
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
   color: #ede6d6;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  max-width: 480px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+  max-width: 460px;
 }
 
 .hero-footer-note {
   font-size: 12px;
   color: #8fad88;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 /* Fallback status banner */
@@ -492,18 +510,18 @@
     justify-content: flex-end;
     align-items: stretch;
     padding: 100px 24px 40px;
-    gap: 32px;
+    gap: 28px;
     overflow-y: auto;
   }
 
   .portal-container {
     position: relative;
-    right: auto;
+    left: auto;
     top: auto;
     transform: none;
     width: 100%;
-    max-width: 390px;
-    height: 220px;
+    max-width: 360px;
+    height: 320px;
     margin: 0 auto;
   }
 
@@ -511,8 +529,12 @@
     max-width: 100%;
   }
 
+  .hero-product-message {
+    font-size: 19px;
+  }
+
   .hero-title {
-    font-size: 38px;
+    font-size: 42px;
   }
 
   .cinematic-topbar {
@@ -526,13 +548,17 @@
     padding: 85px 16px 32px;
   }
 
+  .hero-product-message {
+    font-size: 17px;
+  }
+
   .hero-title {
-    font-size: 32px;
+    font-size: 34px;
   }
 
   .portal-container {
-    height: 200px;
-    border-radius: 16px;
+    height: 260px;
+    border-radius: 20px;
   }
 
   .portal-caption {
@@ -540,7 +566,7 @@
   }
 
   .portal-action-text {
-    padding: 8px 14px;
+    padding: 9px 15px;
     font-size: 12px;
   }
 

@@ -522,6 +522,57 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - 390px Mobile Viewport: `mobile_view_390_1792912382907.png`
   - Production Preview (Port 4173): `production_heavy_rain_1792912398439.png`
 
+---
+
+## 17. Two-State Landing Prototype Visual & State Machine Refinement
+
+**Timestamp:** 2026-10-25 15:30:00 +08:00  
+**Phase:** Checkpoint 1 Refinement — Single Source of Truth, Substantial Title, Repositioned Centre-Left Portal  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Continuous recording of Typical → Rain → Typical, 390px mobile, label consistency verified)
+
+### 1. Refinements Implemented
+1. **Single Source of Truth for Scenario Previews:**
+   - Unified `nextScenarioKey = activeKey === 'typical' ? 'rain' : 'typical'` and derived `nextScenario = SCENES[nextScenarioKey]` in [src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx).
+   - Video source, caption (`Next: Heavy Rain` / `Next: Typical Day`), button text (`Explore Heavy Rain` / `Explore Typical Day`), and accessible label (`aria-label`) are derived strictly from `nextScenario.label`.
+   - Guaranteed consistency before, during, and after transitions.
+2. **Reduced Full-Screen Green Overlay:**
+   - Softened overall backdrop tint (`rgba(13, 40, 24, 0.15–0.35)`), fully preserving the video's natural warm cream, sage, and amber kitchen tones.
+   - Anchored concentrated radial vignette shading (`radial-gradient(ellipse 75% 65% at 0% 100%, ...)`) specifically behind the lower-left text block for high contrast.
+3. **Substantial Typography & Prominent Product Message:**
+   - Enlarge scenario title to `clamp(56px, 6.8vw, 84px)` with high visual weight (`font-weight: 900`, uppercase, crisp drop shadow).
+   - Prominently positioned the product message headline (`Prepare for demand. Before it arrives.`, 22px bold) directly above the scenario title.
+   - Forecast pill and explanation remain clearly legible beneath the title.
+4. **Repositioned Portal to Centre-Left Window Area:**
+   - Re-architected portal to a taller window aspect ratio (`width: 330px; height: 430px; border-radius: 28px;`).
+   - Positioned at `left: 45%; top: 40%; transform: translate(-50%, -50%);`, aligning with the exterior window area.
+   - Completely clears the chef's face, body, and food counter on the right.
+   - Maintained `object-fit: cover; object-position: center;` to avoid stretching the 16:9 video.
+5. **Seamless Handoff without Flashes or Jumps:**
+   - Synchronized background video playback time (`bgVideoRef.current.currentTime = targetTime`) upon committing transition.
+   - Transition state machine (`idle` → `expanding` → `repositioning` → `idle`) coordinates label and forecast commit at 850ms, resetting the portal position smoothly without visible flash.
+
+### 2. Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Single Next Scenario** | Caption, button, and aria-label derive from single `nextScenario`; labels match upcoming state throughout sequence | **PASS** |
+| 2 | **Reduced Green Tint** | Video's cream, sage, and golden amber colors are fully vibrant; dark shading concentrated behind lower-left text | **PASS** |
+| 3 | **Substantial Title & Message** | Title renders at 84px bold uppercase; "Prepare for demand. Before it arrives." headline prominent | **PASS** |
+| 4 | **Repositioned Portal** | Portal sits in centre-left window area (`330×430px`, `28px radius`); chef and food counter completely unblocked | **PASS** |
+| 5 | **Seamless Expansion & Handoff** | 0.85s expansion blossoms outward; labels, forecast, and background commit together with zero flash or jump | **PASS** |
+| 6 | **390px Mobile View** | Verified at 390×844; layout stacks cleanly, typography legible, zero horizontal scrollbar | **PASS** |
+
+### 3. Verification Artifacts
+- **Continuous Demonstration Recording (Typical → Rain → Typical):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/refined_portal_flow_1792913302798.webp`
+- **Screenshots:**
+  - Typical Day Refined Desktop: `typical_day_refined_desktop_1792913326950.png`
+  - Heavy Rain Refined Desktop: `heavy_rain_refined_desktop_1792913335625.png`
+  - Restored Typical Day Desktop: `typical_day_restored_desktop_1792913345444.png`
+  - 390px Mobile Viewport: `refined_mobile_390_1792913355864.png`
+
+
 
 
 

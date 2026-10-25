@@ -4,25 +4,23 @@ import './LandingPreview.css'
 const SCENES = {
   typical: {
     key: 'typical',
+    label: 'Typical Day',
     title: 'TYPICAL DAY',
     portions: '230 forecast portions',
     explanation: 'A steady lunch service. Demand follows the historical Saturday pattern.',
     videoSrc: '/videos/typical-day.mp4',
     posterSrc: '/videos/typical-day-poster.png',
-    nextKey: 'rain',
-    nextLabel: 'Heavy Rain',
     clipStart: 1.2,
     clipEnd: 8.8,
   },
   rain: {
     key: 'rain',
+    label: 'Heavy Rain',
     title: 'HEAVY RAIN',
     portions: '184 forecast portions',
     explanation: 'Simulated demand falls by 20%. Reduced walk-ins expected across lunch service.',
     videoSrc: '/videos/heavy-rain.mp4',
     posterSrc: '/videos/heavy-rain-poster.png',
-    nextKey: 'typical',
-    nextLabel: 'Typical Day',
     clipStart: 1.2,
     clipEnd: 8.8,
   },
@@ -30,7 +28,7 @@ const SCENES = {
 
 export default function LandingPreview({ onOpenDashboard }) {
   const [activeKey, setActiveKey] = useState('typical')
-  const [transitionState, setTransitionState] = useState('idle') // 'idle' | 'expanding' | 'settling'
+  const [transitionState, setTransitionState] = useState('idle') // 'idle' | 'expanding' | 'repositioning'
   const [textAnimState, setTextAnimState] = useState('visible') // 'visible' | 'exiting' | 'entering'
   const [videoError, setVideoError] = useState(false)
 
@@ -42,8 +40,10 @@ export default function LandingPreview({ onOpenDashboard }) {
     return false
   })
 
+  // Single source of truth: nextScenario is derived strictly from activeKey
   const currentScene = SCENES[activeKey]
-  const nextScene = SCENES[currentScene.nextKey]
+  const nextScenarioKey = activeKey === 'typical' ? 'rain' : 'typical'
+  const nextScenario = SCENES[nextScenarioKey]
 
   // Video refs
   const bgVideoRef = useRef(null)
@@ -133,8 +133,8 @@ export default function LandingPreview({ onOpenDashboard }) {
     }
 
     playSafe(bgVideoRef.current, currentScene)
-    playSafe(portalVideoRef.current, nextScene)
-  }, [activeKey, reducedMotion, currentScene, nextScene])
+    playSafe(portalVideoRef.current, nextScenario)
+  }, [activeKey, reducedMotion, currentScene, nextScenario])
 
   // Trigger portal expansion transition
   const handleTriggerTransition = useCallback(() => {
@@ -145,7 +145,7 @@ export default function LandingPreview({ onOpenDashboard }) {
       // Reduced motion: immediate/brief fade without portal expansion
       setTextAnimState('exiting')
       addTimer(() => {
-        setActiveKey(currentScene.nextKey)
+        setActiveKey(nextScenarioKey)
         setTextAnimState('entering')
         addTimer(() => {
           setTextAnimState('visible')
@@ -159,20 +159,28 @@ export default function LandingPreview({ onOpenDashboard }) {
     setTextAnimState('exiting')
     setTransitionState('expanding')
 
-    // Step 2: At 850ms, commit the next scene
+    // Step 2: At 850ms, expansion covers the hero.
+    // Commit the new active scene, title, and forecast together.
     addTimer(() => {
-      setActiveKey(currentScene.nextKey)
-      setTransitionState('settling')
+      const targetTime = portalVideoRef.current ? portalVideoRef.current.currentTime : 1.5
+      setActiveKey(nextScenarioKey)
       setTextAnimState('entering')
 
-      // Step 3: At 1100ms, settle into idle and reveal new text
+      // Sync background video time to match portal video for seamless handoff
+      if (bgVideoRef.current) {
+        bgVideoRef.current.currentTime = targetTime
+      }
+
+      // Enter repositioning state: portal returns to center-left and fades back in
+      setTransitionState('repositioning')
+
       addTimer(() => {
-        setTransitionState('idle')
         setTextAnimState('visible')
+        setTransitionState('idle')
         isTransitioningRef.current = false
       }, 250)
     }, 850)
-  }, [reducedMotion, currentScene])
+  }, [reducedMotion, nextScenarioKey])
 
   return (
     <div className={`cinematic-landing-root ${reducedMotion ? 'reduced-motion' : ''}`}>
@@ -226,14 +234,14 @@ export default function LandingPreview({ onOpenDashboard }) {
               className="bg-poster-img"
             />
           )}
-          {/* Subtle gradient vignette to guarantee contrast while keeping chef clear */}
+          {/* Light overall tint + concentrated lower-left text shading */}
           <div className="hero-gradient-overlay" />
         </div>
 
-        {/* Floating / Expanding Portal Preview */}
+        {/* Floating / Expanding Portal Preview (Taller, Window Area Position) */}
         <div
           className={`portal-container ${transitionState === 'expanding' ? 'is-expanding' : ''} ${
-            transitionState === 'settling' ? 'is-settling' : ''
+            transitionState === 'repositioning' ? 'is-repositioning' : ''
           }`}
           aria-live="polite"
         >
@@ -243,19 +251,19 @@ export default function LandingPreview({ onOpenDashboard }) {
               {!reducedMotion ? (
                 <video
                   ref={portalVideoRef}
-                  key={`portal-${nextScene.key}`}
+                  key={`portal-${nextScenario.key}`}
                   className="portal-video"
-                  src={nextScene.videoSrc}
-                  poster={nextScene.posterSrc}
+                  src={nextScenario.videoSrc}
+                  poster={nextScenario.posterSrc}
                   muted
                   playsInline
                   autoPlay
                   loop
-                  onTimeUpdate={(e) => handleTimeUpdate(e, nextScene.key)}
+                  onTimeUpdate={(e) => handleTimeUpdate(e, nextScenario.key)}
                 />
               ) : (
                 <img
-                  src={nextScene.posterSrc}
+                  src={nextScenario.posterSrc}
                   alt=""
                   className="portal-poster-img"
                 />
@@ -263,13 +271,13 @@ export default function LandingPreview({ onOpenDashboard }) {
               <div className="portal-sheen" aria-hidden="true" />
             </div>
 
-            {/* Portal Labels & Action */}
+            {/* Portal Labels & Action derived strictly from ONE nextScenario value */}
             <div className="portal-meta">
               <span className="portal-badge">
                 <span className="live-dot" aria-hidden="true" /> NEXT SCENE
               </span>
               <span className="portal-caption" id="portal-caption-label">
-                Next: {nextScene.nextLabel || nextScene.title}
+                Next: {nextScenario.label}
               </span>
             </div>
 
@@ -280,24 +288,29 @@ export default function LandingPreview({ onOpenDashboard }) {
               className="portal-action-btn"
               onClick={handleTriggerTransition}
               disabled={transitionState !== 'idle'}
-              aria-label={`Explore ${nextScene.nextLabel || nextScene.title}`}
+              aria-label={`Explore ${nextScenario.label}`}
               aria-describedby="portal-caption-label"
             >
               <span className="portal-action-text">
-                Explore {nextScene.nextLabel || nextScene.title}
+                Explore {nextScenario.label}
               </span>
               <span className="portal-action-icon" aria-hidden="true">→</span>
             </button>
           </div>
         </div>
 
-        {/* Foreground Content: Intro Copy, Title, Portions, Explanation */}
+        {/* Foreground Content: Prominent Product Message, Substantial Title, Portions, Explanation */}
         <div className={`hero-content-anchor ${textAnimState}`}>
-          <div className="hero-badge-row">
-            <span className="simulated-chip">
-              <span className="sim-dot" aria-hidden="true">◉</span> Simulated demo
-            </span>
-            <span className="intro-copy">Prepare for demand. Before it arrives.</span>
+          {/* Prominent Product Message Header */}
+          <div className="hero-product-block">
+            <div className="hero-badge-row">
+              <span className="simulated-chip">
+                <span className="sim-dot" aria-hidden="true">◉</span> Simulated demo
+              </span>
+            </div>
+            <h2 className="hero-product-message">
+              Prepare for demand. Before it arrives.
+            </h2>
           </div>
 
           <div className="hero-title-block">
