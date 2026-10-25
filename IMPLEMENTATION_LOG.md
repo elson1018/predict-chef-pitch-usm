@@ -811,6 +811,69 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
 - **Captured Screenshots:**
   - Resting Desktop Composition: `resting_composition_1792916520599.png`
 
+---
+
+## 22. Two-Endpoint Expansion Synchronization, Bubbled Event Guard & Performance Inspection
+
+**Timestamp:** 2026-10-25 16:38:00 +08:00  
+**Phase:** Motion Regression Reversal, Bubbled Child Event Filtering & Production Performance Inspection  
+**Route:** `http://localhost:4173/#LandingPreview` & `http://localhost:5173/#LandingPreview`  
+**Status:** **PASS** (Zero dropped video frames across 9 transitions, single-execution handoff, continuous 0–100% two-endpoint expansion, identical framing)
+
+### 1. Root Cause Analysis of Transition Regression
+1. **Keyframe Mask/Video Desynchronization:** The previous motion-polish pass added intermediate `60%` and `85%` keyframes to `@keyframes expandClipper` to delay corner flattening, while `@keyframes expandVideo` retained standard two-endpoint interpolation (0% and 100%). This caused spatial mask boundary travel and video scale/translation to move at divergent rates throughout mid-flight, creating visual stutter and boundary lag.
+2. **Bubbled Child Animation Events & Duplicate Handoff:**
+   - `<video className="slot-video">` completed its child animation (`expandVideo`) and fired an `animationend` event that bubbled up to its parent `<div className="slot-layer">`.
+   - The parent listener did not filter `e.target !== e.currentTarget`, catching both the child's `expandVideo` and its own `expandClipper` events.
+   - Because `isTransitioningRef.current` was maintained during the 200ms role-promotion buffer, `completeHandoff()` was invoked twice per transition, triggering duplicate role reassignments and visual hiccups.
+   - The 950ms safety fallback timer also lacked an atomic check against completed handoffs.
+
+### 2. Architectural Fixes Implemented
+1. **Restored Synchronized Two-Endpoint Expansion ([src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css)):**
+   - Removed intermediate `60%` and `85%` keyframes from `@keyframes expandClipper`.
+   - Both `@keyframes expandClipper` and `@keyframes expandVideo` animate strictly between `0%` (resting aperture: `round 18px`, miniature transform) and `100%` (full hero viewport: `round 0px`, scale 1.0, translation 0,0).
+   - Driven by identical duration (`0.85s`) and identical continuous easing (`cubic-bezier(0.25, 0.1, 0.25, 1)`).
+   - Corner radius reduces continuously from resting 18px to 0px across the entire flight, prioritizing motion smoothness and synchrony over delayed corner retention.
+   - Retained 180ms early text fade on `.hero-content-anchor.exiting` (`transition: opacity 0.18s ease-out, transform 0.2s ease-out`).
+2. **Bubbled Event Filtering & Atomic Single Handoff Execution ([src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx)):**
+   - Added `if (e.target !== e.currentTarget) return;` to `handleTransitionEnd`. Any `animationend` or `transitionend` events bubbling from `<video className="slot-video">` are strictly rejected.
+   - Filtered exclusively for the intentional expanding property on `.slot-layer` (`e.animationName === 'expandClipper' || e.propertyName === 'clip-path'`).
+   - Introduced `handoffExecutedRef` initialized to `false` at transition start, set to `true` immediately on first handoff entry, preventing duplicate handoff calls from concurrent events or fallback timers.
+   - Updated safety fallback timer to check `if (isTransitioningRef.current && !handoffExecutedRef.current)`.
+
+### 3. Visual Verification Report (Separate from Performance)
+- **Viewport:** 1440×900 in production preview (`http://localhost:4173/#LandingPreview`).
+- **3 Complete Scenario Cycles (9 transitions):** Typical Day → Heavy Rain → Campus Festival → Typical Day (repeated 3 times at normal pace).
+- **Movement Fluidity:** Exactly one uninterrupted growth movement; video translation, uniform scaling, and clip boundary expand with matched continuous progress.
+- **Visual Stability:** Zero mid-motion pauses, zero restarts, zero framing snaps, zero duplicate role promotion, and zero visual competition from outgoing typography.
+- **Handoff Framing:** 1:1 pixel registration confirmed on settled background.
+
+### 4. Measured Performance Report (`getVideoPlaybackQuality()`)
+- **Total Transitions Tested:** 9 (3 full scenario cycles)
+- **Animation Events Handled:** 18
+- **Transition Events Handled:** 171
+- **Video Slot 0 Playback Quality:**
+  - Total Video Frames: `70`
+  - Dropped Video Frames: `0` (0.00% drop rate)
+  - Corrupted Video Frames: `0`
+- **Video Slot 1 Playback Quality:**
+  - Total Video Frames: `130`
+  - Dropped Video Frames: `0` (0.00% drop rate)
+  - Corrupted Video Frames: `0`
+- **Compositing & Frame Timing:** Persistent DOM video slot architecture eliminates decoder pipeline teardown; hardware video presentation remains continuous throughout all transitions.
+
+### 5. Quality Gates
+- `npm test`: 3/3 passed (98.9ms)
+- `npm run lint`: 0 warnings, 0 errors across 8 files
+- `npm run build`: Production build succeeded in 354ms
+
+### 6. Verification Artifacts
+- **Three Complete Scenario Cycles Recording (Production Preview):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/three_cycle_production_preview_1792917460867.webp`
+- **Settled State Screenshot:**  
+  `C:\Users\gooyo\.gemini\antigravity-ide\brain\2413331d-ba0d-45e6-917d-62019d94fc24\settled_portal_state_1792917509085.png`
+
+
 
 
 

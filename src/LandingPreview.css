@@ -173,7 +173,7 @@
 /* Role: Portal Preview - clipped to the resting portal aperture,
    video transformed to fit miniature scene inside portal */
 .slot-layer.role-portal {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
   z-index: 20;
   opacity: 1;
   transition: opacity 0.25s ease;
@@ -184,27 +184,23 @@
   transition: none;
 }
 
-/* Role: Expanding - single continuous movement without abrupt initial burst,
-   keeping scene visibly rounded through most of the transition and flattening only near full bounds */
+/* Role: Expanding - single continuous two-endpoint movement,
+   matching video scale/translation and clip-boundary expansion with identical duration and easing */
 .slot-layer.role-expanding {
+  clip-path: inset(0px 0px 0px 0px round 0px);
   z-index: 30;
   opacity: 1;
-  animation: expandClipper 0.85s cubic-bezier(0.3, 0.0, 0.2, 1) forwards;
+  animation: expandClipper 0.85s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 .slot-layer.role-expanding .slot-video {
-  animation: expandVideo 0.85s cubic-bezier(0.3, 0.0, 0.2, 1) forwards;
+  transform: translate(0px, 0px) scale(1);
+  animation: expandVideo 0.85s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 @keyframes expandClipper {
   0% {
-    clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
-  }
-  60% {
-    clip-path: inset(calc(var(--portal-top) * 0.35) calc(var(--portal-right) * 0.35) calc(var(--portal-bottom) * 0.35) calc(var(--portal-left) * 0.35) round 18px);
-  }
-  85% {
-    clip-path: inset(calc(var(--portal-top) * 0.10) calc(var(--portal-right) * 0.10) calc(var(--portal-bottom) * 0.10) calc(var(--portal-left) * 0.10) round 14px);
+    clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
   }
   100% {
     clip-path: inset(0px 0px 0px 0px round 0px);
@@ -222,7 +218,7 @@
 
 /* Role: Standby - preloading next scene behind the scenes */
 .slot-layer.role-standby {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
   z-index: 5;
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -257,7 +253,7 @@
   bottom: 50px;
   width: 360px;
   height: 202.5px; /* exactly 16:9 */
-  border-radius: 20px;
+  border-radius: 18px;
   z-index: 25;
   pointer-events: none;
 }
@@ -306,7 +302,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 18px;
   border: 1px solid rgba(247, 244, 234, 0.35);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
   background: transparent;

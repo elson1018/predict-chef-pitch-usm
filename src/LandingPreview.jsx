@@ -75,6 +75,7 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
   const slot1Ref = useRef(null)
   const isTransitioningRef = useRef(false)
   const transitionTargetKeyRef = useRef(null)
+  const handoffExecutedRef = useRef(false)
   const timersRef = useRef([])
 
   // Current active scene and single-source next scenario
@@ -216,6 +217,8 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
 
   // Finalize handoff upon animation completion (driven by transitionend event, not a fixed timeout)
   const completeHandoff = useCallback(() => {
+    if (handoffExecutedRef.current) return
+    handoffExecutedRef.current = true
     if (!isTransitioningRef.current) return
     const targetKey = transitionTargetKeyRef.current
     if (!targetKey) return
@@ -281,15 +284,17 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
     }, 200)
   }, [bgSlot])
 
-  // Transitionend or animationend listener on expanding slot
+  // Transitionend or animationend listener on expanding slot-layer
   const handleTransitionEnd = useCallback((e) => {
+    // CRITICAL: Reject any bubbled events from child elements (e.g. .slot-video)
+    if (e.target !== e.currentTarget) return
+    if (handoffExecutedRef.current) return
     if (!isTransitioningRef.current) return
-    // Ensure we trigger on clip-path/transform transition or keyframe animation completion
+
+    // Trigger only when the intentional expanding clip finishes on .slot-layer
     if (
-      e.propertyName === 'clip-path' ||
-      e.propertyName === 'transform' ||
       e.animationName === 'expandClipper' ||
-      e.animationName === 'expandVideo'
+      e.propertyName === 'clip-path'
     ) {
       completeHandoff()
     }
@@ -299,6 +304,7 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
   const triggerTransitionTo = useCallback((targetKey) => {
     if (isTransitioningRef.current || targetKey === activeKey) return
     isTransitioningRef.current = true
+    handoffExecutedRef.current = false
     transitionTargetKeyRef.current = targetKey
     setIsTransitioning(true)
 
@@ -358,7 +364,7 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
 
     // Safety fallback timer (950ms) in case transitionend is missed
     addTimer(() => {
-      if (isTransitioningRef.current) {
+      if (isTransitioningRef.current && !handoffExecutedRef.current) {
         completeHandoff()
       }
     }, 950)
