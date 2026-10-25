@@ -572,6 +572,70 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Restored Typical Day Desktop: `typical_day_restored_desktop_1792913345444.png`
   - 390px Mobile Viewport: `refined_mobile_390_1792913355864.png`
 
+---
+
+## 18. Campus Festival Integration, 3-State Cycle & Transition Coverage Perfection
+
+**Timestamp:** 2026-10-25 15:40:00 +08:00  
+**Phase:** 3-State Cycle (`Typical Day` → `Heavy Rain` → `Campus Festival` → `Typical Day`), Edge Coverage Fix, Direct Controls & Dashboard Handoff  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Two complete 3-state cycles, direct controls, zero exposed edges, dashboard synchronization verified)
+
+### 1. Refinements & Features Delivered
+1. **Transition Coverage Fix (Zero Exposed Right Edge):**
+   - Replaced asymmetrical corner translation with symmetrical center expansion in [src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css):
+     ```css
+     .portal-container.is-expanding {
+       left: 50% !important;
+       top: 50% !important;
+       transform: translate(-50%, -50%) !important;
+       width: 101vw !important;
+       height: 101vh !important;
+       min-width: 100% !important;
+       min-height: 100% !important;
+       border-radius: 0px !important;
+       z-index: 45;
+     }
+     ```
+   - Expanded outward symmetrically across all four margins, ensuring 100% coverage of hero bounds with zero exposed background strip, flash, or jump.
+2. **Campus Festival Integration (`public/videos/campus-festival.mp4`):**
+   - Staged section `clipStart: 5.0s` to `clipEnd: 8.0s` where festive bunting flags, vibrant warm exterior, and customer activity are consistently visible without end-of-clip bunting loss.
+   - Title: `CAMPUS FESTIVAL`
+   - Forecast: `300 forecast portions`
+   - Explanation: `Simulated demand rises by 30%, with each dish rounded individually before summation.`
+3. **Three-State Cycle Architecture:**
+   - Full cycle: `Typical Day` (230) → `Heavy Rain` (184) → `Campus Festival` (300) → `Typical Day` (230).
+   - In [src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx), portal video, caption (`Next: ...`), button text (`Explore ...`), and `aria-label` derive synchronously from a single `nextScenario` object.
+4. **Accessible Direct Scenario Selector Chips:**
+   - Added accessible pill controls (`role="group"`, `aria-pressed`, keyboard-focusable) allowing instant selection of any scenario without waiting for the full cycle.
+5. **App Scenario Synchronization on Dashboard Open:**
+   - In [src/App.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/App.jsx), `onOpenDashboard={(chosen) => { handleSelectScenario(chosen); go('Overview'); }}` carries the landing page's selected scenario directly into the working dashboard.
+   - Preserves all calculations (230 / 184 / 300 baseline totals), safety buffers, Rive canteen scenes, overrides, and CSV export.
+
+### 2. Browser Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **2 Full 3-State Cycles** | Verified 2 full cycles (`Typical → Rain → Festival → Typical`); zero desync or frame jumps | **PASS** |
+| 2 | **Data Alignment** | Typical: 230, Rain: 184, Festival: 300 portions; matching explanations and video scenes | **PASS** |
+| 3 | **Edge Coverage** | Zero exposed right strips or gaps during expansion in all transition directions | **PASS** |
+| 4 | **Direct Scenario Controls** | Clicked 'Campus Festival' chip directly from Typical; transitioned smoothly to Festival | **PASS** |
+| 5 | **Dashboard Handoff** | Opened dashboard from Campus Festival; `#Overview` loaded with Festival (300 portions, Rive bunting active) | **PASS** |
+| 6 | **Mobile Viewport (390px)** | Verified at 390×844; layout stacks cleanly, direct chips wrap neatly, zero horizontal overflow | **PASS** |
+| 7 | **Production Preview** | Tested on port 4173 (`http://localhost:4173/#LandingPreview`); production bundle transitions flawlessly | **PASS** |
+
+### 3. Verification Artifacts
+- **Continuous 3-State Demonstration Recording (Two Full Cycles + Direct Control + Dashboard Handoff):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/three_state_cycle_1792913793737.webp`
+- **Screenshots:**
+  - Typical Day Desktop (230 portions): `three_state_1_typical_1792913805688.png`
+  - Heavy Rain Desktop (184 portions): `three_state_2_rain_1792913812733.png`
+  - Campus Festival Desktop (300 portions): `three_state_3_festival_1792913819044.png`
+  - Dashboard Festival Handoff: `dashboard_festival_handoff_1792913839179.png`
+  - 390px Mobile Viewport: `mobile_390_three_state_1792913848275.png`
+  - Production Preview (Port 4173): `prod_heavy_rain_1792913859792.png`
+
+
 
 
 

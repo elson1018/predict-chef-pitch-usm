@@ -2,14 +2,15 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import './LandingPreview.css'
 
 const SCENES = {
-  typical: {
-    key: 'typical',
+  normal: {
+    key: 'normal',
     label: 'Typical Day',
     title: 'TYPICAL DAY',
     portions: '230 forecast portions',
     explanation: 'A steady lunch service. Demand follows the historical Saturday pattern.',
     videoSrc: '/videos/typical-day.mp4',
     posterSrc: '/videos/typical-day-poster.png',
+    nextKey: 'rain',
     clipStart: 1.2,
     clipEnd: 8.8,
   },
@@ -21,15 +22,29 @@ const SCENES = {
     explanation: 'Simulated demand falls by 20%. Reduced walk-ins expected across lunch service.',
     videoSrc: '/videos/heavy-rain.mp4',
     posterSrc: '/videos/heavy-rain-poster.png',
+    nextKey: 'event',
     clipStart: 1.2,
     clipEnd: 8.8,
   },
+  event: {
+    key: 'event',
+    label: 'Campus Festival',
+    title: 'CAMPUS FESTIVAL',
+    portions: '300 forecast portions',
+    explanation: 'Simulated demand rises by 30%, with each dish rounded individually before summation.',
+    videoSrc: '/videos/campus-festival.mp4',
+    posterSrc: '/videos/campus-festival-poster.png',
+    nextKey: 'normal',
+    clipStart: 5.0,
+    clipEnd: 8.0,
+  },
 }
 
-export default function LandingPreview({ onOpenDashboard }) {
-  const [activeKey, setActiveKey] = useState('typical')
+export default function LandingPreview({ initialScenario = 'normal', onOpenDashboard }) {
+  const [activeKey, setActiveKey] = useState(() => (SCENES[initialScenario] ? initialScenario : 'normal'))
   const [transitionState, setTransitionState] = useState('idle') // 'idle' | 'expanding' | 'repositioning'
   const [textAnimState, setTextAnimState] = useState('visible') // 'visible' | 'exiting' | 'entering'
+  const [targetOverrideKey, setTargetOverrideKey] = useState(null)
   const [videoError, setVideoError] = useState(false)
 
   // Reduced motion query
@@ -40,10 +55,10 @@ export default function LandingPreview({ onOpenDashboard }) {
     return false
   })
 
-  // Single source of truth: nextScenario is derived strictly from activeKey
-  const currentScene = SCENES[activeKey]
-  const nextScenarioKey = activeKey === 'typical' ? 'rain' : 'typical'
-  const nextScenario = SCENES[nextScenarioKey]
+  // Single source of truth: nextScenario is derived strictly from activeKey (or active target override)
+  const currentScene = SCENES[activeKey] || SCENES.normal
+  const effectiveTargetKey = targetOverrideKey || currentScene.nextKey
+  const nextScenario = SCENES[effectiveTargetKey] || SCENES.normal
 
   // Video refs
   const bgVideoRef = useRef(null)
@@ -102,7 +117,7 @@ export default function LandingPreview({ onOpenDashboard }) {
     }
   }, [])
 
-  // Maintain smooth looping within safe range (skipping opening emblems/jumps)
+  // Maintain smooth looping within safe range (skipping opening emblems/jumps and end-of-clip bunting loss)
   const handleTimeUpdate = useCallback((e, sceneKey) => {
     if (reducedMotion) return
     const vid = e.target
@@ -113,7 +128,7 @@ export default function LandingPreview({ onOpenDashboard }) {
     }
   }, [reducedMotion])
 
-  // Playback initialization when activeKey or reducedMotion changes
+  // Playback initialization when activeKey, targetOverrideKey or reducedMotion changes
   useEffect(() => {
     if (reducedMotion) {
       if (bgVideoRef.current) bgVideoRef.current.pause()
@@ -134,18 +149,19 @@ export default function LandingPreview({ onOpenDashboard }) {
 
     playSafe(bgVideoRef.current, currentScene)
     playSafe(portalVideoRef.current, nextScenario)
-  }, [activeKey, reducedMotion, currentScene, nextScenario])
+  }, [activeKey, nextScenario, reducedMotion, currentScene])
 
-  // Trigger portal expansion transition
-  const handleTriggerTransition = useCallback(() => {
-    if (isTransitioningRef.current) return
+  // Unified transition trigger to a given target key
+  const executeTransitionTo = useCallback((destinationKey) => {
+    if (isTransitioningRef.current || destinationKey === activeKey) return
     isTransitioningRef.current = true
 
     if (reducedMotion) {
       // Reduced motion: immediate/brief fade without portal expansion
       setTextAnimState('exiting')
       addTimer(() => {
-        setActiveKey(nextScenarioKey)
+        setActiveKey(destinationKey)
+        setTargetOverrideKey(null)
         setTextAnimState('entering')
         addTimer(() => {
           setTextAnimState('visible')
@@ -155,15 +171,16 @@ export default function LandingPreview({ onOpenDashboard }) {
       return
     }
 
-    // Step 1: Start fading outgoing text
+    // Step 1: Start fading outgoing text and expanding portal
     setTextAnimState('exiting')
     setTransitionState('expanding')
 
-    // Step 2: At 850ms, expansion covers the hero.
+    // Step 2: At 850ms, expansion covers the hero bounds fully with no exposed edges.
     // Commit the new active scene, title, and forecast together.
     addTimer(() => {
       const targetTime = portalVideoRef.current ? portalVideoRef.current.currentTime : 1.5
-      setActiveKey(nextScenarioKey)
+      setActiveKey(destinationKey)
+      setTargetOverrideKey(null)
       setTextAnimState('entering')
 
       // Sync background video time to match portal video for seamless handoff
@@ -171,7 +188,7 @@ export default function LandingPreview({ onOpenDashboard }) {
         bgVideoRef.current.currentTime = targetTime
       }
 
-      // Enter repositioning state: portal returns to center-left and fades back in
+      // Enter repositioning state: portal returns smoothly to resting position
       setTransitionState('repositioning')
 
       addTimer(() => {
@@ -180,7 +197,22 @@ export default function LandingPreview({ onOpenDashboard }) {
         isTransitioningRef.current = false
       }, 250)
     }, 850)
-  }, [reducedMotion, nextScenarioKey])
+  }, [reducedMotion, activeKey])
+
+  // Main portal button activation (cycles to currentScene.nextKey)
+  const handleTriggerCycle = useCallback(() => {
+    executeTransitionTo(effectiveTargetKey)
+  }, [executeTransitionTo, effectiveTargetKey])
+
+  // Direct scenario selector activation
+  const handleDirectSelect = useCallback((key) => {
+    if (key === activeKey || isTransitioningRef.current) return
+    setTargetOverrideKey(key)
+    // Small timeout to allow portalVideo to mount the target before expansion begins
+    setTimeout(() => {
+      executeTransitionTo(key)
+    }, 30)
+  }, [activeKey, executeTransitionTo])
 
   return (
     <div className={`cinematic-landing-root ${reducedMotion ? 'reduced-motion' : ''}`}>
@@ -201,7 +233,7 @@ export default function LandingPreview({ onOpenDashboard }) {
             type="button"
             id="open-dashboard-btn"
             className="btn-open-dashboard"
-            onClick={onOpenDashboard}
+            onClick={() => onOpenDashboard(activeKey)}
           >
             <span>Open dashboard</span>
             <span className="btn-arrow" aria-hidden="true">↗</span>
@@ -286,7 +318,7 @@ export default function LandingPreview({ onOpenDashboard }) {
               type="button"
               id="explore-scenario-btn"
               className="portal-action-btn"
-              onClick={handleTriggerTransition}
+              onClick={handleTriggerCycle}
               disabled={transitionState !== 'idle'}
               aria-label={`Explore ${nextScenario.label}`}
               aria-describedby="portal-caption-label"
@@ -301,13 +333,36 @@ export default function LandingPreview({ onOpenDashboard }) {
 
         {/* Foreground Content: Prominent Product Message, Substantial Title, Portions, Explanation */}
         <div className={`hero-content-anchor ${textAnimState}`}>
-          {/* Prominent Product Message Header */}
+          {/* Prominent Product Message Header & Direct Scenario Selectors */}
           <div className="hero-product-block">
             <div className="hero-badge-row">
               <span className="simulated-chip">
                 <span className="sim-dot" aria-hidden="true">◉</span> Simulated demo
               </span>
+
+              {/* Small accessible direct scenario selection controls */}
+              <div className="scenario-direct-chips" role="group" aria-label="Direct scenario selection">
+                {Object.values(SCENES).map((s) => {
+                  const isCurrent = activeKey === s.key
+                  return (
+                    <button
+                      key={s.key}
+                      type="button"
+                      id={`direct-scenario-${s.key}`}
+                      className={`direct-chip-btn ${isCurrent ? 'active' : ''}`}
+                      aria-pressed={isCurrent}
+                      aria-label={`Switch to ${s.label}`}
+                      onClick={() => handleDirectSelect(s.key)}
+                      disabled={transitionState !== 'idle' || isCurrent}
+                    >
+                      <span className="direct-chip-dot" aria-hidden="true" />
+                      <span className="direct-chip-text">{s.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
+
             <h2 className="hero-product-message">
               Prepare for demand. Before it arrives.
             </h2>
@@ -326,7 +381,7 @@ export default function LandingPreview({ onOpenDashboard }) {
           </div>
 
           <div className="hero-footer-note">
-            <span>Toggle between typical baseline and rain scenario to preview kitchen demand adaptations.</span>
+            <span>Cycle through typical baseline, heavy rain and campus festival to preview kitchen demand adaptations.</span>
           </div>
         </div>
 

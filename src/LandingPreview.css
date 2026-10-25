@@ -162,7 +162,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Rounded Portal (Centre-Left Window Area & Taller Aspect Ratio)
+   Rounded Portal (Centre-Left Window Area & Seamless Hero Coverage)
    -------------------------------------------------------------------------- */
 .portal-container {
   position: absolute;
@@ -179,13 +179,16 @@
   transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Expanding State: Blossoms outwards to fill the entire hero */
+/* Expanding State: Blossoms outwards to 101vw/101vh centered at 50%/50%,
+   completely covering hero bounds with ZERO exposed right/left edges */
 .portal-container.is-expanding {
-  left: 0 !important;
-  top: 0 !important;
-  transform: none !important;
-  width: 100% !important;
-  height: 100% !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 101vw !important;
+  height: 101vh !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
   border-radius: 0px !important;
   box-shadow: none !important;
   z-index: 45;
@@ -346,7 +349,7 @@
 .hero-content-anchor {
   position: relative;
   z-index: 30;
-  max-width: 520px;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -372,13 +375,14 @@
 .hero-product-block {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .hero-badge-row {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .simulated-chip {
@@ -398,6 +402,62 @@
 .simulated-chip .sim-dot {
   color: #e09f3e;
   font-size: 10px;
+}
+
+/* Direct Scenario Selector Chips */
+.scenario-direct-chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(13, 40, 24, 0.65);
+  border: 1px solid rgba(143, 173, 136, 0.3);
+  border-radius: 9999px;
+  padding: 3px 4px;
+  backdrop-filter: blur(6px);
+}
+
+.direct-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: transparent;
+  color: #ede6d6;
+  border: none;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.direct-chip-btn:hover:not(:disabled) {
+  background: rgba(247, 244, 234, 0.15);
+  color: #ffffff;
+}
+
+.direct-chip-btn:focus-visible {
+  outline: 2px solid #e09f3e;
+  outline-offset: 1px;
+}
+
+.direct-chip-btn.active {
+  background: #f7f4ea;
+  color: #163024;
+  font-weight: 700;
+  cursor: default;
+}
+
+.direct-chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8fad88;
+  transition: background 0.15s ease;
+}
+
+.direct-chip-btn.active .direct-chip-dot {
+  background: #e09f3e;
 }
 
 /* Prominent Product Headline */
@@ -420,7 +480,7 @@
 /* Substantially enlarged scenario title */
 .hero-title {
   margin: 0;
-  font-size: clamp(56px, 6.8vw, 84px);
+  font-size: clamp(52px, 6.5vw, 80px);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -453,7 +513,7 @@
   line-height: 1.5;
   color: #ede6d6;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
-  max-width: 460px;
+  max-width: 480px;
 }
 
 .hero-footer-note {
@@ -495,7 +555,8 @@
 
 .cinematic-landing-root.reduced-motion .btn-open-dashboard,
 .cinematic-landing-root.reduced-motion .portal-action-btn,
-.cinematic-landing-root.reduced-motion .portal-action-text {
+.cinematic-landing-root.reduced-motion .portal-action-text,
+.cinematic-landing-root.reduced-motion .direct-chip-btn {
   transition: none !important;
 }
 
@@ -534,12 +595,17 @@
   }
 
   .hero-title {
-    font-size: 42px;
+    font-size: 40px;
   }
 
   .cinematic-topbar {
     padding: 0 20px;
     height: 70px;
+  }
+
+  .scenario-direct-chips {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -553,7 +619,7 @@
   }
 
   .hero-title {
-    font-size: 34px;
+    font-size: 32px;
   }
 
   .portal-container {
@@ -568,6 +634,11 @@
   .portal-action-text {
     padding: 9px 15px;
     font-size: 12px;
+  }
+
+  .direct-chip-btn {
+    padding: 3px 7px;
+    font-size: 10px;
   }
 
   .cinematic-topbar .brand-name {

@@ -264,7 +264,17 @@ function App() {
   }
 
   if (page === 'LandingPreview') {
-    return <LandingPreview onOpenDashboard={() => go('Overview')} />
+    return (
+      <LandingPreview
+        initialScenario={scenario}
+        onOpenDashboard={(chosenScenario) => {
+          if (chosenScenario && scenarios[chosenScenario]) {
+            handleSelectScenario(chosenScenario)
+          }
+          go('Overview')
+        }}
+      />
+    )
   }
 
   return (
