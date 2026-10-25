@@ -1,7 +1,7 @@
 /* ==========================================================================
    PredictChef Cinematic Landing Page Prototype Stylesheet
+   Argon Visual Direction: Bottom-Right Landscape Portal & Growing Miniature Scene
    Strictly scoped under .cinematic-landing-root
-   Persistent Video Layers & Smooth Reveal Mask
    ========================================================================== */
 
 .cinematic-landing-root {
@@ -126,12 +126,14 @@
   align-items: flex-end;
   padding: 0 60px 50px;
 
-  /* Portal reveal mask coordinates: 330px x 430px, centered at 45% x 40% */
-  --portal-top: calc(40% - 215px);
-  --portal-bottom: calc(60% - 215px);
-  --portal-left: calc(45% - 165px);
-  --portal-right: calc(55% - 165px);
-  --portal-radius: 28px;
+  /* Default fallback geometry (overridden dynamically by applyGeometryVars) */
+  --portal-top: calc(100vh - 252.5px);
+  --portal-bottom: 50px;
+  --portal-left: calc(100vw - 420px);
+  --portal-right: 60px;
+  --portal-tx: 480px;
+  --portal-ty: 240px;
+  --portal-scale: 0.25;
 }
 
 /* Persistent Slot Layers: ALWAYS 100% full-screen surface */
@@ -153,6 +155,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  transform-origin: 50% 50%;
 }
 
 /* Role: Background - full visibility */
@@ -162,15 +165,26 @@
   opacity: 1;
 }
 
-/* Role: Portal Preview - masked to the portal aperture */
+.slot-layer.role-background .slot-video {
+  transform: none;
+  transition: none;
+}
+
+/* Role: Portal Preview - clipped to the resting portal aperture,
+   video transformed to fit miniature scene inside portal */
 .slot-layer.role-portal {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round var(--portal-radius));
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
   z-index: 20;
   opacity: 1;
   transition: opacity 0.25s ease;
 }
 
-/* Role: Expanding - smoothly opens reveal mask over 0.85s without changing video crop */
+.slot-layer.role-portal .slot-video {
+  transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Role: Expanding - miniature kitchen visibly grows into hero background */
 .slot-layer.role-expanding {
   clip-path: inset(calc(0% + 0px) calc(0% + 0px) calc(0% + 0px) calc(0% + 0px) round 0px);
   z-index: 30;
@@ -178,17 +192,25 @@
   transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Role: Standby - preloading next scene */
+.slot-layer.role-expanding .slot-video {
+  transform: translate(0px, 0px) scale(1);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Role: Standby - preloading next scene behind the scenes */
 .slot-layer.role-standby {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round var(--portal-radius));
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
   z-index: 5;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
 
-/* Reduced full-screen green overlay:
-   Light overall tint preserving cream, sage and amber,
-   with concentrated stronger shading anchored strictly behind the lower-left text */
+.slot-layer.role-standby .slot-video {
+  transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  transition: none;
+}
+
+/* Light overall tint + concentrated lower-left text shading (Central emblem remains clear) */
 .hero-gradient-overlay {
   position: absolute;
   inset: 0;
@@ -204,29 +226,89 @@
 }
 
 /* --------------------------------------------------------------------------
-   Dedicated Portal Frame UI Overlay (Border, Sheen, Labels, Accessible Button)
+   Resting Portal Anchor in Bottom-Right (Landscape 16:9)
    -------------------------------------------------------------------------- */
-.portal-frame-ui {
+.portal-anchor {
   position: absolute;
-  left: 45%;
-  top: 40%;
-  transform: translate(-50%, -50%);
-  width: 330px;
-  height: 430px;
-  border-radius: 28px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(247, 244, 234, 0.35);
-  pointer-events: none;
+  right: 60px;
+  bottom: 50px;
+  width: 360px;
+  height: 202.5px; /* exactly 16:9 */
+  border-radius: 18px;
   z-index: 25;
-  overflow: hidden;
-  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
-.portal-frame-ui.is-visible {
+/* Next-scene caption placed immediately ABOVE the portal, leaving footage clear */
+.portal-caption-above {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(13, 40, 24, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ede6d6;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(143, 173, 136, 0.25);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.portal-caption-above .caption-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e09f3e;
+}
+
+.portal-caption-above.is-visible {
+  opacity: 1;
+}
+
+.portal-caption-above.is-hidden {
+  opacity: 0;
+}
+
+/* Interactive portal window button covering the resting aperture */
+.portal-window-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(247, 244, 234, 0.35);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  pointer-events: auto;
+}
+
+.portal-window-btn:hover {
+  border-color: rgba(224, 159, 62, 0.6);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.75), 0 0 16px rgba(224, 159, 62, 0.25);
+}
+
+.portal-window-btn:focus-visible {
+  outline: 3px solid #e09f3e;
+  outline-offset: 3px;
+}
+
+.portal-window-btn.is-visible {
   opacity: 1;
   pointer-events: auto;
 }
 
-.portal-frame-ui.is-hidden {
+.portal-window-btn.is-hidden {
   opacity: 0;
   pointer-events: none;
 }
@@ -234,119 +316,17 @@
 .portal-sheen {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
   pointer-events: none;
-}
-
-/* Portal Metadata Overlay */
-.portal-meta {
-  position: absolute;
-  top: 14px;
-  left: 16px;
-  right: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.portal-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: rgba(13, 40, 24, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #8fad88;
-  border-radius: 9999px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  border: 1px solid rgba(143, 173, 136, 0.25);
-}
-
-.portal-badge .live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #e09f3e;
-}
-
-.portal-caption {
-  font-size: 13px;
-  font-weight: 600;
-  color: #f7f4ea;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-  background: rgba(13, 40, 24, 0.65);
-  backdrop-filter: blur(6px);
-  padding: 4px 10px;
-  border-radius: 8px;
-}
-
-/* Accessible Action Button Covering Portal */
-.portal-action-btn {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: rgba(13, 40, 24, 0.15);
-  cursor: pointer;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 16px;
-  z-index: 10;
-  transition: background 0.25s ease;
-  pointer-events: auto;
-}
-
-.portal-action-btn:hover {
-  background: rgba(13, 40, 24, 0.3);
-}
-
-.portal-action-btn:focus-visible {
-  outline: 3px solid #e09f3e;
-  outline-offset: -3px;
-}
-
-.portal-action-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 11px 20px;
-  background: #e09f3e;
-  color: #163024;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.portal-action-btn:hover .portal-action-text {
-  transform: translateY(-2px);
-  background: #f1ab4a;
-}
-
-.portal-action-icon {
-  font-size: 15px;
-  transition: transform 0.2s ease;
-}
-
-.portal-action-btn:hover .portal-action-icon {
-  transform: translateX(3px);
 }
 
 /* --------------------------------------------------------------------------
-   Foreground Hero Content: Typography & Staggered Reveal
+   Foreground Hero Content: Cleaner Bottom-Left Layout
    -------------------------------------------------------------------------- */
 .hero-content-anchor {
   position: relative;
   z-index: 35;
-  max-width: 540px;
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -372,38 +352,24 @@
 .hero-product-block {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.hero-badge-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.simulated-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  background: rgba(143, 173, 136, 0.22);
-  border: 1px solid rgba(143, 173, 136, 0.45);
-  color: #8fad88;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 9999px;
-  letter-spacing: 0.04em;
-}
-
-.simulated-chip .sim-dot {
-  color: #e09f3e;
-  font-size: 10px;
+/* Prominent Product Headline */
+.hero-product-message {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ede6d6;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
 }
 
 /* Direct Scenario Selector Chips */
 .scenario-direct-chips {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   gap: 6px;
   background: rgba(13, 40, 24, 0.65);
@@ -457,17 +423,6 @@
   background: #e09f3e;
 }
 
-/* Prominent Product Headline */
-.hero-product-message {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  color: #ede6d6;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
-}
-
 .hero-title-block {
   display: flex;
   flex-direction: column;
@@ -513,12 +468,6 @@
   max-width: 480px;
 }
 
-.hero-footer-note {
-  font-size: 12px;
-  color: #8fad88;
-  margin-top: 4px;
-}
-
 /* Fallback status banner */
 .video-fallback-banner {
   position: absolute;
@@ -545,14 +494,17 @@
   transition: none !important;
 }
 
+.cinematic-landing-root.reduced-motion .slot-video {
+  transition: none !important;
+}
+
 .cinematic-landing-root.reduced-motion .hero-content-anchor {
   transition: opacity 0.15s ease !important;
   transform: none !important;
 }
 
 .cinematic-landing-root.reduced-motion .btn-open-dashboard,
-.cinematic-landing-root.reduced-motion .portal-action-btn,
-.cinematic-landing-root.reduced-motion .portal-action-text,
+.cinematic-landing-root.reduced-motion .portal-window-btn,
 .cinematic-landing-root.reduced-motion .direct-chip-btn {
   transition: none !important;
 }
@@ -570,21 +522,16 @@
     padding: 100px 24px 40px;
     gap: 28px;
     overflow-y: auto;
-
-    /* Mobile portal mask: 320px x 260px, centered horizontally at 50% */
-    --portal-top: calc(36% - 130px);
-    --portal-bottom: calc(64% - 130px);
-    --portal-left: calc(50% - 160px);
-    --portal-right: calc(50% - 160px);
-    --portal-radius: 20px;
   }
 
-  .portal-frame-ui {
-    left: 50%;
-    top: 36%;
-    width: 320px;
-    height: 260px;
-    border-radius: 20px;
+  .portal-anchor {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: 350px;
+    height: 196.875px; /* exactly 16:9 */
+    margin: 0 auto;
   }
 
   .hero-content-anchor {
@@ -623,18 +570,9 @@
     font-size: 32px;
   }
 
-  .portal-frame-ui {
-    height: 240px;
-    width: 300px;
-  }
-
-  .portal-caption {
-    font-size: 12px;
-  }
-
-  .portal-action-text {
-    padding: 9px 15px;
-    font-size: 12px;
+  .portal-anchor {
+    max-width: 320px;
+    height: 180px; /* 16:9 */
   }
 
   .direct-chip-btn {

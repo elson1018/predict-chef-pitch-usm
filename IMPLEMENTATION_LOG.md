@@ -696,6 +696,73 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Mobile 390×844 Viewport: `mobile_390_persistent_1792914903496.png`
   - Production Preview (Port 4173): `prod_heavy_rain_verified_1792914923124.png`
 
+---
+
+## 20. Argon Visual Direction: Measured Miniature Growing Transform & Bottom-Right Portal
+
+**Timestamp:** 2026-10-25 16:15:00 +08:00  
+**Phase:** Argon Visual Direction, Dynamic Geometry Calculation & Transitionend Handoff  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Growing miniature kitchen animation, 1:1 pixel registration, zero crop morphing, unobstructed emblem)
+
+### 1. Architectural & Geometry Implementation
+1. **Dynamic Geometry Calculation (No Hardcoded Transform Ratios):**
+   - In [src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx), measured actual hero rectangle and resting portal rectangle via `getBoundingClientRect()`:
+     - `heroRect = heroRef.current.getBoundingClientRect()`
+     - `portalRect = portalAnchorRef.current.getBoundingClientRect()`
+   - Computed uniform scale and translation to place the incoming video inside the portal aperture at rest:
+     - `scale = Math.max(pWidth / heroW, pHeight / heroH)`
+     - `tx = (pLeft + pWidth / 2) - (heroW / 2)`
+     - `ty = (pTop + pHeight / 2) - (heroH / 2)`
+   - Applied dynamically to CSS variables on `.cinematic-hero`: `--portal-top`, `--portal-bottom`, `--portal-left`, `--portal-right`, `--portal-tx`, `--portal-ty`, `--portal-scale`.
+2. **Growing Miniature Kitchen Animation ([src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css)):**
+   - **Resting State:**
+     - The incoming video is scaled down to miniature by `scale` and translated to `(tx, ty)`:
+       `transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));`
+     - Clipped by `clip-path: inset(var(--portal-top) ... round 18px);`
+     - Displays the complete, uncropped 16:9 kitchen scene in the bottom-right.
+   - **Expanding Animation (0.85s `cubic-bezier(0.16, 1, 0.3, 1)`):**
+     - The video transforms from `translate(tx, ty) scale(scale)` to `translate(0, 0) scale(1)`.
+     - The clipping boundary expands from portal aperture to `inset(0 0 0 0 round 0px)`.
+     - The miniature kitchen visibly GROWS and glides from the bottom-right to fill the main background!
+   - **Zero Crop Snap:** At expansion completion, the video's uniform scale is 1.0 and translation is (0, 0), perfectly matching the final background framing in 1:1 pixel registration.
+3. **Transitionend-Driven Handoff:**
+   - Completed handoff on `onTransitionEnd` (listening for `clip-path` or `transform` completion), rather than a presumed 750ms timeout.
+   - Preserved video element identity and running playback clock on promotion to `role="background"`.
+4. **Visual Layout Adjustments:**
+   - **Bottom-Right Landscape Portal:** Sized at 360×202.5px (exact 16:9 landscape aspect ratio).
+   - **Next-Scene Caption:** Positioned immediately above the portal (`.portal-caption-above`), leaving footage completely clear.
+   - **Keyboard Operability:** Portal window button has visible `:focus-visible` ring (`outline: 3px solid #e09f3e`).
+   - **Unobstructed Central Emblem:** Clear view of the kitchen counter and central pot.
+   - **Cleaner Bottom-Left Layout:** Product message headline prominent above title; removed redundant badges and helper footnote.
+
+### 2. Browser Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Resting Composition** | 360×202.5 landscape portal in bottom-right; caption immediately above; footage clear | **PASS** |
+| 2 | **Growing Animation** | Miniature kitchen visibly grows and glides from bottom-right into full hero bounds | **PASS** |
+| 3 | **Zero Crop Snap / Jump** | 1:1 pixel registration at expansion end; video continues seamlessly without restart | **PASS** |
+| 4 | **3-State Cycle Sequence** | Typical → Rain → Festival → Typical verified smoothly in dev and production previews | **PASS** |
+| 5 | **Direct Scenario Chips** | Clicked 'Campus Festival' chip; direct growing transition to Festival verified | **PASS** |
+| 6 | **Dashboard Handoff** | 'Open dashboard' carries active scenario into `#Overview` (300 portions, Rive bunting active) | **PASS** |
+| 7 | **Mobile Viewport (390px)** | Verified at 390×844; stacked mobile layout, no horizontal scrollbars | **PASS** |
+| 8 | **Quality Gates** | `npm test` (3/3 pass), `npm run lint` (0 err/0 warn), `npm run build` (success) | **PASS** |
+
+### 3. Verification Artifacts
+- **Argon Growing Portal Continuous Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/argon_growing_portal_1792915753230.webp`
+- **Captured Screenshots:**
+  - Resting Desktop Screenshot: `argon_resting_desktop_1792915767057.png`
+  - Heavy Rain Transition Verified: `heavy_rain_transition_verified_1792915775451.png`
+  - Campus Festival Transition Verified: `campus_festival_transition_verified_1792915784353.png`
+  - Return to Typical Day Verified: `typical_day_return_verified_1792915793866.png`
+  - Direct Campus Festival Verified: `direct_campus_festival_verified_1792915802493.png`
+  - Dashboard Festival Sync Verified: `dashboard_festival_sync_verified_1792915811444.png`
+  - Mobile 390×844 Verified: `mobile_390_verified_1792915824528.png`
+  - Production Preview Verified (Port 4173): `prod_preview_transition_verified_1792915841184.png`
+
+
 
 
 
