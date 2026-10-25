@@ -7,32 +7,6 @@
   --portal-right: 4vw;
   --portal-bottom: 5vh;
   --portal-radius: 16px;
-
-  /* Exact center of the resting portal for transform-origin */
-  --portal-origin-x: calc(100vw - var(--portal-right) - (var(--portal-w) * 0.5));
-  --portal-origin-y: calc(100vh - var(--portal-bottom) - (var(--portal-h) * 0.5));
-
-  /* Exact inset() for the resting portal */
-  --clip-rest: inset(
-    calc(100vh - var(--portal-bottom) - var(--portal-h))
-    var(--portal-right)
-    var(--portal-bottom)
-    calc(100vw - var(--portal-right) - var(--portal-w))
-    round var(--portal-radius)
-  );
-
-  /* Hover inset(): expands 6px outward on all 4 sides */
-  --clip-hover: inset(
-    calc(100vh - var(--portal-bottom) - var(--portal-h) - 6px)
-    calc(var(--portal-right) - 6px)
-    calc(var(--portal-bottom) - 6px)
-    calc(100vw - var(--portal-right) - var(--portal-w) - 6px)
-    round 18px
-  );
-
-  /* Fullscreen inset() */
-  --clip-full: inset(0px 0px 0px 0px round 0px);
-
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
 
   position: relative;
@@ -54,7 +28,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  will-change: clip-path, transform, filter, opacity;
+  will-change: transform, filter, opacity;
 }
 
 .scene-video-media {
@@ -76,7 +50,6 @@
 .scene-video-layer.video-role-bg {
   z-index: 1;
   opacity: 1;
-  clip-path: var(--clip-full);
 }
 
 .scene-video-layer.video-role-bg .scene-video-media {
@@ -100,80 +73,82 @@
 }
 
 /* ROLE C: Incoming Portal Scene */
+/* Use a true bounding-box transform on the portal layer so the FULL 16:9 scene is visible inside the card! */
 .scene-video-layer.video-role-portal {
   z-index: 3;
   opacity: 1;
-  clip-path: var(--clip-rest);
-  transition: clip-path 400ms var(--ease-cinematic), opacity 300ms ease;
+  transform-origin: bottom right;
+  /* Scale the 100vw x 100vh layer down into the bottom-right card slot */
+  transform: translate3d(calc(-1 * var(--portal-right)), calc(-1 * var(--portal-bottom)), 0) scale(0.24);
+  border-radius: calc(var(--portal-radius) / 0.24);
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75), 0 0 0 6px rgba(245, 239, 230, 0.45);
   cursor: pointer;
   pointer-events: auto;
+  transition:
+    transform 450ms var(--ease-cinematic),
+    border-radius 450ms var(--ease-cinematic),
+    box-shadow 450ms var(--ease-cinematic),
+    opacity 300ms ease;
 }
 
-/* Scale the incoming video down to 0.36 around the portal center so the whole room is visible inside the card */
 .scene-video-layer.video-role-portal .scene-video-media {
-  transform-origin: var(--portal-origin-x) var(--portal-origin-y);
-  transform: scale(0.36);
-  transition: transform 400ms var(--ease-cinematic);
-}
-
-/* Hover State on Portal */
-.landing-viewport.portal-hovered.phase-idle .scene-video-layer.video-role-portal {
-  clip-path: var(--clip-hover);
-}
-.landing-viewport.portal-hovered.phase-idle .scene-video-layer.video-role-portal .scene-video-media {
-  transform: scale(0.385);
-}
-
-/* EXPANDING PHASE (900ms): Portal mask opens to full screen while inner video scales 0.36 -> 1.0 */
-.landing-viewport.phase-expanding .scene-video-layer.video-role-portal {
-  clip-path: var(--clip-full);
-  transition: clip-path 900ms var(--ease-cinematic);
-}
-.landing-viewport.phase-expanding .scene-video-layer.video-role-portal .scene-video-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transform: scale(1);
-  transition: transform 900ms var(--ease-cinematic);
 }
 
-/* RESETTING PHASE (Instantaneous snap to bottom-right for next incoming video) */
-.landing-viewport.phase-resetting .scene-video-layer.video-role-portal,
-.landing-viewport.phase-resetting .scene-video-layer.video-role-portal .scene-video-media {
-  transition: none !important;
+/* Hover state: subtle lift and warm amber border glow */
+.landing-viewport.portal-hovered.phase-idle .scene-video-layer.video-role-portal {
+  transform: translate3d(calc(-1 * var(--portal-right)), calc(-1 * var(--portal-bottom) - 4px), 0) scale(0.252);
+  box-shadow: 0 50px 140px rgba(0, 0, 0, 0.85), 0 0 0 8px #e8b86d;
 }
+
+/* Expanding state (900ms): Smoothly zooms from bottom-right miniature card to full 100vw x 100vh viewport */
+.landing-viewport.phase-expanding .scene-video-layer.video-role-portal {
+  transform: translate3d(0px, 0px, 0px) scale(1);
+  border-radius: 0px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0px rgba(245, 239, 230, 0);
+  transition:
+    transform 900ms var(--ease-cinematic),
+    border-radius 900ms var(--ease-cinematic),
+    box-shadow 900ms var(--ease-cinematic);
+}
+
+/* Resetting state: Instant snap back to bottom-right slot */
 .landing-viewport.phase-resetting .scene-video-layer.video-role-portal {
+  transition: none !important;
   opacity: 0;
-  clip-path: var(--clip-rest);
-}
-.landing-viewport.phase-resetting .scene-video-layer.video-role-portal .scene-video-media {
-  transform: scale(0.36);
+  transform: translate3d(calc(-1 * var(--portal-right)), calc(-1 * var(--portal-bottom)), 0) scale(0.24);
+  border-radius: calc(var(--portal-radius) / 0.24);
 }
 
 /* ==========================================================================
-   3. PORTAL CHROME HITBOX & INNER BADGE (No external floating text)
+   3. PORTAL CHROME HITBOX & INNER BADGE
    ========================================================================== */
 .portal-chrome-hitbox {
   position: absolute;
   right: var(--portal-right);
   bottom: var(--portal-bottom);
-  width: var(--portal-w);
-  height: var(--portal-h);
+  width: 24vw;
+  height: 24vh;
   border-radius: var(--portal-radius);
-  border: 1.5px solid rgba(245, 239, 230, 0.42);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  border: none; /* Border is now rendered directly on .video-role-portal so it expands smoothly! */
+  box-shadow: none;
   background: transparent;
   z-index: 4;
   cursor: pointer;
-  padding: 12px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 400ms var(--ease-cinematic), border-color 250ms ease, box-shadow 400ms var(--ease-cinematic), opacity 200ms ease;
+  transition: transform 450ms var(--ease-cinematic), opacity 200ms ease;
   box-sizing: border-box;
 }
 
 .landing-viewport.portal-hovered.phase-idle .portal-chrome-hitbox {
-  transform: scale(1.038);
-  border-color: #e8b86d;
-  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.65), 0 0 0 2px rgba(232, 184, 109, 0.4);
+  transform: translateY(-4px) scale(1.05);
 }
 
 .landing-viewport.phase-expanding .portal-chrome-hitbox,
@@ -303,13 +278,16 @@
 .landing-editorial-stack {
   position: absolute;
   left: 4vw;
-  bottom: 4.5vh;
+  bottom: 5vh;
   z-index: 5;
-  max-width: 470px;
-  /* Subtle dark radial vignette guarantees 100% legibility without hiding counter art */
-  background: radial-gradient(circle at 15% 85%, rgba(13, 31, 23, 0.72) 0%, rgba(13, 31, 23, 0) 75%);
-  padding: 16px 20px 12px 0;
-  border-radius: 12px;
+  max-width: 460px;
+  background: rgba(13, 31, 23, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 239, 230, 0.16);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
 .landing-scenario-pills {
@@ -469,7 +447,7 @@
 }
 
 .landing-viewport.reduced-motion.phase-expanding .scene-video-layer.video-role-portal {
-  clip-path: var(--clip-full) !important;
+  transform: none !important;
 }
 
 /* ==========================================================================
@@ -477,14 +455,20 @@
    ========================================================================== */
 @media (max-width: 768px) {
   .landing-viewport {
-    --portal-w: 260px;
-    --portal-h: 146.25px;
     --portal-right: 16px;
     --portal-bottom: 20px;
   }
+  .portal-chrome-hitbox {
+    width: 220px;
+    height: 123.75px;
+  }
+  .scene-video-layer.video-role-portal {
+    transform: translate3d(calc(-1 * var(--portal-right)), calc(-1 * var(--portal-bottom)), 0) scale(0.20);
+    border-radius: calc(var(--portal-radius) / 0.20);
+  }
   .landing-editorial-stack {
     max-width: calc(100vw - 32px);
-    bottom: calc(var(--portal-h) + var(--portal-bottom) + 16px);
+    bottom: calc(124px + var(--portal-bottom) + 16px);
   }
   .editorial-headline {
     font-size: 32px;

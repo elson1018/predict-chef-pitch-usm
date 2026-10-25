@@ -921,6 +921,52 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Campus Festival State (Zero Bunting Collision): `campus_festival_state_1792932036521.png`
   - Dashboard Handoff State: `dashboard_handoff_campus_festival_1792932069537.png`
 
+---
+
+## 24. Final Polish Amendment: Portal Inner Framing, Expanding Border & Editorial Stack Contrast
+
+**Timestamp:** 2026-10-25 21:00:00 +08:00  
+**Phase:** Visual Polish: Full-Room Miniature Framing, Integrated Expanding Border & Frosted Editorial Stack  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (100% complete room visible in miniature, smooth border expansion, crisp text contrast, 0 errors)
+
+### 1. Root Cause & Architectural Fixes Implemented
+1. **Full-Room Miniature Framing (`scale(0.24)` Bounding Box):**
+   - *Previous Issue:* Scaling around `--portal-origin-x / y` inside a full-screen `clip-path` pulled only the bottom-right counter into the card and cropped out the window, weather, bunting, and chef.
+   - *Fix in [src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css):* Replaced with a true bounding-box transform on `.scene-video-layer.video-role-portal`:
+     `transform-origin: bottom right;`
+     `transform: translate3d(calc(-1 * var(--portal-right)), calc(-1 * var(--portal-bottom)), 0) scale(0.24);`
+     `border-radius: calc(var(--portal-radius) / 0.24); overflow: hidden;`
+   - The entire 16:9 room (window, rain/bunting, chef, and counter) is centered and 100% visible inside the `24vw × 24vh` resting portal slot.
+2. **Integrated Expanding Border & Shadow:**
+   - *Previous Issue:* Border was placed on `.portal-chrome-hitbox`, which faded out early and left the expanding video edge sharp against the background.
+   - *Fix:* Moved border and glowing shadow directly onto `.scene-video-layer.video-role-portal`:
+     `box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75), 0 0 0 6px rgba(245, 239, 230, 0.45);`
+   - During `phase-expanding`, `scale(0.24) -> scale(1)`, `border-radius -> 0px`, and `box-shadow -> 0` all transition together over 900ms (`cubic-bezier(0.16, 1, 0.3, 1)`). The card border smoothly expands with the footage into full-screen bounds.
+3. **Frosted Dark Glass Editorial Container:**
+   - *Previous Issue:* Description text sat over the light cream counter band (`#E2D9C8`), degrading readability.
+   - *Fix:* Enclosed `.landing-editorial-stack` inside a refined frosted dark container (`background: rgba(13, 31, 23, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(245, 239, 230, 0.16); border-radius: 16px; padding: 20px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);`). Text maintains crisp legibility across all scenarios.
+
+### 2. Verification Checklist Results
+
+| # | Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Full Room Miniature Framing** | Window, weather/bunting, chef, and counter are completely visible inside the resting card | **PASS** |
+| 2 | **Integrated Expanding Border** | Card border and shadow expand smoothly with footage over 900ms; zero abrupt edge pop | **PASS** |
+| 3 | **Editorial Stack Contrast** | Frosted dark glass container isolates text from the light counter band; 100% crisp legibility | **PASS** |
+| 4 | **Portal Hover Feedback** | Subtle upward lift and warm amber border glow (`#e8b86d`) on hover | **PASS** |
+| 5 | **Quality Gates** | `npm test` (3/3 pass), `npm run lint` (0 err/0 warn), `npm run build` (success in 378ms) | **PASS** |
+
+### 3. Verification Artifacts
+- **Final Polish Amendment Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/final_polish_amendment_verification_1792933115863.webp`
+- **Captured Screenshots:**
+  - Resting State Full-Room Portal: `resting_state_full_room_portal_1792933130478.png`
+  - Portal Hover State: `portal_hover_state_1792933139795.png`
+  - Heavy Rain Settled State: `heavy_rain_settled_1792933150204.png`
+  - Campus Festival Settled State: `campus_festival_settled_1792933162647.png`
+
+
 
 
 
