@@ -460,6 +460,69 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Cycle 4 Demand Insights Festival: `reset_demand_festival_verified.png`
   - Production Preview Rain After Reset: `reset_preview_rain_verified.png`
 
+---
+
+## 16. Cinematic Landing Page Prototype (Expanding Portal Transition)
+
+**Timestamp:** 2026-10-25 15:15:00 +08:00  
+**Phase:** Checkpoint 1 — Typical Day ↔ Heavy Rain Expanding Portal Prototype  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (5 full cycles, rapid clicks, reduced motion, 390px mobile, production preview verified)
+
+### 1. Architectural & Transition Implementation
+- **Isolated Experience at `#LandingPreview`:**
+  - Integrated via React hash routing in [src/App.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/App.jsx) without breaking default `#Overview` entry.
+  - Added subtle preview shortcut button `✦ Cinematic Landing` in topbar for easy access.
+  - Preserved dashboard state, Rive canteen scenes, preparation controls, safety buffer, overrides, and CSV export.
+- **Component & Scoped Styles:**
+  - Authored [src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx) and [src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css).
+  - Strictly scoped under `.cinematic-landing-root`; no global `overflow: hidden`, no custom cursors, no body mutations.
+  - PredictChef color identity: forest green (`#0d2818`), warm cream (`#f7f4ea`), sage (`#8fad88`), muted amber (`#e09f3e`).
+- **Signature Interaction (Expanding Portal):**
+  - Center-right rounded preview card (`410px × 250px`, `border-radius: 22px`) showcases upcoming scenario video.
+  - On activation ("Explore Heavy Rain" / "Explore Typical Day"):
+    1. Outgoing text translates down and fades out (0.3s).
+    2. Portal expands to `width: 100%`, `height: 100%`, `inset: 0`, and `border-radius: 0px` over 0.85s (`cubic-bezier(0.16, 1, 0.3, 1)`).
+    3. At 850ms, the next scene commits, background updates, and portal resets smoothly.
+    4. New title, portion metric, and explanation animate in with a staggered upward entrance.
+    5. Input lock prevents overlapping transitions and handles rapid clicks deterministically.
+- **Video Handling & Safe Looping:**
+  - Local MP4 assets in `public/videos/`: `typical-day.mp4` and `heavy-rain.mp4`, plus fallback posters `typical-day-poster.png` and `heavy-rain-poster.png`.
+  - Configurable safe loop range (`clipStart: 1.2s`, `clipEnd: 8.8s`) bypasses opening transformation emblems.
+  - Video elements configured with `muted`, `playsInline`, `autoPlay`, and `loop`. Pauses playback on component unmount.
+- **Accessibility & Reduced Motion:**
+  - Full keyboard operability on buttons (`#open-dashboard-btn`, `#explore-scenario-btn`) with visible focus rings (`3px solid #e09f3e`).
+  - When `prefers-reduced-motion` is active: renders high-res posters instead of videos, disables portal expansion, and executes transitions via instant/brief 150ms opacity fades.
+- **Responsiveness (Down to 390px):**
+  - Media container preserves 16:9 aspect ratio without blind cropping.
+  - Vertical page scrolling enabled on mobile viewports; zero horizontal overflow (`hasHorizontalScroll: false`).
+
+### 2. Browser Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Typical ↔ Rain 5x** | Completed 5 continuous cycles (Typical → Rain → Typical); zero dropped frames or desync | **PASS** |
+| 2 | **Data Alignment** | Scene title, forecast ("230" vs "184"), and explanation always match active video settled state | **PASS** |
+| 3 | **Rapid Clicks** | Triple-clicked during expansion; transition lock rejected concurrent triggers, settling cleanly | **PASS** |
+| 4 | **Navigation / Refresh** | Direct hash load at `#LandingPreview`, page refresh, and back-and-forth navigation to dashboard verified | **PASS** |
+| 5 | **Fallback / Error Handling** | Local posters provided for all scenes; fallback banner renders if video encounters playback error | **PASS** |
+| 6 | **Reduced Motion** | Emulated reduced motion; portal expansion disabled, static poster rendered, 150ms fade executed | **PASS** |
+| 7 | **390px Responsiveness** | Verified at 390×844; 16:9 media preserved, controls accessible, no horizontal scrollbar | **PASS** |
+| 8 | **Open Dashboard** | "Open dashboard" button smoothly routes to `#Overview`; dashboard calculations & Rive scenes intact | **PASS** |
+| 9 | **Production Preview** | Tested on port 4173 (`http://localhost:4173/#LandingPreview`); production bundle transitions flawlessly | **PASS** |
+
+### 3. Verification Artifacts
+- **Continuous Transition Recording (Dev & Production Preview):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/landing_portal_transition_1792912306662.webp`
+- **Reduced Motion Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/reduced_motion_check_1792912415174.webp`
+- **Screenshots:**
+  - Typical Day Desktop: `typical_day_desktop_1792912320048.png`
+  - Heavy Rain Desktop: `heavy_rain_desktop_1792912330634.png`
+  - 390px Mobile Viewport: `mobile_view_390_1792912382907.png`
+  - Production Preview (Port 4173): `production_heavy_rain_1792912398439.png`
+
+
 
 
 

@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { dishes, scenarios, makePlan, sum, impact } from './data'
 import KitchenScene from './KitchenScene'
 import RiveFeasibility from './RiveFeasibility'
+import LandingPreview from './LandingPreview'
 import './App.css'
 
 const pages = ['Overview', 'Smart Prep Sheet', 'Demand Insights', 'Impact Dashboard', 'Rive Feasibility']
@@ -159,11 +160,11 @@ function DishComparisonSection({ scenario, prefersReducedMotion }) {
 }
 
 function App() {
-  const [page, setPage] = useState(() =>
-    pages.includes(decodeURIComponent(location.hash.slice(1)))
-      ? decodeURIComponent(location.hash.slice(1))
-      : pages[0]
-  )
+  const [page, setPage] = useState(() => {
+    const hash = typeof window !== 'undefined' ? decodeURIComponent(location.hash.slice(1)) : ''
+    if (hash === 'LandingPreview') return 'LandingPreview'
+    return pages.includes(hash) ? hash : pages[0]
+  })
   const [scenario, setScenario] = useState('normal')
   const [buffer, setBuffer] = useState(10)
   const [overrides, setOverrides] = useState({})
@@ -200,7 +201,11 @@ function App() {
   useEffect(() => {
     const change = () => {
       const next = decodeURIComponent(location.hash.slice(1))
-      setPage(pages.includes(next) ? next : pages[0])
+      if (next === 'LandingPreview') {
+        setPage('LandingPreview')
+      } else {
+        setPage(pages.includes(next) ? next : pages[0])
+      }
     }
     window.addEventListener('hashchange', change)
     return () => window.removeEventListener('hashchange', change)
@@ -256,6 +261,10 @@ function App() {
     a.click()
     URL.revokeObjectURL(url)
     setNotice('Prep sheet downloaded. All quantities are simulated.')
+  }
+
+  if (page === 'LandingPreview') {
+    return <LandingPreview onOpenDashboard={() => go('Overview')} />
   }
 
   return (
@@ -322,6 +331,15 @@ function App() {
             Workspace <span>/</span> <b>{page}</b>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              id="open-cinematic-preview-btn"
+              className="text-button"
+              style={{ fontSize: '13px', color: '#8fad88', textDecoration: 'none', padding: '6px 12px', border: '1px solid #233e31', borderRadius: '6px', background: 'transparent', cursor: 'pointer' }}
+              onClick={() => go('LandingPreview')}
+              title="Open cinematic landing page prototype"
+            >
+              ✦ Cinematic Landing
+            </button>
             <button
               id="reset-demo-btn"
               className="reset-demo-btn"
