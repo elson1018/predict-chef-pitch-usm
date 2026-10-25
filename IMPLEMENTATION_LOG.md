@@ -616,13 +616,14 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
 
 | # | Check Item | Observed Result | Status |
 |---|---|---|---|
-| 1 | **2 Full 3-State Cycles** | Verified 2 full cycles (`Typical → Rain → Festival → Typical`); zero desync or frame jumps | **PASS** |
+| 1 | **2 Full 3-State Cycles** | Verified 2 full cycles (`Typical → Rain → Festival → Typical`); cycle sequence works | **PASS** |
 | 2 | **Data Alignment** | Typical: 230, Rain: 184, Festival: 300 portions; matching explanations and video scenes | **PASS** |
 | 3 | **Edge Coverage** | Zero exposed right strips or gaps during expansion in all transition directions | **PASS** |
-| 4 | **Direct Scenario Controls** | Clicked 'Campus Festival' chip directly from Typical; transitioned smoothly to Festival | **PASS** |
+| 4 | **Direct Scenario Controls** | Clicked 'Campus Festival' chip directly from Typical; transitioned directly to Festival | **PASS** |
 | 5 | **Dashboard Handoff** | Opened dashboard from Campus Festival; `#Overview` loaded with Festival (300 portions, Rive bunting active) | **PASS** |
 | 6 | **Mobile Viewport (390px)** | Verified at 390×844; layout stacks cleanly, direct chips wrap neatly, zero horizontal overflow | **PASS** |
-| 7 | **Production Preview** | Tested on port 4173 (`http://localhost:4173/#LandingPreview`); production bundle transitions flawlessly | **PASS** |
+| 7 | **Production Preview** | Tested on port 4173 (`http://localhost:4173/#LandingPreview`); production bundle loads and cycles | **PASS** |
+| 8 | **Handoff Smoothness** | *Corrected retrospective finding:* Inspected frame-by-frame; video remounted via React key change and crop morphed due to portrait-to-landscape container aspect ratio change | **FAILED (Addressed in Section 19)** |
 
 ### 3. Verification Artifacts
 - **Continuous 3-State Demonstration Recording (Two Full Cycles + Direct Control + Dashboard Handoff):**  
@@ -634,6 +635,67 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Dashboard Festival Handoff: `dashboard_festival_handoff_1792913839179.png`
   - 390px Mobile Viewport: `mobile_390_three_state_1792913848275.png`
   - Production Preview (Port 4173): `prod_heavy_rain_1792913859792.png`
+
+---
+
+## 19. Persistent Video Layer Architecture & Frame-by-Frame Handoff Continuity
+
+**Timestamp:** 2026-10-25 15:55:00 +08:00  
+**Phase:** Persistent Dual-Slot Video Layers, CSS Reveal Mask Aperture & Zero-Jump Handoff  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Frame-by-frame continuity verified, zero remount, zero crop change, zero black flash, seamless forward playback)
+
+### 1. Root Cause Analysis of Previous Handoff Defects
+1. **DOM Video Remount:** `<video key={'bg-${currentScene.key}'}>` unmounted the entire video element upon `activeKey` change, discarding the buffered media pipeline and restarting playback from scratch.
+2. **Crop Morphing during Expansion:** The portal container resized from 330×430 (portrait) to 100vw×100vh (landscape), forcing `object-fit: cover` to dynamically uncrop the horizontal edges during expansion, altering the framing.
+3. **Premature Source Replacement:** The portal `<video>` updated its `src` immediately when `nextScenario` changed at the 850ms mark, causing an abrupt swap before the incoming background was visually established.
+4. **Mid-Transition Loop Seeks:** Trim-loop handling checked boundaries indiscriminately, triggering loop resets back to `clipStart` during ongoing transitions.
+
+### 2. Architectural Solution Implemented
+1. **Persistent Dual-Slot Video Engine ([src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx)):**
+   - Maintained two permanent `<video>` slots (`Slot 0` and `Slot 1`) in the DOM without changing React keys.
+   - Slot roles alternate cleanly between `'background'` and `'portal'` (`bgSlot` state).
+   - **Zero-Restart Role Promotion:** When `Slot 1` expands to 100% full screen, its role is promoted to `'background'`. It is the **exact same DOM element**, playing on the **exact same clock**, with **zero seek, zero restart, and zero remount**.
+   - **Sequenced Next Preview:** The outgoing slot is retired, its role set to `'standby'` while it preloads the *following* scenario (`campus-festival.mp4` / `typical-day.mp4`). Only after its frame is decoded and ready is it revealed in the portal aperture.
+2. **CSS Reveal Mask Geometry ([src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css)):**
+   - Both video slots are rendered at a permanent `100vw × 100vh` surface (`position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;`).
+   - The portal preview is formed via a CSS `clip-path` reveal aperture:
+     `clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round var(--portal-radius))`
+   - During expansion, `clip-path` smoothly opens to `inset(0 0 0 0 round 0px)` over 0.85s (`cubic-bezier(0.16, 1, 0.3, 1)`).
+   - **Zero Crop Change:** The video pixels on screen are stationary in coordinate space while the mask opens outward. Video framing in the portal exactly matches the final background framing in 1:1 pixel registration.
+3. **Transition Headroom Guard & Loop Decoupling:**
+   - Before expansion starts, remaining playback time is verified: `if (scene.clipEnd - vid.currentTime < 2.0s) vid.currentTime = scene.clipStart`.
+   - `handleTimeUpdate` suppresses trim looping while a slot is actively expanding (`role === 'expanding'`), guaranteeing uninterrupted forward playback.
+
+### 3. Acceptance Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Video Continuity** | The expanding video continues playing into the background without restarting, flashing, or jumping frames | **PASS** |
+| 2 | **Consistent Crop / Framing** | Full-bleed surface masked by `clip-path`; zero crop morphing, scale snap, or aspect ratio distortion | **PASS** |
+| 3 | **Zero Remounting** | DOM `<video>` identity preserved across role promotion; no React key recreation or audio/video glitch | **PASS** |
+| 4 | **Edge Coverage** | `inset: 0` surface covers 100% of hero bounds; zero exposed outgoing strip on left or right | **PASS** |
+| 5 | **Synchronous Commit** | Title ("HEAVY RAIN", "CAMPUS FESTIVAL", "TYPICAL DAY") and forecast commit precisely at full mask coverage | **PASS** |
+| 6 | **Sequenced Portal Reveal** | Portal UI fades out during expansion; next preview only mounts and fades in after background handoff settles | **PASS** |
+| 7 | **Rapid Input Resilience** | Triple-clicked during expansion; transition guard prevents interruption or state corruption | **PASS** |
+| 8 | **Direct Scenario Selection** | Direct chips (Typical Day, Heavy Rain, Campus Festival) trigger seamless transition directly to selected state | **PASS** |
+| 9 | **Dashboard Scenario Sync** | Clicking 'Open dashboard' carries selected scenario into `App` state (300 portions, Rive bunting active on Festival) | **PASS** |
+| 10 | **Mobile (390px) & Prod Preview** | Verified at 390×844 (no overflow) and on production preview (`http://localhost:4173/#LandingPreview`) | **PASS** |
+
+### 4. Verification Artifacts
+- **Frame-by-Frame Transition Continuity Recording:**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/handoff_continuity_1792914826432.webp`
+- **Captured Screenshots:**
+  - Resting State Desktop (Typical Day): `resting_state_1440_1792914837690.png`
+  - Heavy Rain Handoff: `heavy_rain_state_1792914845809.png`
+  - Campus Festival Handoff: `campus_festival_state_1792914852458.png`
+  - Return to Typical Day: `typical_day_return_1792914860021.png`
+  - Rapid Click Stability: `rapid_clicks_settled_1792914867945.png`
+  - Direct Selection (Festival): `direct_campus_festival_1792914877643.png`
+  - Dashboard Festival Handoff: `dashboard_festival_handoff_1792914887241.png`
+  - Mobile 390×844 Viewport: `mobile_390_persistent_1792914903496.png`
+  - Production Preview (Port 4173): `prod_heavy_rain_verified_1792914923124.png`
+
 
 
 

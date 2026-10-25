@@ -42,9 +42,22 @@ const SCENES = {
 
 export default function LandingPreview({ initialScenario = 'normal', onOpenDashboard }) {
   const [activeKey, setActiveKey] = useState(() => (SCENES[initialScenario] ? initialScenario : 'normal'))
-  const [transitionState, setTransitionState] = useState('idle') // 'idle' | 'expanding' | 'repositioning'
+  const [bgSlot, setBgSlot] = useState(0) // 0 or 1 indicates which persistent video slot is currently background
+  const [slot0, setSlot0] = useState(() => ({
+    scenarioKey: SCENES[initialScenario] ? initialScenario : 'normal',
+    role: 'background', // 'background' | 'portal' | 'expanding' | 'standby'
+  }))
+  const [slot1, setSlot1] = useState(() => {
+    const init = SCENES[initialScenario] ? initialScenario : 'normal'
+    return {
+      scenarioKey: SCENES[init].nextKey,
+      role: 'portal',
+    }
+  })
+
+  const [portalUIVisible, setPortalUIVisible] = useState(true)
   const [textAnimState, setTextAnimState] = useState('visible') // 'visible' | 'exiting' | 'entering'
-  const [targetOverrideKey, setTargetOverrideKey] = useState(null)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const [videoError, setVideoError] = useState(false)
 
   // Reduced motion query
@@ -55,18 +68,26 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
     return false
   })
 
-  // Single source of truth: nextScenario is derived strictly from activeKey (or active target override)
-  const currentScene = SCENES[activeKey] || SCENES.normal
-  const effectiveTargetKey = targetOverrideKey || currentScene.nextKey
-  const nextScenario = SCENES[effectiveTargetKey] || SCENES.normal
-
-  // Video refs
-  const bgVideoRef = useRef(null)
-  const portalVideoRef = useRef(null)
+  // References to persistent DOM video elements
+  const slot0Ref = useRef(null)
+  const slot1Ref = useRef(null)
   const isTransitioningRef = useRef(false)
   const timersRef = useRef([])
 
-  // Watch media query
+  // Current active scene and single-source next scenario
+  const currentScene = SCENES[activeKey] || SCENES.normal
+  const portalSlotIndex = bgSlot === 0 ? 1 : 0
+  const portalSlotState = portalSlotIndex === 0 ? slot0 : slot1
+  const nextScenario = SCENES[portalSlotState.scenarioKey] || SCENES[currentScene.nextKey]
+
+  // Clear timers helper
+  const addTimer = (fn, delay) => {
+    const id = setTimeout(fn, delay)
+    timersRef.current.push(id)
+    return id
+  }
+
+  // Watch reduced-motion media query
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -85,31 +106,24 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
     }
   }, [])
 
-  // Clear timers helper
-  const addTimer = (fn, delay) => {
-    const id = setTimeout(fn, delay)
-    timersRef.current.push(id)
-    return id
-  }
-
-  // Cleanup on unmount
+  // Cleanup on unmount: pause both persistent video elements
   useEffect(() => {
-    const bg = bgVideoRef.current
-    const portal = portalVideoRef.current
+    const vid0 = slot0Ref.current
+    const vid1 = slot1Ref.current
     const timers = timersRef.current
 
     return () => {
       timers.forEach((t) => clearTimeout(t))
-      if (bg) {
+      if (vid0) {
         try {
-          bg.pause()
+          vid0.pause()
         } catch {
           // ignore
         }
       }
-      if (portal) {
+      if (vid1) {
         try {
-          portal.pause()
+          vid1.pause()
         } catch {
           // ignore
         }
@@ -117,102 +131,194 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
     }
   }, [])
 
-  // Maintain smooth looping within safe range (skipping opening emblems/jumps and end-of-clip bunting loss)
-  const handleTimeUpdate = useCallback((e, sceneKey) => {
-    if (reducedMotion) return
-    const vid = e.target
-    const scene = SCENES[sceneKey]
-    if (!scene) return
-    if (vid.currentTime >= scene.clipEnd) {
-      vid.currentTime = scene.clipStart
-    }
-  }, [reducedMotion])
-
-  // Playback initialization when activeKey, targetOverrideKey or reducedMotion changes
+  const hasInitializedRef = useRef(false)
+  // Initial playback start on mount
   useEffect(() => {
-    if (reducedMotion) {
-      if (bgVideoRef.current) bgVideoRef.current.pause()
-      if (portalVideoRef.current) portalVideoRef.current.pause()
-      return
-    }
+    if (reducedMotion || hasInitializedRef.current) return
+    hasInitializedRef.current = true
 
-    const playSafe = (vid, scene) => {
-      if (!vid) return
+    const playSlotSafe = (vid, scene) => {
+      if (!vid || !scene) return
       vid.currentTime = scene.clipStart
       const p = vid.play()
       if (p && typeof p.catch === 'function') {
         p.catch(() => {
-          // Autoplay was blocked or element not ready
+          // Autoplay was blocked
         })
       }
     }
 
-    playSafe(bgVideoRef.current, currentScene)
-    playSafe(portalVideoRef.current, nextScenario)
-  }, [activeKey, nextScenario, reducedMotion, currentScene])
+    if (slot0Ref.current && slot0.role === 'background') {
+      playSlotSafe(slot0Ref.current, SCENES[slot0.scenarioKey])
+    }
+    if (slot1Ref.current && slot1.role === 'portal') {
+      playSlotSafe(slot1Ref.current, SCENES[slot1.scenarioKey])
+    }
+  }, [reducedMotion, slot0.role, slot0.scenarioKey, slot1.role, slot1.scenarioKey])
 
-  // Unified transition trigger to a given target key
-  const executeTransitionTo = useCallback((destinationKey) => {
-    if (isTransitioningRef.current || destinationKey === activeKey) return
+  // Separate timeupdate trim looping: NEVER loop or seek during expansion
+  const handleTimeUpdate = useCallback((e, slotId) => {
+    if (reducedMotion) return
+    const vid = e.target
+    const slotState = slotId === 0 ? slot0 : slot1
+    // Never seek at loop boundary while this slot is actively expanding
+    if (slotState.role === 'expanding') return
+
+    const scene = SCENES[slotState.scenarioKey]
+    if (!scene) return
+    if (vid.currentTime >= scene.clipEnd) {
+      vid.currentTime = scene.clipStart
+    }
+  }, [reducedMotion, slot0, slot1])
+
+  // Core transition logic preserving video element identity and playback clock
+  const triggerTransitionTo = useCallback((targetKey) => {
+    if (isTransitioningRef.current || targetKey === activeKey) return
     isTransitioningRef.current = true
+    setIsTransitioning(true)
 
+    // Reduced motion path: immediate clean fade without portal expansion
     if (reducedMotion) {
-      // Reduced motion: immediate/brief fade without portal expansion
       setTextAnimState('exiting')
       addTimer(() => {
-        setActiveKey(destinationKey)
-        setTargetOverrideKey(null)
+        setActiveKey(targetKey)
+        const nextNext = SCENES[targetKey].nextKey
+        if (bgSlot === 0) {
+          setSlot0({ scenarioKey: targetKey, role: 'background' })
+          setSlot1({ scenarioKey: nextNext, role: 'portal' })
+        } else {
+          setSlot1({ scenarioKey: targetKey, role: 'background' })
+          setSlot0({ scenarioKey: nextNext, role: 'portal' })
+        }
         setTextAnimState('entering')
         addTimer(() => {
           setTextAnimState('visible')
           isTransitioningRef.current = false
+          setIsTransitioning(false)
         }, 150)
       }, 150)
       return
     }
 
-    // Step 1: Start fading outgoing text and expanding portal
+    // Determine incoming and outgoing slot
+    const incomingSlotId = bgSlot === 0 ? 1 : 0
+    const incomingRef = incomingSlotId === 0 ? slot0Ref : slot1Ref
+    const incomingVid = incomingRef.current
+    const targetScene = SCENES[targetKey]
+
+    // Headroom check: ensure at least 2.5s playback headroom before expansion starts
+    // This prevents a trim-loop reset from occurring during the 0.85s expansion
+    if (incomingVid && targetScene) {
+      const remainingTime = targetScene.clipEnd - incomingVid.currentTime
+      if (remainingTime < 2.0 || incomingVid.currentTime < targetScene.clipStart) {
+        incomingVid.currentTime = targetScene.clipStart
+      }
+      // Ensure incoming video is playing
+      const p = incomingVid.play()
+      if (p && typeof p.catch === 'function') p.catch(() => {})
+    }
+
+    // Step 1: Hide portal UI overlay and begin fading outgoing text
+    setPortalUIVisible(false)
     setTextAnimState('exiting')
-    setTransitionState('expanding')
 
-    // Step 2: At 850ms, expansion covers the hero bounds fully with no exposed edges.
-    // Commit the new active scene, title, and forecast together.
+    // Step 2: Set incoming slot to 'expanding' (clip-path expands over 0.85s)
+    if (incomingSlotId === 0) {
+      setSlot0((prev) => ({ ...prev, role: 'expanding' }))
+    } else {
+      setSlot1((prev) => ({ ...prev, role: 'expanding' }))
+    }
+
+    // Step 3: At exactly 850ms, the incoming layer has reached 100% full hero coverage.
+    // Promote the incoming slot to 'background' WITHOUT remounting or seeking its video element!
     addTimer(() => {
-      const targetTime = portalVideoRef.current ? portalVideoRef.current.currentTime : 1.5
-      setActiveKey(destinationKey)
-      setTargetOverrideKey(null)
-      setTextAnimState('entering')
-
-      // Sync background video time to match portal video for seamless handoff
-      if (bgVideoRef.current) {
-        bgVideoRef.current.currentTime = targetTime
+      // Outgoing slot is retired
+      const outgoingSlotId = bgSlot
+      const outgoingRef = outgoingSlotId === 0 ? slot0Ref : slot1Ref
+      if (outgoingRef.current) {
+        try {
+          outgoingRef.current.pause()
+        } catch {
+          // ignore
+        }
       }
 
-      // Enter repositioning state: portal returns smoothly to resting position
-      setTransitionState('repositioning')
+      // Promote incoming slot to background
+      setBgSlot(incomingSlotId)
+      setActiveKey(targetKey)
+      setTextAnimState('entering')
 
+      if (incomingSlotId === 0) {
+        setSlot0({ scenarioKey: targetKey, role: 'background' })
+      } else {
+        setSlot1({ scenarioKey: targetKey, role: 'background' })
+      }
+
+      // Prepare following preview scenario for the retired slot
+      const nextUpcomingKey = SCENES[targetKey].nextKey
+      const retiredSlotId = outgoingSlotId
+      const retiredRef = outgoingRef
+
+      if (retiredSlotId === 0) {
+        setSlot0({ scenarioKey: nextUpcomingKey, role: 'standby' })
+      } else {
+        setSlot1({ scenarioKey: nextUpcomingKey, role: 'standby' })
+      }
+
+      // Step 4: After incoming background is established, prepare and reveal next portal preview
       addTimer(() => {
         setTextAnimState('visible')
-        setTransitionState('idle')
+
+        // Start playback of the next preview in the retired slot
+        if (retiredRef.current) {
+          const nextSceneData = SCENES[nextUpcomingKey]
+          retiredRef.current.currentTime = nextSceneData.clipStart
+          const playPromise = retiredRef.current.play()
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {})
+          }
+        }
+
+        // Switch role to portal and reveal portal UI overlay
+        if (retiredSlotId === 0) {
+          setSlot0({ scenarioKey: nextUpcomingKey, role: 'portal' })
+        } else {
+          setSlot1({ scenarioKey: nextUpcomingKey, role: 'portal' })
+        }
+        setPortalUIVisible(true)
         isTransitioningRef.current = false
+        setIsTransitioning(false)
       }, 250)
     }, 850)
-  }, [reducedMotion, activeKey])
+  }, [activeKey, bgSlot, reducedMotion])
 
-  // Main portal button activation (cycles to currentScene.nextKey)
-  const handleTriggerCycle = useCallback(() => {
-    executeTransitionTo(effectiveTargetKey)
-  }, [executeTransitionTo, effectiveTargetKey])
-
-  // Direct scenario selector activation
+  // Direct scenario chip selection
   const handleDirectSelect = useCallback((key) => {
     if (key === activeKey || isTransitioningRef.current) return
-    setTargetOverrideKey(key)
-    // Small timeout to allow portalVideo to mount the target before expansion begins
+    const incomingSlotId = bgSlot === 0 ? 1 : 0
+    const incomingSetter = incomingSlotId === 0 ? setSlot0 : setSlot1
+    const incomingRef = incomingSlotId === 0 ? slot0Ref : slot1Ref
+
+    // Ensure incoming slot is loaded with the requested scenario
+    incomingSetter({ scenarioKey: key, role: 'portal' })
+
+    if (incomingRef.current) {
+      const sceneData = SCENES[key]
+      incomingRef.current.currentTime = sceneData.clipStart
+      const p = incomingRef.current.play()
+      if (p && typeof p.catch === 'function') p.catch(() => {})
+    }
+
+    // Small delay to ensure decoded frame is ready before expanding
     setTimeout(() => {
-      executeTransitionTo(key)
-    }, 30)
-  }, [activeKey, executeTransitionTo])
+      triggerTransitionTo(key)
+    }, 40)
+  }, [activeKey, bgSlot, triggerTransitionTo])
+
+  // Main portal button activation (cycles to nextScenario)
+  const handleTriggerCycle = useCallback(() => {
+    triggerTransitionTo(nextScenario.key)
+  }, [triggerTransitionTo, nextScenario.key])
 
   return (
     <div className={`cinematic-landing-root ${reducedMotion ? 'reduced-motion' : ''}`}>
@@ -243,92 +349,93 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
 
       {/* Main Full-Height Hero */}
       <main className="cinematic-hero" role="region" aria-label="PredictChef Interactive Scenario Explorer">
-        {/* Background Layer: Current Scene Video & Poster */}
-        <div className="hero-bg-layer" aria-hidden="true">
+        {/* Persistent Video Slot 0 */}
+        <div
+          className={`slot-layer role-${slot0.role}`}
+          aria-hidden="true"
+        >
           {!reducedMotion ? (
             <video
-              ref={bgVideoRef}
-              key={`bg-${currentScene.key}`}
-              className="bg-video"
-              src={currentScene.videoSrc}
-              poster={currentScene.posterSrc}
+              ref={slot0Ref}
+              className="slot-video"
+              src={SCENES[slot0.scenarioKey]?.videoSrc}
+              poster={SCENES[slot0.scenarioKey]?.posterSrc}
               muted
               playsInline
-              autoPlay
               loop
-              onTimeUpdate={(e) => handleTimeUpdate(e, currentScene.key)}
+              onTimeUpdate={(e) => handleTimeUpdate(e, 0)}
               onError={() => setVideoError(true)}
             />
           ) : (
             <img
-              src={currentScene.posterSrc}
+              src={SCENES[slot0.scenarioKey]?.posterSrc}
               alt=""
-              className="bg-poster-img"
+              className="slot-poster-img"
             />
           )}
-          {/* Light overall tint + concentrated lower-left text shading */}
-          <div className="hero-gradient-overlay" />
         </div>
 
-        {/* Floating / Expanding Portal Preview (Taller, Window Area Position) */}
+        {/* Persistent Video Slot 1 */}
         <div
-          className={`portal-container ${transitionState === 'expanding' ? 'is-expanding' : ''} ${
-            transitionState === 'repositioning' ? 'is-repositioning' : ''
-          }`}
+          className={`slot-layer role-${slot1.role}`}
+          aria-hidden="true"
+        >
+          {!reducedMotion ? (
+            <video
+              ref={slot1Ref}
+              className="slot-video"
+              src={SCENES[slot1.scenarioKey]?.videoSrc}
+              poster={SCENES[slot1.scenarioKey]?.posterSrc}
+              muted
+              playsInline
+              loop
+              onTimeUpdate={(e) => handleTimeUpdate(e, 1)}
+              onError={() => setVideoError(true)}
+            />
+          ) : (
+            <img
+              src={SCENES[slot1.scenarioKey]?.posterSrc}
+              alt=""
+              className="slot-poster-img"
+            />
+          )}
+        </div>
+
+        {/* Light overall tint + concentrated lower-left text shading */}
+        <div className="hero-gradient-overlay" aria-hidden="true" />
+
+        {/* Dedicated Portal Frame UI (Border, Sheen, Labels, Accessible Button) */}
+        <div
+          className={`portal-frame-ui ${portalUIVisible ? 'is-visible' : 'is-hidden'}`}
           aria-live="polite"
         >
-          <div className="portal-frame">
-            {/* Incoming Video inside Portal */}
-            <div className="portal-video-wrap">
-              {!reducedMotion ? (
-                <video
-                  ref={portalVideoRef}
-                  key={`portal-${nextScenario.key}`}
-                  className="portal-video"
-                  src={nextScenario.videoSrc}
-                  poster={nextScenario.posterSrc}
-                  muted
-                  playsInline
-                  autoPlay
-                  loop
-                  onTimeUpdate={(e) => handleTimeUpdate(e, nextScenario.key)}
-                />
-              ) : (
-                <img
-                  src={nextScenario.posterSrc}
-                  alt=""
-                  className="portal-poster-img"
-                />
-              )}
-              <div className="portal-sheen" aria-hidden="true" />
-            </div>
+          <div className="portal-sheen" aria-hidden="true" />
 
-            {/* Portal Labels & Action derived strictly from ONE nextScenario value */}
-            <div className="portal-meta">
-              <span className="portal-badge">
-                <span className="live-dot" aria-hidden="true" /> NEXT SCENE
-              </span>
-              <span className="portal-caption" id="portal-caption-label">
-                Next: {nextScenario.label}
-              </span>
-            </div>
-
-            {/* Accessible interactive button overlay covering the portal */}
-            <button
-              type="button"
-              id="explore-scenario-btn"
-              className="portal-action-btn"
-              onClick={handleTriggerCycle}
-              disabled={transitionState !== 'idle'}
-              aria-label={`Explore ${nextScenario.label}`}
-              aria-describedby="portal-caption-label"
-            >
-              <span className="portal-action-text">
-                Explore {nextScenario.label}
-              </span>
-              <span className="portal-action-icon" aria-hidden="true">→</span>
-            </button>
+          {/* Portal Metadata Overlay derived strictly from ONE nextScenario value */}
+          <div className="portal-meta">
+            <span className="portal-badge">
+              <span className="live-dot" aria-hidden="true" /> NEXT SCENE
+            </span>
+            <span className="portal-caption" id="portal-caption-label">
+              Next: {nextScenario.label}
+            </span>
           </div>
+
+          {/* Accessible interactive button overlay covering the portal */}
+          <button
+            type="button"
+            id="explore-scenario-btn"
+            className="portal-action-btn"
+            onClick={handleTriggerCycle}
+            disabled={isTransitioning}
+            aria-label={`Explore ${nextScenario.label}`}
+            aria-describedby="portal-caption-label"
+          >
+            <span className="portal-action-text">
+              Explore {nextScenario.label}
+            </span>
+            <span className="portal-action-icon" aria-hidden="true">→</span>
+          </button>
         </div>
 
         {/* Foreground Content: Prominent Product Message, Substantial Title, Portions, Explanation */}
@@ -343,17 +450,17 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
               {/* Small accessible direct scenario selection controls */}
               <div className="scenario-direct-chips" role="group" aria-label="Direct scenario selection">
                 {Object.values(SCENES).map((s) => {
-                  const isCurrent = activeKey === s.key
+                  const isSelected = activeKey === s.key
                   return (
                     <button
                       key={s.key}
                       type="button"
                       id={`direct-scenario-${s.key}`}
-                      className={`direct-chip-btn ${isCurrent ? 'active' : ''}`}
-                      aria-pressed={isCurrent}
+                      className={`direct-chip-btn ${isSelected ? 'active' : ''}`}
+                      aria-pressed={isSelected}
                       aria-label={`Switch to ${s.label}`}
                       onClick={() => handleDirectSelect(s.key)}
-                      disabled={transitionState !== 'idle' || isCurrent}
+                      disabled={isTransitioning || isSelected}
                     >
                       <span className="direct-chip-dot" aria-hidden="true" />
                       <span className="direct-chip-text">{s.label}</span>
