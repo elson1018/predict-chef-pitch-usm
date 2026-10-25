@@ -153,17 +153,51 @@ export default function KitchenScene({
     }
   }, [prefersReducedMotion, setReducedMotionVal, vmi])
 
-  // Handle resetKey to restart decorative loops reliably
+  // Handle resetKey: establish working data reset without destroying the active state machine
   useEffect(() => {
     if (resetKey > 0 && rive) {
       try {
-        rive.stop('State Machine 1')
-        rive.play('State Machine 1')
+        // Ensure State Machine 1 is playing if it was somehow stopped or paused
+        if (
+          rive.playingStateMachineNames &&
+          !rive.playingStateMachineNames.includes('State Machine 1')
+        ) {
+          rive.play('State Machine 1')
+        }
+        // Verify and rebind ViewModel instance if disconnected
+        let activeVmi = rive.viewModelInstance
+        if (!activeVmi) {
+          const defaultVm =
+            rive.defaultViewModel?.() ||
+            rive.viewModelByName?.('CanteenVM')
+          if (defaultVm) {
+            activeVmi = defaultVm.defaultInstance?.() || defaultVm.instance?.()
+          }
+        }
+        if (activeVmi && rive.bindViewModelInstance) {
+          rive.bindViewModelInstance(activeVmi)
+        }
+        if (activeVmi) {
+          const numProp = activeVmi.number?.('scenario')
+          if (numProp) {
+            numProp.value = 0
+          }
+          const boolProp = activeVmi.boolean?.('prefersReducedMotion')
+          if (boolProp) {
+            boolProp.value = Boolean(prefersReducedMotion)
+          }
+        }
+        if (setScenarioVal) {
+          setScenarioVal(0)
+        }
+        if (setReducedMotionVal) {
+          setReducedMotionVal(Boolean(prefersReducedMotion))
+        }
       } catch (e) {
-        console.warn('[KitchenScene] Error resetting animations:', e)
+        console.warn('[KitchenScene] Error resetting demo state:', e)
       }
     }
-  }, [resetKey, rive])
+  }, [resetKey, rive, prefersReducedMotion, setScenarioVal, setReducedMotionVal])
 
   return (
     <div

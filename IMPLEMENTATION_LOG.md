@@ -414,6 +414,53 @@ Per user instruction, the system explicitly distinguishes what has been implemen
   - Demand Insights Typical Day: `demand_insights_typical_verified.png`
   - Production Preview (Port 4173): `preview_overview_verified.png`
 
+---
+
+## 15. Post-Reset Demo Scenario Switching Fix & 5-Cycle Verification
+
+**Timestamp:** 2026-10-25 12:26:00 +08:00  
+**Phase:** Lifecycle-Safe Reset & Continuous Scenario Switching Verification  
+**Status:** **PASS** (5 full cycles verified on dev and production preview with uninterrupted steam and scenario reactivity)
+
+### 1. Root Cause Confirmed
+- In `KitchenScene.jsx`, the previous reset effect called:
+  ```javascript
+  rive.stop('State Machine 1')
+  rive.play('State Machine 1')
+  ```
+- Rive's underlying web runtime (`@rive-app/webgl2` `Animator.stop`) removes and destroys the named `StateMachine` instance (`m.cleanup()`). Calling `rive.play('State Machine 1')` instantiates a brand new replacement `StateMachine`.
+- Crucially, `Animator.play` does not reconnect or rebind `this._viewModelInstance` to newly spawned state machine instances.
+- As a result, subsequent mutations to `vmi.number('scenario').value` operated on an orphaned ViewModel instance, leaving the replacement state machine permanently parked on its entry state (`TypicalDayState`). Totals changed in React, but canvas artwork remained stuck on Typical Day.
+
+### 2. Lifecycle-Safe Minimal Fix ([KitchenScene.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/KitchenScene.jsx))
+- **Non-Destructive Data Reset:** Removed the destructive `rive.stop('State Machine 1')` call on reset. Because `State Machine 1` contains bidirectional transitions (`0 <-> 1`, `1 <-> 2`, `0 <-> 2`) across all scenarios, updating `scenario = 0` automatically transitions `ScenarioLayer` back to Typical Day while preserving continuous decorative loops.
+- **Rebind & Reacquire Safety:** If `rive.viewModelInstance` is detached or missing, rebinds via `rive.bindViewModelInstance(activeVmi)` using the default `CanteenVM` instance.
+- **Synchronous Value Application:** Explicitly resets `scenario` to `0` and syncs `prefersReducedMotion` to the active ViewModel and React hook state.
+- **Execution Guard:** Executes only when `resetKey > 0` (actual user reset request), avoiding remounts or state recreation during ordinary scenario button clicks.
+
+### 3. Acceptance Verification Results (5 Cycles Without Refreshing)
+
+Sequence: `Festival → Reset → Rain → Festival → Typical`
+
+| Cycle # | Location | Reset (Typical: 230/254) | Heavy Rain (184/205) | Campus Festival (300/332) | Typical Day (230/254) | Status |
+|---|---|---|---|---|---|---|
+| **Cycle 1** | Overview | Restored Typical; steam loops continue | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+| **Cycle 2** | Overview | Restored Typical; steam loops continue | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+| **Cycle 3** | Overview | Restored Typical; steam loops continue | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+| **Cycle 4** | Demand Insights | Restored Typical; returned to Overview | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+| **Cycle 5** | Demand Insights | Restored Typical; returned to Overview | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+| **Preview** | Port 4173 Overview | Restored Typical; steam loops continue | Cloudy window, falling rain, 1 customer | Bunting flags, 5 customers, warm sky | Restored Typical | **PASS** |
+
+### 4. Captured Verification Artifacts
+- **Continuous Recording (Covering Full Multi-Cycle Test & Production Preview):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/reset_demo_sequence_1792902232045.webp`
+- **Screenshots:**
+  - Cycle 1 Reset to Typical: `reset_typical_verified.png`
+  - Cycle 1 Heavy Rain After Reset: `reset_rain_verified.png`
+  - Cycle 4 Demand Insights Festival: `reset_demand_festival_verified.png`
+  - Production Preview Rain After Reset: `reset_preview_rain_verified.png`
+
+
 
 
 
