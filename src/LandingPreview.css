@@ -173,7 +173,7 @@
 /* Role: Portal Preview - clipped to the resting portal aperture,
    video transformed to fit miniature scene inside portal */
 .slot-layer.role-portal {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
   z-index: 20;
   opacity: 1;
   transition: opacity 0.25s ease;
@@ -181,25 +181,48 @@
 
 .slot-layer.role-portal .slot-video {
   transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
-  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: none;
 }
 
-/* Role: Expanding - miniature kitchen visibly grows into hero background */
+/* Role: Expanding - single continuous movement without abrupt initial burst,
+   keeping scene visibly rounded through most of the transition and flattening only near full bounds */
 .slot-layer.role-expanding {
-  clip-path: inset(calc(0% + 0px) calc(0% + 0px) calc(0% + 0px) calc(0% + 0px) round 0px);
   z-index: 30;
   opacity: 1;
-  transition: clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: expandClipper 0.85s cubic-bezier(0.3, 0.0, 0.2, 1) forwards;
 }
 
 .slot-layer.role-expanding .slot-video {
-  transform: translate(0px, 0px) scale(1);
-  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: expandVideo 0.85s cubic-bezier(0.3, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes expandClipper {
+  0% {
+    clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
+  }
+  60% {
+    clip-path: inset(calc(var(--portal-top) * 0.35) calc(var(--portal-right) * 0.35) calc(var(--portal-bottom) * 0.35) calc(var(--portal-left) * 0.35) round 18px);
+  }
+  85% {
+    clip-path: inset(calc(var(--portal-top) * 0.10) calc(var(--portal-right) * 0.10) calc(var(--portal-bottom) * 0.10) calc(var(--portal-left) * 0.10) round 14px);
+  }
+  100% {
+    clip-path: inset(0px 0px 0px 0px round 0px);
+  }
+}
+
+@keyframes expandVideo {
+  0% {
+    transform: translate(var(--portal-tx), var(--portal-ty)) scale(var(--portal-scale));
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
 }
 
 /* Role: Standby - preloading next scene behind the scenes */
 .slot-layer.role-standby {
-  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 18px);
+  clip-path: inset(var(--portal-top) var(--portal-right) var(--portal-bottom) var(--portal-left) round 20px);
   z-index: 5;
   opacity: 0;
   transition: opacity 0.25s ease;
@@ -234,7 +257,7 @@
   bottom: 50px;
   width: 360px;
   height: 202.5px; /* exactly 16:9 */
-  border-radius: 18px;
+  border-radius: 20px;
   z-index: 25;
   pointer-events: none;
 }
@@ -283,7 +306,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 18px;
+  border-radius: 20px;
   border: 1px solid rgba(247, 244, 234, 0.35);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
   background: transparent;
@@ -330,7 +353,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.35s ease;
 }
 
 .hero-content-anchor.visible {
@@ -338,14 +361,16 @@
   transform: translateY(0);
 }
 
+/* Outgoing text fades briskly early so it never competes with the expanding scene */
 .hero-content-anchor.exiting {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(12px);
+  transition: opacity 0.18s ease-out, transform 0.2s ease-out;
 }
 
 .hero-content-anchor.entering {
   opacity: 0;
-  transform: translateY(-16px);
+  transform: translateY(-12px);
   transition: none;
 }
 
@@ -491,7 +516,11 @@
 }
 
 .cinematic-landing-root.reduced-motion .slot-layer.role-expanding {
-  transition: none !important;
+  animation: none !important;
+}
+
+.cinematic-landing-root.reduced-motion .slot-layer.role-expanding .slot-video {
+  animation: none !important;
 }
 
 .cinematic-landing-root.reduced-motion .slot-video {

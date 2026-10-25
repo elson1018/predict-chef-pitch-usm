@@ -762,6 +762,56 @@ Sequence: `Festival → Reset → Rain → Festival → Typical`
   - Mobile 390×844 Verified: `mobile_390_verified_1792915824528.png`
   - Production Preview Verified (Port 4173): `prod_preview_transition_verified_1792915841184.png`
 
+---
+
+## 21. Motion Polish Pass: Continuous Easing, Delayed Corner Flattening & Early Text Fade
+
+**Timestamp:** 2026-10-25 16:22:00 +08:00  
+**Phase:** Motion Polish on Measured Growing Portal Transition  
+**Route:** `http://localhost:5173/#LandingPreview` & `http://localhost:4173/#LandingPreview`  
+**Status:** **PASS** (Continuous expansion motion, visible corner rounding across ~85% of travel, early text fade at 180ms, uninterrupted playback, 1:1 pixel framing)
+
+### 1. Motion Polish Refinements Implemented
+1. **Continuous Expansion Easing (Eliminated Initial Burst & Long Settle):**
+   - Replaced steep `cubic-bezier(0.16, 1, 0.3, 1)` with a smooth, continuous travel curve: `cubic-bezier(0.3, 0.0, 0.2, 1)`.
+   - The entire 0.85s expansion moves as a single, fluid, cinematic motion rather than an aggressive takeoff followed by a prolonged crawling settle.
+2. **Delayed Corner Radius Flattening (`@keyframes expandClipper`):**
+   - Single-property transitions on `clip-path` interpolate corner radii concurrently with spatial offsets, resulting in corners appearing square prematurely while the card is still traversing mid-screen.
+   - Implemented multi-step `@keyframes expandClipper`:
+     - `0%`: `round 20px` (matches resting portal radius).
+     - `60%`: `round 18px` (expanding scene remains visibly rounded through the majority of its flight across the screen).
+     - `85%`: `round 14px` (preserves distinct rounded card aesthetic as it nears full-screen bounds).
+     - `100%`: `round 0px` (smoothly reduces to zero right against full-screen hero coverage).
+   - Paired with synchronized `@keyframes expandVideo` animating scale and translation to `(0px, 0px) scale(1)`.
+3. **Early Outgoing Text Fade (Zero Competition):**
+   - In [src/LandingPreview.css](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.css), updated `.hero-content-anchor.exiting`:
+     `transition: opacity 0.18s ease-out, transform 0.2s ease-out;`
+   - Outgoing scenario headline and forecast clear completely within the first ~180ms of transition initiation, before the expanding portal enters the left half of the viewport. Outgoing typography never collides or competes visually with the incoming scene.
+4. **Transition & Animation Lifecycle Safety ([src/LandingPreview.jsx](file:///c:/Users/gooyo/Documents/GitHub/predict-chef-pitch-usm/src/LandingPreview.jsx)):**
+   - Added `onAnimationEnd={handleTransitionEnd}` alongside `onTransitionEnd` on both persistent video slots.
+   - Updated `handleTransitionEnd` to complete role promotion on `e.animationName === 'expandClipper' || e.animationName === 'expandVideo'`, completing handoff upon exact completion of keyframe movement.
+   - Maintained identical final framing (1:1 pixel registration) and uninterrupted continuous playback clock.
+
+### 2. Browser Verification Checklist
+
+| # | Check Item | Observed Result | Status |
+|---|---|---|---|
+| 1 | **Visibly Rounded Through Most of Travel** | Expanding card preserves `round 18px-14px` across 85% of movement; visible rounding retained until edges meet viewport | **PASS** |
+| 2 | **Corner Radius Smooth Reduction to Zero** | Corner radius drops from `round 14px` to `0px` strictly in the final 15% (85%–100%) against hero bounds | **PASS** |
+| 3 | **One Continuous Movement** | `cubic-bezier(0.3, 0.0, 0.2, 1)` eliminated abrupt burst and long crawling settle; steady, cinematic glide | **PASS** |
+| 4 | **Early Outgoing Text Fade** | Outgoing scenario title and forecast fade out completely in 180ms; zero visual collision or competition with expanding card | **PASS** |
+| 5 | **Identical Final Framing** | Exact 1:1 pixel registration at animation completion; zero crop change or boundary snap | **PASS** |
+| 6 | **Uninterrupted Playback** | Video maintains persistent DOM slot identity; clock continues forward smoothly with zero restart or freeze | **PASS** |
+| 7 | **Cycle Sequence Verification** | Typical Day → Heavy Rain → Campus Festival verified smoothly on both dev (5173) and production preview (4173) | **PASS** |
+| 8 | **Quality Gates** | `npm test` (3/3 pass), `npm run lint` (0 err/0 warn), `npm run build` (success in 280ms) | **PASS** |
+
+### 3. Verification Artifacts
+- **Motion Polish Demonstration Recording (Typical → Rain → Festival Cycle):**  
+  `file:///C:/Users/gooyo/.gemini/antigravity-ide/brain/2413331d-ba0d-45e6-917d-62019d94fc24/motion_polish_cycle_1792916508713.webp`
+- **Captured Screenshots:**
+  - Resting Desktop Composition: `resting_composition_1792916520599.png`
+
+
 
 
 

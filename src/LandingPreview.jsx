@@ -281,11 +281,16 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
     }, 200)
   }, [bgSlot])
 
-  // Transitionend listener on expanding slot
+  // Transitionend or animationend listener on expanding slot
   const handleTransitionEnd = useCallback((e) => {
     if (!isTransitioningRef.current) return
-    // Ensure we trigger on the clip-path or transform animation completion
-    if (e.propertyName === 'clip-path' || e.propertyName === 'transform') {
+    // Ensure we trigger on clip-path/transform transition or keyframe animation completion
+    if (
+      e.propertyName === 'clip-path' ||
+      e.propertyName === 'transform' ||
+      e.animationName === 'expandClipper' ||
+      e.animationName === 'expandVideo'
+    ) {
       completeHandoff()
     }
   }, [completeHandoff])
@@ -423,6 +428,7 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
         <div
           className={`slot-layer role-${slot0.role}`}
           onTransitionEnd={handleTransitionEnd}
+          onAnimationEnd={handleTransitionEnd}
           aria-hidden="true"
         >
           {!reducedMotion ? (
@@ -450,6 +456,7 @@ export default function LandingPreview({ initialScenario = 'normal', onOpenDashb
         <div
           className={`slot-layer role-${slot1.role}`}
           onTransitionEnd={handleTransitionEnd}
+          onAnimationEnd={handleTransitionEnd}
           aria-hidden="true"
         >
           {!reducedMotion ? (
